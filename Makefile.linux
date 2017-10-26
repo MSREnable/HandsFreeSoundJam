@@ -1,0 +1,11 @@
+LDFLAGS = -lm -lGL -lglfw -lstdc++ -lGLEW
+LDFLAGS += $(WHISPERDIR)/dsp/libwhisper.a
+CXXFLAGS += -D__UNIX_JACK__
+LDFLAGS += -ljack -lsoundpipe -lsndfile -ldl
+CFLAGS += -DEXPORT=""
+CXXFLAGS += -DEXPORT=""
+CFLAGS += -DFULLSCREEN -g
+CFLAGS += -DDRAW_POINTER
+
+debug: eyejam
+	gdb -ex=r eyejam

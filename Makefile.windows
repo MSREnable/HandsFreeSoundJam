@@ -1,0 +1,43 @@
+EXT=x86_64-w64-mingw32
+CC=$(EXT)-gcc
+AR=$(EXT)-gcc-ar
+
+CFLAGS += -I/usr/local/include -g -DNANOVG_GLEW -DGLEW_STATIC
+CFLAGS += -I/mingw64/include 
+CFLAGS += -DFULLSCREEN
+CFLAGS += -DUSE_EYETRACKING
+CFLAGS += -I$(LIBDIR)/stream_engine/include
+
+CFLAGS += -DEXPORT="__declspec(dllexport)"
+CXXFLAGS += -DEXPORT="__declspec(dllexport)"
+
+# a quick hack: on windows, moons are smaller, so scale them by some factor 
+ifdef HIGHRES
+CFLAGS += -DSCALING=2
+endif
+
+LDFLAGS =
+#LDFLAGS += /mingw64/lib/gcc/$(EXT)/7.1.0/libstdc++.a
+LDFLAGS += -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic
+LDFLAGS += $(LIBDIR)/tobii_stream_engine.dll
+#LDFLAGS += /mingw64/x86_64-w64-mingw32/lib/libwinpthread.a
+
+LDFLAGS += /mingw64/lib/libglfw3.a
+
+LDFLAGS += -lm -lGLU32  
+LDFLAGS += -lgdi32
+LDFLAGS += /mingw64/lib/libglew32.a
+LDFLAGS += /mingw64/x86_64-w64-mingw32/lib/libopengl32.a
+
+CXXFLAGS += -D__WINDOWS_WASAPI__ -I/usr/local/include
+LDFLAGS += -lole32 -lwinmm -luuid -lksuser -ldsound -lwinmm  
+LDFLAGS += -L/usr/local/lib -lsoundpipe 
+LDFLAGS += /mingw64/lib/libsndfile.a
+LDFLAGS += /mingw64/lib/libvorbis.a
+LDFLAGS += /mingw64/lib/libvorbisenc.a
+LDFLAGS += /mingw64/lib/libogg.a
+LDFLAGS += /mingw64/lib/libspeex.a
+LDFLAGS += /mingw64/lib/libflac.a
+
+PLEASE_USE_WINDOWS=1
+
