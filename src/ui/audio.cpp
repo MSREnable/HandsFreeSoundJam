@@ -4,7 +4,7 @@ static RtAudio global_audio;
 extern "C" {
 #include <soundpipe.h>
 #include <stdlib.h>
-#include "dsp/dsp.h"
+#include "dsp.h"
 
 struct jam_audio {
     int sr;

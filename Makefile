@@ -34,8 +34,8 @@ DSP_OBJ= trinity/trinity.o\
 	 surgeon/surgeon_presets.o\
 	 sp.o\
 
-CXXFLAGS += -I$(DSPDIR)
-CFLAGS += -I$(DSPDIR)
+CXXFLAGS += -I$(DSPDIR) -Isrc
+CFLAGS += -I$(DSPDIR) -Isrc
 
 OBJ += $(addprefix src/ui/, $(UI_OBJ)) $(addprefix src/dsp/, $(DSP_OBJ))
 
@@ -76,6 +76,6 @@ linux_debug:
 	make -f Makefile -f Makefile.linux debug
 
 transfer: 
-	rsync -rvt $(WHISPERDIR)/dsp/samples .
+	rsync -rvt src/dsp/samples .
 	rsync -rvt $(LIBDIR)/tobii_stream_engine.dll .
 
