@@ -22,11 +22,6 @@ Please refer to the [Usage](usage.md) file.
 On Windows, use the msys2 environment. On Linux, business as usual. Eye 
 control is only available Windows. 
 
-First, make sure libwhisper.a is compiled. In the 
-[whisper32 DSP directory](src/dsp), run 
-    
-    make libwhisper.a
-
 Now eyejam can be compiled. 
 
 On Linux, run:

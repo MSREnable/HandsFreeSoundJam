@@ -168,9 +168,9 @@ void whisper_eyejam_init(int sr)
     /* drums */
     whisper_tracks_gain(1, -4.f);
     /* bass */
-    whisper_tracks_gain(2, -2.f);
+    whisper_tracks_gain(2, -6.f);
     /* chords */
-    whisper_tracks_gain(3, 2.f);
+    whisper_tracks_gain(3, -3.f);
     /* melody 2 */
     whisper_tracks_gain(4, -5.f);
 

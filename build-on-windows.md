@@ -64,21 +64,6 @@ Then install it with:
 
 NOTE: sudo is not needed! 
 
-## libwhisper
-
-The assumption is that the MusicProjects repo has already been cloned 
-somewhere. In msys2, go to that directory. 
-
-Before eyejam can be compiled, the core whisper dsp library must be compiled:
-
-	cd whisper/whisper/dsp
-	make 
-
-Change back to the top-level directory with:
-
-	cd -
-
-
 ## EyeJam
 
 EyeJam can finally be compiled! If the Tobii EyeX drivers have not been 
@@ -109,8 +94,8 @@ To build for high-resolution displays like the Microsft Surface, run
 
 Before the application can be run, assets and dlls must be transferred:
 
-	make transf
+	make transfer
 
 Now EyeJam can be run with:
 
-	./eyejam	
+	./eyejam
