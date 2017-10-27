@@ -162,11 +162,16 @@ void whisper_eyejam_init(int sr)
     eyejam_init(&eyejam, sr);
 
     /* set up some reasonable gains */
-    
-    whisper_tracks_gain(0, -8.f);
+   
+    /* melody */
+    whisper_tracks_gain(0, -9.f);
+    /* drums */
     whisper_tracks_gain(1, -4.f);
-    whisper_tracks_gain(2, -1.f);
+    /* bass */
+    whisper_tracks_gain(2, -2.f);
+    /* chords */
     whisper_tracks_gain(3, 2.f);
+    /* melody 2 */
     whisper_tracks_gain(4, -5.f);
 
     /* set up looping for tracks */

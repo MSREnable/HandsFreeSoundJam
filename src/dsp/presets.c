@@ -62,7 +62,7 @@ static void trinity_bass(int instr)
 
     whisper_trinity_amp_atk(instr, 0.001f);
     whisper_trinity_amp_dec(instr, 0.2f);
-    whisper_trinity_amp_sus(instr, 0.8f);
+    whisper_trinity_amp_sus(instr, 0.3f);
     whisper_trinity_amp_rel(instr, 0.07f);
     
     whisper_trinity_filter_atk(instr, 0.001f);

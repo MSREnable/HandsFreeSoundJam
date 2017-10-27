@@ -98,6 +98,9 @@ static void drumkit_create(sp_data *sp, whisper_drumkit *kit)
     drumkit_sample_load(kit, &kit->sample[2], "samples/simplekit/hh.flac");
     /* turn down hihat */
     kit->sample[2].gain = 0.3f;
+    
+    /* turn down snare */
+    kit->sample[1].gain = 0.5f;
 
     for(v = 0; v < DK_NVOICES; v++) {
         drumkit_voice_init(sp, kit, &kit->voice[v], &kit->sample[0]);
