@@ -137,6 +137,11 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 #ifdef USE_EYETRACKING
         jam_tobii_getxy(&mx, &my);
+	/* clamp values to be between 0 and 1 */
+	if(mx > 1) mx = 1;
+	else if(mx < 0) mx = 0;
+	if(my > 1) my = 1;
+	else if(my < 0) my = 0;
         mx_n = SF1eFilterDoAtTime(&filt_x, (float)mx, t);
         my_n = SF1eFilterDoAtTime(&filt_y, (float)my, t);
         mx = mx_n * win_width;
