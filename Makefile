@@ -14,7 +14,7 @@ UI_OBJ += piano.o editpanel.o pianoroll.o
 
 # DSP flags 
 
-CFLAGS += -DPD -O2 -funroll-loops -fomit-frame-pointer -Wall -fPIC -g
+CFLAGS += -DPD -O3 -funroll-loops -fomit-frame-pointer -Wall -fPIC -g
 CFLAGS += -I. -I$(LIBDIR)/loadflac/ -I$(LIBDIR)/sqlite
 CFLAGS += -I/usr/local/include 
 
