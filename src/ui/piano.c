@@ -76,7 +76,6 @@ struct jam_piano {
 
 static void set_note(jam_piano *piano, int id, void *ud)
 {
-    printf("hit button %d\n", id);
     whisper_eyejam_edit_insert(id);
 }
 
