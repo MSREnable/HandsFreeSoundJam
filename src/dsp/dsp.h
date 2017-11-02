@@ -217,7 +217,7 @@ EXPORT void whisper_tracks_voice_offset(int track, int offset);
 EXPORT int whisper_tracks_current_clip(int track);
 EXPORT int whisper_tracks_next_clip(int track);
 EXPORT int whisper_tracks_get_row_id(int track);
-EXPORT void whisper_tracks_set_row_id(int track);
+EXPORT void whisper_tracks_set_row_id(int track, int id);
 EXPORT int whisper_tracks_get_clip_row_id(int track, int clip);
 whisper_track * whisper_tracks_get_global_data();
 whisper_track * whisper_tracks_get_track(int track);

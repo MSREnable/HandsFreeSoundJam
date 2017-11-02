@@ -355,9 +355,10 @@ EXPORT int whisper_tracks_get_row_id(int track)
 {
     return tracks[track].row_id;
 }
-EXPORT void whisper_tracks_set_row_id(int track)
+
+EXPORT void whisper_tracks_set_row_id(int track, int id)
 {
-    tracks[track].row_id = track;
+    tracks[track].row_id = id;
 }
 
 EXPORT int whisper_tracks_get_clip_row_id(int track, int clip)
