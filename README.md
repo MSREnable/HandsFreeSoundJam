@@ -13,6 +13,24 @@ This version of EyeJam is a prototype. The front UI aspects are written
 in C using OpenGL via [NanoVG](http://www.github.com/memononen/nanovg) and
 GLFW, and is meant to eventually be replaced with a Windows UI layer. 
 
+EyeJam is an eye-controlled music environment for electronic loop-based 
+performance and composition. It is designed using familiar design paradigms 
+found in commercial music production software, which have been adapted to work 
+well with eye control. The core interface revolves around what is known as a 
+clip launcher, inspired by the the one found in the popular digital audio 
+workstation Ableton Live. Using the EyeJam clip launcher, one is able perform a 
+piece of music by scheduling, or "launching", small musical fragments, known as 
+"clips", which are automatically aligned and quantized to the next downbeat of 
+the song. Editing capabilities are provided through a editing window, where 
+clips can be modified or rewritten entirely. Modified musical content will 
+automatically be loaded and saved when the application is open and closed. 
+
+EyeJam uses the PCEye Mini via the Tobii Stream Engine API for eye tracking. 
+Graphics are drawn using OpenGL via NanoVG, a lightweight 2d vector graphics 
+library. Persistent data storage is provided via SQLite. Realtime audio is 
+achieved using RtAudio, and digitial signal processing is built on top of the 
+musical audio signal processing library Soundpipe.
+
 ## Usage
 
 Please refer to the [Usage](usage.md) file.

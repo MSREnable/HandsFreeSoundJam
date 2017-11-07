@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #ifndef DEMO_CLIPS_H
 #define DEMO_CLIPS_H
 #include "note_macros.h"
