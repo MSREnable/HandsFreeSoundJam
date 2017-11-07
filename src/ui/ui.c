@@ -1,10 +1,14 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "dsp/dsp.h"
 #include "eyejam.h"
 #include "nanovg.h"
 
-/* there will be 4 regions eventually, but for now only 3 are implemented */
 #define NREGIONS 4
 
 typedef struct {

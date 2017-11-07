@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #ifdef NANOVG_GLEW
 #include <GL/glew.h>
 #endif

@@ -1,11 +1,10 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #include <stdlib.h>
 #include "dsp.h"
-
-/* 
-TODO: add a delay reset function for delay line to prevent clock drift 
-This function should be called every minute or so internally and should be
-subtle. 
-*/
 
 #define MAX_DELAY_IN_SECONDS 5
 

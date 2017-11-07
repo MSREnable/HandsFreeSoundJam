@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #ifdef USE_EYETRACKING
 #include <tobii/tobii_streams.h>
 #include <stdio.h>

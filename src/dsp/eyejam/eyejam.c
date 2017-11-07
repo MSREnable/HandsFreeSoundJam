@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #include <math.h>
 #include "dsp.h"
 #define DB2LIN(A) pow(10, (double)(A)/20)
