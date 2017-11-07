@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #ifndef WHISPER_DSP
 #define WHISPER_DSP
 #include "soundpipe.h"

@@ -1,4 +1,9 @@
-﻿#ifndef WHISPER_H
+﻿/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
+#ifndef WHISPER_H
 #define WHISPER_H
 #ifdef __cplusplus
 extern "C" {
