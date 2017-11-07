@@ -239,7 +239,8 @@ int main()
     
         nvgFontSize(vg, CONSTANT(14.0f));
         nvgFillColor(vg, nvgRGB(255, 255, 255));
-        nvgText(vg, win_width, win_height, "Eyejam Demo", NULL);
+        nvgText(vg, win_width, win_height, 
+        "Microsoft Hands-Free Sound Jam", NULL);
 
         nvgEndFrame(vg);
         glfwSwapBuffers(window);

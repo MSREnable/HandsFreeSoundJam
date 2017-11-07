@@ -1,7 +1,5 @@
 # Microsoft Hands-Free Sound Jam
 
-By Paul Batchelor
-
 "Microsoft Hands-Free Sound Jam" is an eye-controlled musical performance and 
 composition environment.  The core interface implements what is known as a clip launcher, 
 based on the the one found in the popular digital audio workstation Ableton Live.
