@@ -1,6 +1,6 @@
 # Mixer
 
-In Eyejam, the mixer is the component analogous to a mixer you would find
+In MSHFSJ, the mixer is the component analogous to a mixer you would find
 in a conventional digital audio workstation. The task of the mixer is to sum
 all the tracks together into one signal and handle any global effects 
 processing.

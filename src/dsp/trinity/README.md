@@ -5,7 +5,7 @@ date. Refer to the header file [dsp.h](../dsp.h) for more info.
 # Trinity
 
 A 3-oscillator subtractive polyphonic synthesizer. Typically, this synthesizer 
-would be spawned inside of EyeJam. However, it can also be spawned as a 
+would be spawned inside of MSHFSJ. However, it can also be spawned as a 
 standalone program. The API below shows the exported functions you can use to 
 control the synthesizer. 
 
@@ -22,7 +22,7 @@ of a note or turning a note on or off, knowledge of the voice ID is required.
 
 Voices are grouped together to form a single instrument. Instruments allow
 for multiple instances of Trinity to be played at once. Each instrument can 
-be programmed to have their own sound. For instance, the default EyeJam demo
+be programmed to have their own sound. For instance, the default MSHFSJ demo
 uses two separate Trinity intruments for the bass and melody instruments.
 
 

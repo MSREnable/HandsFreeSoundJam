@@ -1,7 +1,7 @@
 # The Clip Editing Interface
 
 The following document will describe the clip editing interface used
-by EyeJam. 
+by MSHFSJ. 
 
 The clip editing interface was designed to provide a means for efficiently
 inserting and removing notes in a clip. This editor makes a few good musical 
@@ -22,7 +22,7 @@ in the
 [piano roll](../../../Fidget/src/eyejam/pianoroll.c),
 and 
 [editor](../../../Fidget/src/eyejam/editpanel.c)
-UI components for EyeJam.
+UI components for MSHFSJ.
 
 ## whisper\_eyejam\_edit\_init
     EXPORT void whisper_eyejam_edit_init();

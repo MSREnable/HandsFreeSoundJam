@@ -1,19 +1,19 @@
 # Usage
 
-A visual guide to using EyeJam, an eye-controlled application for 
+A visual guide to using MSHFSJ, an eye-controlled application for 
 realtime-oriented music performance and composition.
 
 ## The Clip Launcher
 
-The main interface to EyeJam is the clip launching window. This is the window
-seen when EyeJam first starts. 
+The main interface to MSHFSJis the clip launching window. This is the window
+seen when MSHFSJ first starts. 
 
 ![The Clip Launcher Screen](images/launcher.png)
 
 The internal clock plays by default, but there is no sound. In order to 
 make any sound, a clip needs to be launched. A **clip** is a short chunk of 
 music (be it melodic, harmonic/chordal, or percussive in nature). Compositions
-in EyeJam are composed of little clips that can be mixed and matched together.
+in MSHFSJ are composed of little clips that can be mixed and matched together.
 A clip in eyejam is tied to a specific instrument in what is known as a
 **clip region**.
 
@@ -24,7 +24,7 @@ like ponies.
 
 ![Clip Region](images/region.png)
 
-There are 4 clip regions inside of EyeJam. Each region controls a different
+There are 4 clip regions inside of MSHFSJ. Each region controls a different
 kind of instrument: Melody, Melody 2, Drums, and Chords.
 
 ### Selecting a Clip
@@ -79,7 +79,7 @@ is stopped.
 
 ### Stop Button
 
-Dwelling on the **stop button** will stop all sound for EyeJam. 
+Dwelling on the **stop button** will stop all sound for MSHFSJ. 
 
 ![Stop](images/stop.png)
 
@@ -214,8 +214,8 @@ the correct voice channel must be selected.
 ### Polyphony 
 ![Polyphony Piano Roll](images/polyphony.png)
 
-Polyphony editing in EyeJam is a little strange compared to other DAWs. This
-is largely due to how things are handled under the hood (the EyeJam 
+Polyphony editing in MSHFSJ is a little strange compared to other DAWs. This
+is largely due to how things are handled under the hood (the MSHFSJ 
 implemenation is simpler). A polyphonic instrument such as the drum kit or
 the instrument for chord progressions has what will be referred as 
 **voice channels**, where a particular voice is assigned to a particular 

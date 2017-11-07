@@ -1,6 +1,6 @@
 # Tracks
 
-In EyeJam, a **track** binds a group of [clips](clip.md) to a synthesizer
+In MSHFSJ, a **track** binds a group of [clips](clip.md) to a synthesizer
 instrument like [trinity](../trinity/README.md), 
 [surgeon](../surgeon/README.md), or [drumkit](../drumkit/README.md).
 

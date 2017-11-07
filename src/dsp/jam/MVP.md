@@ -1,7 +1,7 @@
-# EyeJam: the minimum viable product
+# Hands-Free Sound Jam: the minimum viable product
 
 This document will serve to describe all the whisper functions needed to run the 
-EyeJam minimum viable product (MVP), and what order to call them in. Rather
+MSHFSJ minimum viable product (MVP), and what order to call them in. Rather
 than provide an API reference page, the format of this document will be more
 of an introductory tutorial on how the Whisper library works in general, 
 and things to think about when using it from C# via the compiled DLL. 
@@ -42,7 +42,7 @@ This approach may not scale well if several
 applications are planned on being made, but having a monolithic DLL file
 makes life a little bit more convenient.
 
-In order for the EyeJam demo to work, it needs to be able to play clips! 
+In order for the MSHFSJ demo to work, it needs to be able to play clips! 
 Clips are short musical phrases (rhythmic, melodic, percussive) that can be 
 launched inside a track. Only one clip can be launched at a time per track. 
 
@@ -56,7 +56,7 @@ This will load clips that are stored internally inside the whisper library.
 When a clip has finished playing, it will turn itself off by default. To 
 repeat a melody, one must cue the clip up while it is currently playing. For
 things like drum loops, this would get very annoying! Clips inside a track
-can be set to be looped. In the EyeJam MVP, the drums, bass, and chord tracks 
+can be set to be looped. In the MSHFSJ MVP, the drums, bass, and chord tracks 
 all are set to be loopable. The tracks for these are 1, 2, and 3, respectively:
 
     whisper_tracks_loopmode(1, 1);
@@ -140,7 +140,7 @@ launched at the same time. For instance, to launch clip 2 on both tracks:
 
 ## Button Behavior 
 
-Buttons in the EyeJam OpenGL MVP are color coded based on state. These states 
+Buttons in the MSHFSJ OpenGL MVP are color coded based on state. These states 
 are obtained based on if the clip is currently playing, or about to be played.
 
 To get the current clip being played on a track:

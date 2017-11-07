@@ -4,9 +4,9 @@ This README will describe persistent and database management.
 
 ## A summary of data hierarchy in Eyejam
 
-Data in EyeJam stores data using the SQLite database format. SQLite is a 
+Data in MSHFSJ stores data using the SQLite database format. SQLite is a 
 cross-platofrm battle-tested flexible format that is more than suitable for
-the needs of EyeJam. Right now, the SQLite database is used to store
+the needs of MSHFSJ. Right now, the SQLite database is used to store
 musical note information for **clips**, **tracks**, and **songs**. 
 
 The core atomic structure of the musical note information is a [clip](clip.md),
@@ -23,7 +23,7 @@ currently out of scope for what SQLite is able to save.
 A group of tracks (the number of which is hard coded to be 
 ``WHISPER_NTRACKS``) are grouped in a high-level interface which will be 
 referred as a **song**. This is a singular unit which handles all the musical 
-note in a single instance. This abstraction is desirable should EyeJam want
+note in a single instance. This abstraction is desirable should MSHFSJ want
 to be able to load and store multiple songs in the SQLite database. 
 Note that a song only handles note metadata. For full granularity of control, 
 more tables will need to be made to handle things like synth and effect 

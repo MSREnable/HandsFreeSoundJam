@@ -1,6 +1,6 @@
 # Eyejam
 
-Eyejam is the name of the software driving the creation of the whisper library.
+MSHFSJ is the name of the software driving the creation of the whisper library.
 It is a gaze-controlled clip launcher based on the clip launching mechanics
 of the music software Ableton Live.
 

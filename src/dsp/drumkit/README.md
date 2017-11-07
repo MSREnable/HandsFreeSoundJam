@@ -6,7 +6,7 @@ memory to be played back later. Internally, this instrument uses the
 single-header public domain library 
 [DrFlac](https://github.com/mackron/dr_libs/blob/master/dr_flac.h) 
 to load samples into memory. These samples can then be called back on demand.
-When [sequencing note information with clips](../eyejam/clip.md), samples 
+When [sequencing note information with clips](../jam/clip.md), samples 
 correspond to midi note numbers. The default instrument sounds have the 
 following associations:
     - note 0: kick

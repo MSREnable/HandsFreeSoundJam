@@ -3,10 +3,10 @@
 
 ## Introduction 
 
-Clips are the atomic particle which ties all of EyeJam together. Conceptually,
-a "clip" is a short musical phrase. Clips are launched via the EyeJam interface
+Clips are the atomic particle which ties all of MSHFSJ together. Conceptually,
+a "clip" is a short musical phrase. Clips are launched via the MSHFSJ interface
 to build up a piece of music in realtime. Clips, and clip launching in 
-Eyejam are somewhat analogous to the features found in the 
+MSHFSJ are somewhat analogous to the features found in the 
 digital audio workstation 
 [Ableton Live](https://en.wikipedia.org/wiki/Ableton_Live).
 

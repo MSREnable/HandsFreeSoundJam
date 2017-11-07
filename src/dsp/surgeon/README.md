@@ -1,7 +1,7 @@
 # Surgeon
 
 Four-operator FM synthesizer. Surgeon was the third synthesizer built for
-EyeJam. Compared to [Trinity](../trinity/README.md), the interface is somewhat
+MSHFSJ. Compared to [Trinity](../trinity/README.md), the interface is somewhat
 cleaner internally. Because the general eyejam clip launching interface was
 completed at this point, there was never an effort to play surgeon as a 
 standalone. 

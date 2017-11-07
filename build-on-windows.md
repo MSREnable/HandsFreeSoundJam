@@ -1,6 +1,6 @@
-# Building Eyejam On Windows
+# Building Hands-Free Sound Jam On Windows
 
-This document provides a comprehensive guide to building EyeJam on Windows.
+This document provides a comprehensive guide to building MSHFSJ on Windows.
 
 
 ## Git and Msys2
@@ -71,10 +71,6 @@ installed. The software can be downloaded
 [here](http://tobiigaming.com/getstarted/?utm_source=developer.tobii.com) 
 
 
-From the MusicProjects top-level directory, go into the Fidget EyeJam directory:
-
-	cd Fidget/src/eyejam
-
 Install glew and glfw, both the graphics libraries needed for EyeJam:
 
 	pacman -S mingw-w64-x86_64-glew mingw-w64-x86_64-glfw
@@ -96,6 +92,6 @@ Before the application can be run, assets and dlls must be transferred:
 
 	make transfer
 
-Now EyeJam can be run with:
+Now MSHFSJ can be run with:
 
-	./eyejam
+	./MicrosoftHandsFreeSoundJam
