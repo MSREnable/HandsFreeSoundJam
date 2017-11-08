@@ -375,6 +375,7 @@ size_t whisper_xy_size();
 void whisper_xy_init(whisper_xy *xy, sp_data *sp);
 void whisper_xy_state(whisper_xy *xy, int state);
 void whisper_xy_setpos(whisper_xy *xy, SPFLOAT x, SPFLOAT y);
+void whisper_xy_getpos(float *x, float *y);
 void whisper_xy_compute(whisper_xy *xy, 
     SPFLOAT *inL, SPFLOAT *inR, SPFLOAT *outL, SPFLOAT *outR);
 void whisper_xy_cleanup(whisper_xy *xy);

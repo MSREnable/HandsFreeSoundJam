@@ -20,6 +20,7 @@
 
 static int win_width, win_height;
 static GLFWwindow *window;
+void whisper_xy_getpos(float *x, float *y);
 
 static void key(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -59,6 +60,7 @@ int main()
     double mx, my;
     double mx_n, my_n; /* normalized values */
     double t, prev_t, delta;
+    float smoothX, smoothY;
     jam_ui *ui;
 #ifdef USE_ONEEURO
     SF1eFilter filt_x;
@@ -221,15 +223,19 @@ int main()
 
         /* draw crosshairs */
         if(jam_xy_is_on()) {
+            whisper_xy_getpos(&smoothX, &smoothY);
+            smoothX *= win_width;
+            smoothY = (1 - smoothY);
+            smoothY *= win_height;
             nvgBeginPath(vg);
-            nvgMoveTo(vg, 0, my);
-            nvgLineTo(vg, win_width, my); 
+            nvgMoveTo(vg, 0, smoothY);
+            nvgLineTo(vg, win_width, smoothY); 
             nvgStrokeColor(vg, nvgRGB(255, 255, 255));
             nvgStroke(vg);
             
             nvgBeginPath(vg);
-            nvgMoveTo(vg, mx, 0);
-            nvgLineTo(vg, mx, win_height); 
+            nvgMoveTo(vg, smoothX, 0);
+            nvgLineTo(vg, smoothX, win_height); 
             nvgStrokeColor(vg, nvgRGB(255, 255, 255));
             nvgStroke(vg);
         }

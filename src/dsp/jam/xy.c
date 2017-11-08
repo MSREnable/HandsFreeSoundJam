@@ -5,6 +5,8 @@
 
 #include "dsp.h"
 
+#define SMOOTHING 0.1
+
 enum {
     XY_MODE_ON,
     XY_MODE_OFF,
@@ -31,6 +33,8 @@ struct whisper_xy {
     sp_port *portY;
     SPFLOAT x;
     SPFLOAT y;
+    SPFLOAT smoothX; 
+    SPFLOAT smoothY;
     xy_filter xyfilt;
     xy_delay xydel;
     int state;
@@ -125,9 +129,9 @@ void whisper_xy_init(whisper_xy *xy, sp_data *sp)
 
     /* set up smoothing filters */
     sp_port_create(&xy->portX);
-    sp_port_init(xy->sp, xy->portX, 0.02f);
+    sp_port_init(xy->sp, xy->portX, SMOOTHING);
     sp_port_create(&xy->portY);
-    sp_port_init(xy->sp, xy->portY, 0.02f);
+    sp_port_init(xy->sp, xy->portY, SMOOTHING);
     whisper_xy_setpos(xy, 0.f, 0.f);
 
     xy_filter_init(xy->sp, &xy->xyfilt, 100.f, 4000.f, 0.4f, 1.9f);
@@ -137,6 +141,8 @@ void whisper_xy_init(whisper_xy *xy, sp_data *sp)
 
     xy->len = xy->sp->sr * 0.1f;
     xy->counter = 0;
+    xy->smoothX = 0;
+    xy->smoothY= 0;
 }
 
 void xy_filter_compute(sp_data *sp, xy_filter *xy,
@@ -192,6 +198,8 @@ void whisper_xy_compute(whisper_xy *xy,
         xy->state == XY_MODE_FADEOUT) {
         sp_port_compute(xy->sp, xy->portX, &xy->x, &s_portX);
         sp_port_compute(xy->sp, xy->portY, &xy->y, &s_portY);
+        xy->smoothX = s_portX;
+        xy->smoothY = s_portY;
         xy_filter_compute(xy->sp, &xy->xyfilt, &s_portX, &s_portY, inL, inR, 
             &tmp_inL, &tmp_inR);
         xy_delay_compute(xy->sp, &xy->xydel, &s_portX,
@@ -253,4 +261,13 @@ void whisper_xy_state_toggle(whisper_xy *xy)
 int whisper_xy_is_on(whisper_xy *xy)
 {
     return xy->state == XY_MODE_ON;
+}
+
+void whisper_xy_getpos(float *x, float *y)
+{
+    whisper_xy *xy;
+    xy = whisper_xy_global_data();
+
+    *x = xy->smoothX;
+    *y = xy->smoothY;
 }
