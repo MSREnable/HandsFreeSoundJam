@@ -244,6 +244,9 @@ EXPORT void whisper_schedule(int track, int clip)
         t->mode = WHISPER_PLEASE_LAUNCH;
     }
     t->next_clip = clip;
+    /* set the currently played clip to be in the editor */
+    whisper_eyejam_edit_set_track(track);
+    whisper_eyejam_edit_set_clip(clip);
 }
 
 EXPORT void whisper_clip_set_note(int track, int clip, int pos, int voice, int nn)

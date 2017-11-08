@@ -41,7 +41,7 @@ EXPORT int whisper_eyejam_edit_get_track()
 
 EXPORT void whisper_eyejam_edit_set_clip(int clip)
 {
-    g_edit.clip = 0;
+    g_edit.clip = clip;
 }
 
 EXPORT int whisper_eyejam_edit_get_clip()
