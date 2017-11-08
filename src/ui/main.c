@@ -14,7 +14,7 @@
 #include "nanovg_gl.h"
 #include "eyejam.h"
 
-#ifdef USE_EYETRACKING
+#ifdef USE_ONEEURO
 #include "SF1eFilter.h"
 #endif
 
@@ -60,7 +60,7 @@ int main()
     double mx_n, my_n; /* normalized values */
     double t, prev_t, delta;
     jam_ui *ui;
-#ifdef USE_EYETRACKING
+#ifdef USE_ONEEURO
     SF1eFilter filt_x;
     SF1eFilter filt_y;
 #endif
@@ -120,8 +120,8 @@ int main()
 
     ui = malloc(jam_ui_size());
     jam_ui_init(ui);
-#ifdef USE_EYETRACKING
     jam_tobii_setup();
+#ifdef USE_ONEEURO
 	filt_x.config.frequency = 0.1;
 	filt_x.config.cutoffSlope = 1;
 	filt_x.config.derivativeCutoffFrequency = 1;
@@ -142,15 +142,23 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 #ifdef USE_EYETRACKING
         jam_tobii_getxy(&mx, &my);
-	/* clamp values to be between 0 and 1 */
-	if(mx > 1) mx = 1;
-	else if(mx < 0) mx = 0;
-	if(my > 1) my = 1;
-	else if(my < 0) my = 0;
+        /* clamp values to be between 0 and 1 */
+        if(mx > 1) mx = 1;
+        else if(mx < 0) mx = 0;
+        if(my > 1) my = 1;
+        else if(my < 0) my = 0;
+#ifdef USE_ONEEURO
         mx_n = SF1eFilterDoAtTime(&filt_x, (float)mx, t);
         my_n = SF1eFilterDoAtTime(&filt_y, (float)my, t);
         mx = mx_n * win_width;
         my = my_n * win_height;
+#else
+        mx_n = mx;
+        my_n = my;
+        mx *= win_width;
+        my *= win_height;
+#endif
+
 #else
         glfwGetCursorPos(window, &mx, &my);
         mx_n = mx / win_width;

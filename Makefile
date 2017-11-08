@@ -50,7 +50,9 @@ OBJ += $(LIBDIR)/nanovg/src/nanovg.o \
        $(LIBDIR)/sqlite/sqlite3.o\
 
 
+ifdef USE_ONEEURO
 OBJ += $(LIBDIR)/SF1eFilter/SF1eFilter.o
+endif
 
 clean:
 	rm -rf $(OBJ) $(NAME)
