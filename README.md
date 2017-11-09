@@ -1,33 +1,27 @@
 # Microsoft Hands-Free Sound Jam
 
-"Microsoft Hands-Free Sound Jam" is an eye-controlled musical performance and 
-composition environment.  The core interface implements what is known as a clip launcher, 
-based on the the one found in the popular digital audio workstation Ableton Live.
-In MSHFSJ, one is able to launch small musical fragments known as "clips", 
-which are automatically aligned to the beat of the song. Clips can be launched
-and mixed together in various combinations to play a song. 
-
-This version of MSHFSJ is a prototype. The front UI aspects are written
-in C using OpenGL via [NanoVG](http://www.github.com/memononen/nanovg) and
-GLFW, and is meant to eventually be replaced with a Windows UI layer. 
-
-MSHFSJ is an eye-controlled music environment for electronic loop-based 
+Microsoft Hands-Free Sound Jam, or "MSHFSJ", 
+is an eye-controlled music environment for electronic loop-based 
 performance and composition. It is designed using familiar design paradigms 
 found in commercial music production software, which have been adapted to work 
 well with eye control. The core interface revolves around what is known as a 
 clip launcher, inspired by the the one found in the popular digital audio 
 workstation Ableton Live. Using the MSHFSJ clip launcher, one is able perform a 
-piece of music by scheduling, or "launching", small musical fragments, known as 
-"clips", which are automatically aligned and quantized to the next downbeat of 
-the song. Editing capabilities are provided through a editing window, where 
+piece of music by scheduling, or "launching", small musical fragments known as 
+"clips". These clips are automatically aligned and quantized to the next downbeat of 
+the song. Editing capabilities are provided through an editing window, where 
 clips can be modified or rewritten entirely. Modified musical content will 
 automatically be loaded and saved when the application is open and closed. 
 
 MSHFSJ uses the PCEye Mini via the Tobii Stream Engine API for eye tracking. 
-Graphics are drawn using OpenGL via NanoVG, a lightweight 2d vector graphics 
-library. Persistent data storage is provided via SQLite. Realtime audio is 
-achieved using RtAudio, and digitial signal processing is built on top of the 
-musical audio signal processing library Soundpipe.
+Graphics are drawn using OpenGL via 
+[NanoVG](https://www.github.com/memononen/nanovg), a lightweight 2d vector 
+graphics library. Persistent data storage is provided via 
+[SQLite](https://www.sqlite.org). 
+Realtime audio is achieved using 
+[RtAudio](https://www.github.com/thestk/rtaudio), and digitial signal processing is 
+built on top of the musical audio signal processing library 
+[Soundpipe](http://www.pbat.ch/proj/soundpipe).
 
 ## Usage
 
@@ -35,10 +29,8 @@ Please refer to the [Usage](usage.md) file.
 
 ## Setup
 
-On Windows, use the msys2 environment. On Linux, business as usual. Eye 
-control is only available Windows. 
-
-Now MSHFSJ can be compiled. 
+On Windows, use the [MSYS2 environment](http://msys2.org). 
+On Linux, it's business as usual. Eye control is only available on Windows. 
 
 On Linux, run:
 
