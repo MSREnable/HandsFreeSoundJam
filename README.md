@@ -21,7 +21,7 @@ graphics library. Persistent data storage is provided via
 Realtime audio is achieved using 
 [RtAudio](https://www.github.com/thestk/rtaudio), and digitial signal processing is 
 built on top of the musical audio signal processing library 
-[Soundpipe](http://www.pbat.ch/proj/soundpipe).
+[Soundpipe](http://www.pbat.ch/proj/soundpipe.html).
 
 ## Usage
 
