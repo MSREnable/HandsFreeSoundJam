@@ -16,7 +16,7 @@ typedef struct {
     jam_ui *top;
     jam_btnreg *reg[NREGIONS];
     jam_button *close;
-    jam_button *xy;
+    jam_button *toy;
     jam_button *reset;
     jam_button *edit;
     jam_button *play;
@@ -38,6 +38,7 @@ struct jam_ui {
     jam_audio *audio;
     cliplauncher_ui launcher;
     editor_ui editor;
+    jam_toys *toys;
     int screen;
 };
 
@@ -201,13 +202,11 @@ static void please_close(jam_button *but, void *ud)
     jam_close();
 }
 
-static void xy_toggle(jam_button *but, void *ud)
+static void toy_screen(jam_button *but, void *ud)
 {
-    /* whisper_eyejam_xy_toggle(); */
-    /* HACK: turn on moonjam */
     jam_ui *ui;
     ui = ud;
-    ui->screen = 2;
+    jam_ui_screen(ui, JAM_TOYS);
 }
 
 static void reset_track(jam_button *but, void *ud)
@@ -224,7 +223,7 @@ static void edit_screen(jam_button *but, void *ud)
     jam_ui *ui;
     ui = ud;
         
-    jam_ui_screen(ui, 1);
+    jam_ui_screen(ui, JAM_EDIT);
 }
 
 static jam_button_cb event[] = 
@@ -375,17 +374,16 @@ static void launcher_init(cliplauncher_ui *ui)
     jam_button_text(ui->close, "Close");
 
     /* make XY button */
-    ui->xy= malloc(jam_button_size());
-    jam_button_init(ui->xy);
-    jam_button_setsize(ui->xy, CONSTANT(100), CONSTANT(100));
-    jam_button_pos(ui->xy, 
+    ui->toy= malloc(jam_button_size());
+    jam_button_init(ui->toy);
+    jam_button_setsize(ui->toy, CONSTANT(100), CONSTANT(100));
+    jam_button_pos(ui->toy, 
         centerw - CONSTANT(512), 
         centerh - CONSTANT(384));
 
-    jam_button_cb_trigger(ui->xy, xy_toggle);
-    /* HACK: spawn moongazing for now */ 
-    jam_button_text(ui->xy, "MoonJam");
-    jam_button_data(ui->xy, ui->top);
+    jam_button_cb_trigger(ui->toy, toy_screen);
+    jam_button_text(ui->toy, "Toys");
+    jam_button_data(ui->toy, ui->top);
     
     /* make reset button */
     ui->reset = malloc(jam_button_size());
@@ -471,8 +469,8 @@ static void launcher_step(NVGcontext *vg, cliplauncher_ui *ui,
     }
     jam_button_interact(ui->close, x, y, delta);
     jam_button_draw(vg, ui->close);
-    jam_button_interact(ui->xy , x, y, delta);
-    jam_button_draw(vg, ui->xy);
+    jam_button_interact(ui->toy , x, y, delta);
+    jam_button_draw(vg, ui->toy);
     jam_button_interact(ui->reset, x, y, delta);
     jam_button_draw(vg, ui->reset);
     jam_button_interact(ui->edit, x, y, delta);
@@ -518,8 +516,8 @@ static void launcher_destroy(cliplauncher_ui *ui)
     }
     jam_button_free(ui->close);
     free(ui->close);
-    jam_button_free(ui->xy);
-    free(ui->xy);
+    jam_button_free(ui->toy);
+    free(ui->toy);
     jam_button_free(ui->reset);
     free(ui->reset);
     jam_button_free(ui->edit);
@@ -545,6 +543,8 @@ void jam_ui_init(jam_ui *ui)
     editor_init(&ui->editor);
     ui->screen = 0;
     mg_init(ui);
+    ui->toys = malloc(jam_toys_size());
+    jam_toys_init(ui->toys, ui);
 }
 
 void jam_ui_free(jam_ui *ui)
@@ -554,16 +554,20 @@ void jam_ui_free(jam_ui *ui)
     jam_audio_stop(ui->audio);
     jam_audio_destroy(&ui->audio);
     mg_clean();
+    free(ui->toys);
 }
 
 void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
 {
     switch(ui->screen) {
-        case 1:
+        case JAM_EDIT:
             editor_step(vg, &ui->editor, x, y, delta);
             break;
-        case 2:
+        case JAM_MOONJAM:
             mg_draw(vg, x, y, delta);
+            break;
+        case JAM_TOYS:
+            jam_toys_step(vg, ui->toys, x, y, delta);
             break;
         default:
             launcher_step(vg, &ui->launcher, x, y, delta);

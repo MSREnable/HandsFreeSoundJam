@@ -27,6 +27,13 @@ enum {
     EYEJAM_TRIGGER
 };
 
+enum {
+    JAM_LAUNCHER,
+    JAM_EDIT,
+    JAM_TOYS,
+    JAM_MOONJAM
+};
+
 typedef struct jam_audio jam_audio;
 typedef struct jam_hit jam_hit;
 typedef struct jam_timer jam_timer;
@@ -36,6 +43,7 @@ typedef struct jam_btnreg jam_btnreg;
 typedef struct jam_piano jam_piano;
 typedef struct jam_panel jam_panel;
 typedef struct jam_pianoroll jam_pianoroll;
+typedef struct jam_toys jam_toys;
 
 typedef void (*jam_button_cb)(jam_button*,void*);
 
@@ -159,5 +167,15 @@ void jam_pianoroll_init(jam_pianoroll  *roll, double x, double y);
 void jam_pianoroll_free(jam_pianoroll  *roll);
 void jam_pianoroll_interact(jam_pianoroll *roll, double x, double y, double step);
 void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll);
+
+/* Toys Window */
+
+size_t jam_toys_size();
+void jam_toys_init(jam_toys *toys, jam_ui *ui);
+void jam_toys_free(jam_toys *toys);
+void jam_toys_interact(jam_toys *toys, double x, double y, double step);
+void jam_toys_draw(NVGcontext *vg, jam_toys *toys);
+void jam_toys_step(NVGcontext *vg, jam_toys *toys, double x, double y, double step);
+
 
 #endif

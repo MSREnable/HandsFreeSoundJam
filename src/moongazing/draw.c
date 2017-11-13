@@ -167,7 +167,7 @@ void mg_draw(NVGcontext *vg, double x, double y, double delta)
 
     if(mg_window_closing()) {
         moon_data.please_close = 0;
-        jam_ui_screen(moon_data.top, 0);
+        jam_ui_screen(moon_data.top, JAM_TOYS);
     }
 }
 

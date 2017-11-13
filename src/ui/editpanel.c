@@ -33,7 +33,7 @@ static void launcher_screen(jam_button *but, void *ud)
     jam_ui *ui;
     ui = ud;
         
-    jam_ui_screen(ui, 0);
+    jam_ui_screen(ui, JAM_LAUNCHER);
 }
 
 static void clear_clip(jam_button *but, void *ud)
