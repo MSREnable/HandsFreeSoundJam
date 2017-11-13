@@ -122,7 +122,10 @@ int main()
 
     ui = malloc(jam_ui_size());
     jam_ui_init(ui);
+#ifdef USE_EYETRACKING
     jam_tobii_setup();
+#endif
+
 #ifdef USE_ONEEURO
     filt_x.config.frequency = 0.1;
     filt_x.config.cutoffSlope = 1;
