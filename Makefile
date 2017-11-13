@@ -9,7 +9,7 @@ NAME=MicrosoftHandsFreeSoundJam
 CFLAGS = -I$(LIBDIR)/nanovg/src/ -Wall
 CFLAGS += -DGLFW_INCLUDE_EXT -DNANOVG_GL2_IMPLEMENTATION -DNANOVG_GLEW
 CXXFLAGS += -I$(LIBDIR)/rtaudio
-UI_OBJ += main.o audio.o hit.o timer.o button.o ui.o btnreg.o gaze.o 
+UI_OBJ += main.o audio.o hit.o timer.o button.o ui.o btnreg.o gaze.o
 UI_OBJ += piano.o editpanel.o pianoroll.o
 
 
@@ -49,6 +49,10 @@ OBJ += $(LIBDIR)/nanovg/src/nanovg.o \
        $(LIBDIR)/loadflac/loadflac.o\
        $(LIBDIR)/sqlite/sqlite3.o\
 
+
+MOONGAZE_OBJ = draw.o moon.o synth.o
+
+OBJ += $(addprefix src/moongazing/, $(MOONGAZE_OBJ))
 
 ifdef USE_ONEEURO
 OBJ += $(LIBDIR)/SF1eFilter/SF1eFilter.o
