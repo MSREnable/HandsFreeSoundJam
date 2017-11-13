@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #include <stdio.h>
 #include "moongazing.h"
 #include "nanovg.h"

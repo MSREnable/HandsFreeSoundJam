@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #include <stdlib.h>
 #include <soundpipe.h>
 #include "dsp.h"

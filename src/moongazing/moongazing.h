@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #ifndef MOONGAZING_H
 #define MOONGAZING_H
 #define NMOONS 4

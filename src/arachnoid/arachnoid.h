@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT license.
+ */
+
 #ifndef ARACHNOID_CIRC_H
 #define ARACHNOID_CIRC_H
 
