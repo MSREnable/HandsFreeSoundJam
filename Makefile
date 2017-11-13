@@ -54,6 +54,9 @@ MOONGAZE_OBJ = draw.o moon.o synth.o
 
 OBJ += $(addprefix src/moongazing/, $(MOONGAZE_OBJ))
 
+ARACHNOID_OBJ = audio.o circ.o draw.o
+OBJ += $(addprefix src/arachnoid/, $(ARACHNOID_OBJ))
+
 ifdef USE_ONEEURO
 OBJ += $(LIBDIR)/SF1eFilter/SF1eFilter.o
 endif

@@ -8,6 +8,7 @@
 #include "dsp/dsp.h"
 #include "eyejam.h"
 #include "moongazing/moongazing.h"
+#include "arachnoid/arachnoid.h"
 #include "nanovg.h"
 
 #define NREGIONS 4
@@ -35,6 +36,7 @@ typedef struct {
 } editor_ui;
 
 struct jam_ui {
+    NVGcontext *vg;
     jam_audio *audio;
     cliplauncher_ui launcher;
     editor_ui editor;
@@ -541,10 +543,12 @@ void jam_ui_init(jam_ui *ui)
     ui->editor.top = ui;
     launcher_init(&ui->launcher);
     editor_init(&ui->editor);
-    ui->screen = 0;
     mg_init(ui);
     ui->toys = malloc(jam_toys_size());
     jam_toys_init(ui->toys, ui);
+    arachnoid_init(ui);
+
+    jam_ui_screen(ui, JAM_LAUNCHER);
 }
 
 void jam_ui_free(jam_ui *ui)
@@ -555,10 +559,13 @@ void jam_ui_free(jam_ui *ui)
     jam_audio_destroy(&ui->audio);
     mg_clean();
     free(ui->toys);
+    arachnoid_clean();
 }
 
 void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
 {
+    /* RGB: 28, 11, 43 */
+    jam_clear_color(0.1093, 0.0431, 0.1686);
     switch(ui->screen) {
         case JAM_EDIT:
             editor_step(vg, &ui->editor, x, y, delta);
@@ -568,6 +575,10 @@ void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
             break;
         case JAM_TOYS:
             jam_toys_step(vg, ui->toys, x, y, delta);
+            break;
+        case JAM_ARACHNOID:
+            /* RGB: 20, 26, 19*/
+            arachnoid_step(vg, x, y, delta);
             break;
         default:
             launcher_step(vg, &ui->launcher, x, y, delta);
@@ -603,4 +614,3 @@ void jam_ui_screen(jam_ui *ui, int screen)
 {
     ui->screen = screen;
 }
-

@@ -31,7 +31,8 @@ enum {
     JAM_LAUNCHER,
     JAM_EDIT,
     JAM_TOYS,
-    JAM_MOONJAM
+    JAM_MOONJAM,
+    JAM_ARACHNOID,
 };
 
 typedef struct jam_audio jam_audio;
@@ -177,5 +178,5 @@ void jam_toys_interact(jam_toys *toys, double x, double y, double step);
 void jam_toys_draw(NVGcontext *vg, jam_toys *toys);
 void jam_toys_step(NVGcontext *vg, jam_toys *toys, double x, double y, double step);
 
-
+void jam_clear_color(float r, float g, float b);
 #endif

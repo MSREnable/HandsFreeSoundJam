@@ -7,6 +7,12 @@
 #define MOONSCALE 1
 #endif
 
+#ifndef JAM_UI_DATA
+#define JAM_UI_DATA
+typedef struct jam_ui jam_ui;
+#endif
+
+
 /* data types */
 
 typedef struct NVGcontext NVGcontext;
@@ -16,7 +22,7 @@ typedef struct mg_synth mg_synth;
 
 /* top-level functions */
 
-void mg_init();
+void mg_init(jam_ui *ui);
 void mg_clean();
 void mg_draw(NVGcontext *vg, double x, double y, double t);
 void mg_bind_synth(mg_synth *synth);

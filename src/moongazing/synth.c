@@ -189,8 +189,8 @@ void mg_synth_create(mg_synth **synth, int sr)
     int i;
     *synth = malloc(sizeof(mg_synth));
     psynth = *synth;
-    
-    sp_create(&psynth->sp);
+   
+    psynth->sp = whisper_sp_data();
     sp = psynth->sp;
     sp->sr = sr;
     sp_ftbl_create(sp, &psynth->ft, 8192);
@@ -244,7 +244,6 @@ void mg_synth_destroy(mg_synth **synth)
     sp_ftbl_destroy(&psynth->ft);
     sp_moogladder_destroy(&psynth->lpf);
     sp_port_destroy(&psynth->fade);
-    sp_destroy(&psynth->sp);
     free(*synth);
 }
 

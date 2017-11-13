@@ -6,6 +6,7 @@
 #include <math.h>
 #include "dsp.h"
 #include "moongazing/moongazing.h"
+#include "arachnoid/arachnoid.h"
 #define NSENDS 2
 #define DB2LIN(A) pow(10, (double)(A)/20)
 
@@ -39,6 +40,7 @@ void whisper_mixer_init(int sr)
     mg_synth_create(&mixer.moonjam, sr);
     mg_bind_synth(mixer.moonjam);
 }
+
 void whisper_mixer_destroy()
 {
     int e;
@@ -123,6 +125,13 @@ void whisper_mixer_tick(SPFLOAT *clock, SPFLOAT *L, SPFLOAT *R)
     mg_synth_tick(mixer.moonjam, &tmpL);
     *L += tmpL;
     *R += tmpL;
+
+    /* compute arachnoid */
+
+    tmpL = arachnoid_tick();
+    *L += tmpL;
+    *R += tmpL;
+
     /* compute global effects */
 
     for(s = 0; s < NSENDS; s++) {

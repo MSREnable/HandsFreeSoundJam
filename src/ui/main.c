@@ -29,6 +29,11 @@ static int win_width, win_height;
 static GLFWwindow *window;
 void whisper_xy_getpos(float *x, float *y);
 
+void jam_clear_color(float r, float g, float b)
+{
+    glClearColor(r, g, b, 1.0);
+}
+
 static void key(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     NVG_NOTUSED(scancode);
@@ -114,8 +119,6 @@ int main()
         return -1;
     }
 
-    /* RGB: 28, 11, 43 */
-    glClearColor(0.1093, 0.0431, 0.1686, 1.0);
     /* glfwSetCursorPosCallback(window, pos_callback); */
     glfwSetKeyCallback(window, key);
 
@@ -204,10 +207,10 @@ int main()
         nvgStrokeColor(vg, nvgRGB(255, 255, 255));
         nvgStroke(vg);
 /* 1024 x 768 guides */
-        int offset = (win_width - 1024) / 2;
+        int offset = (win_width - CONSTANT(1024)) / 2;
         nvgBeginPath(vg);
-        nvgMoveTo(vg, 1024 + offset, 0);
-        nvgLineTo(vg, 1024 + offset, win_height);
+        nvgMoveTo(vg, CONSTANT(1024) + offset, 0);
+        nvgLineTo(vg, CONSTANT(1024) + offset, win_height);
         nvgStrokeColor(vg, nvgRGB(255, 255, 255));
         nvgStroke(vg);
 
@@ -217,10 +220,10 @@ int main()
         nvgStrokeColor(vg, nvgRGB(255, 255, 255));
         nvgStroke(vg);
 
-        offset = (win_height - 768) / 2;
+        offset = (win_height - CONSTANT(768)) / 2;
         nvgBeginPath(vg);
-        nvgMoveTo(vg, 0, 768 + offset);
-        nvgLineTo(vg, win_width, 768 + offset);
+        nvgMoveTo(vg, 0, CONSTANT(768) + offset);
+        nvgLineTo(vg, win_width, CONSTANT(768) + offset);
         nvgStrokeColor(vg, nvgRGB(255, 255, 255));
         nvgStroke(vg);
         nvgBeginPath(vg);
