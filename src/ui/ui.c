@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "dsp/dsp.h"
 #include "eyejam.h"
+#include "moongazing/moongazing.h"
 #include "nanovg.h"
 
 #define NREGIONS 4
@@ -202,7 +203,10 @@ static void please_close(jam_button *but, void *ud)
 
 static void xy_toggle(jam_button *but, void *ud)
 {
-    whisper_eyejam_xy_toggle();
+    /* whisper_eyejam_xy_toggle(); */
+    jam_ui *ui;
+    ui = ud;
+    ui->screen = 2;
 }
 
 static void reset_track(jam_button *but, void *ud)
@@ -378,6 +382,7 @@ static void launcher_init(cliplauncher_ui *ui)
         centerh - CONSTANT(384));
     jam_button_cb_trigger(ui->xy, xy_toggle);
     jam_button_text(ui->xy, "XY Mode");
+    jam_button_data(ui->xy, ui->top);
     
     /* make reset button */
     ui->reset = malloc(jam_button_size());
@@ -536,6 +541,7 @@ void jam_ui_init(jam_ui *ui)
     launcher_init(&ui->launcher);
     editor_init(&ui->editor);
     ui->screen = 0;
+    mg_init(ui);
 }
 
 void jam_ui_free(jam_ui *ui)
@@ -544,6 +550,7 @@ void jam_ui_free(jam_ui *ui)
     editor_destroy(&ui->editor);
     jam_audio_stop(ui->audio);
     jam_audio_destroy(&ui->audio);
+    mg_clean();
 }
 
 void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
@@ -551,6 +558,9 @@ void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
     switch(ui->screen) {
         case 1:
             editor_step(vg, &ui->editor, x, y, delta);
+            break;
+        case 2:
+            mg_draw(vg, x, y, delta);
             break;
         default:
             launcher_step(vg, &ui->launcher, x, y, delta);

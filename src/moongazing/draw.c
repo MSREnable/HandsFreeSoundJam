@@ -4,7 +4,7 @@
 #include "ui/eyejam.h"
 
 #define CLOSE_DWELL 0.45
-#define CLOSE_RADIUS 75*MOONSCALE
+#define CLOSE_RADIUS CONSTANT(75)
 
 
 static double x_c = 100;
@@ -19,6 +19,7 @@ static unsigned char palette[][3] = {
 };
 
 typedef struct {
+    jam_ui *top;
     mg_moon *moon[NMOONS];
     mg_synth *synth;
     int count;
@@ -85,7 +86,7 @@ static void pos_callback(double xpos, double ypos)
     
     /* check for bottom left corner intersection */
     hit_this_time = 0;
-    if((xpos < CLOSE_RADIUS * MOONSCALE && ypos > CLOSE_RADIUS * MOONSCALE) || 
+    if((xpos < CLOSE_RADIUS && ypos > CLOSE_RADIUS) || 
             moon_data.closing == 1) {
         moon_data.hit_last_time = 1;
         hit_this_time = 1;
@@ -119,9 +120,10 @@ static void pos_callback(double xpos, double ypos)
 
 }
 
-void mg_init()
+void mg_init(jam_ui *top)
 {
     mg_setup(&moon_data); 
+    moon_data.top = top;
 }
 
 void mg_clean()
@@ -134,7 +136,7 @@ void mg_draw(NVGcontext *vg, double x, double y, double delta)
     int i;
     int win_width, win_height;
     int color;
-  
+
     moon_data.delta = delta;
     win_width = jam_win_width();   
     win_height = jam_win_height();   
@@ -156,7 +158,7 @@ void mg_draw(NVGcontext *vg, double x, double y, double delta)
     }
 
     nvgBeginPath(vg);
-    nvgCircle(vg, 0, win_height, CLOSE_RADIUS * MOONSCALE);
+    nvgCircle(vg, 0, win_height, CLOSE_RADIUS);
     nvgFillColor(vg, nvgRGBA(193, 51, 0, 255));
     nvgFill(vg);
 
@@ -164,6 +166,11 @@ void mg_draw(NVGcontext *vg, double x, double y, double delta)
     nvgRect(vg, 0, 0, win_width, win_height);
     nvgFillColor(vg, nvgRGBA(255, 255, 255, 255 * moon_data.timer_alpha));
     nvgFill(vg);
+
+    if(mg_window_closing()) {
+        moon_data.please_close = 0;
+        jam_ui_screen(moon_data.top, 0);
+    }
 }
 
 float mg_time_fade(void)

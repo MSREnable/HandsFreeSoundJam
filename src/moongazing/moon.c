@@ -72,7 +72,7 @@ static void calculate_offset(mg_moon *moon)
 static void change_movement(mg_moon *moon)
 {
     moon->speed = 0.05 + random_number() * 0.5;
-    moon->amp = 8.0 + MOONSCALE * 20.0 * random_number();
+    moon->amp = 8.0 + CONSTANT(20.0) * random_number();
     moon->off_x = 0.0;
     moon->off_y = 0.0;
 
@@ -82,7 +82,7 @@ static void change_movement(mg_moon *moon)
 
 void mg_moon_init(mg_moon *moon)
 {
-    moon->r = 75.f * MOONSCALE;
+    moon->r = CONSTANT(75.f);
     moon->scale = 1.0;
     moon->x_c = 200.f;
     moon->y_c = 200.f;
