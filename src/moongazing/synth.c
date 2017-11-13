@@ -97,6 +97,7 @@ static void synthlet_init(sp_data *sp, synthlet *s)
     s->fm->car = 1.f;
     s->fm->mod = 1.f;
     s->fm->indx = 1.f;
+    s->fm->amp = 0.3;
 }
 
 static void synthlet_destroy(synthlet *s)
@@ -135,7 +136,7 @@ static void pad_synth_init(sp_data *sp, pad_voice *pad)
 
     sp_blsaw_create(&pad->saw);
     sp_blsaw_init(sp, pad->saw);
-    *pad->saw->amp = 0.1f;
+    *pad->saw->amp = 0.2f;
 
     rnd = (SPFLOAT)rand() / RAND_MAX;
     sp_osc_create(&pad->lfo);
@@ -253,10 +254,6 @@ void mg_synth_tick(mg_synth *synth, float *out)
     int i;
     SPFLOAT tmp;
     SPFLOAT dry;
-    SPFLOAT s_revL;
-    SPFLOAT s_revR;
-    SPFLOAT s_del;
-    SPFLOAT s_rev_in;
     SPFLOAT pads;
     SPFLOAT s_lpf;
     SPFLOAT fade;
@@ -283,7 +280,6 @@ void mg_synth_tick(mg_synth *synth, float *out)
    
     sp_moogladder_compute(sp, synth->lpf, &pads, &s_lpf);
     dry += s_lpf * 0.25;
-    s_rev_in = dry + s_del * 0.5f;
     *out = dry;
    
     fade = (SPFLOAT)(1 - mg_time_fade());
