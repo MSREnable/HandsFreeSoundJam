@@ -115,7 +115,7 @@ static SPFLOAT tick(audio_data *d)
 
     sp_randi_compute(d->sp, d->ri, NULL, &s_ri);
     d->del->del = s_ri;
-    in = tmp + d->prev * 0.9;
+    in = tmp + d->prev * 0.99;
     sp_vdelay_compute(d->sp, d->del, &in, &s_del);
     d->prev = s_del;
     out = s_del * 0.3 + tmp;
