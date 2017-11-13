@@ -29,28 +29,43 @@ Please refer to the [Usage](usage.md) file.
 
 ## Setup
 
-On Windows, use the [MSYS2 environment](http://msys2.org). 
-On Linux, it's business as usual. Eye control is only available on Windows. 
+
+### Windows 10
+
+The Windows build uses the [MSYS2 environment](http://msys2.org). 
+
+Full instructions on building for on Windows can be found with the 
+document [build-on-windows.md](build-on-windows.md).
+
+
+### Linux
+
+On Linux, it's business as usual. You will need a few dependencies to be 
+installed, including JACK, and GLFW3.
 
 On Linux, run:
 
     make linux
 
-On Windows, run:
-
-    make windows
-
-For high-resolution windows displays (such as the surface), run:
-
-    make windows-highres
-
-Full instructions on building for on Windows can be found with the 
-document [build-on-windows.md](build-on-windows.md).
-
 Before running the program, assets from the other parts of this repository 
 need to be transferred. Do this with:
 
     make transfer
+
+Then run the program:
+
+    ./MicrosoftHandsFreeSoundJam
+
+## Mac OSX
+
+Mac OSX can be built from the commandline using the provided Makefile system:
+
+    make osx
+
+Then the program can be run with:
+
+    ./MicrosoftHandsFreeSoundJam
+
 
 ## Screenshots
 

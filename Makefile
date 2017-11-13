@@ -1,5 +1,5 @@
-default: ; @echo "Usage: make [windows|windows-highres|linux]"
-.PHONY: transfer
+default: ; @echo "Usage: make [windows|windows-highres|linux|osx]"
+.PHONY: transfer windows windows-highres linux osx
 
 DSPDIR=src/dsp
 LIBDIR=lib
@@ -7,7 +7,7 @@ LIBDIR=lib
 NAME=MicrosoftHandsFreeSoundJam
 
 CFLAGS = -I$(LIBDIR)/nanovg/src/ -Wall
-CFLAGS += -DGLFW_INCLUDE_EXT -DNANOVG_GL2_IMPLEMENTATION -DNANOVG_GLEW
+CFLAGS += -DGLFW_INCLUDE_EXT -DNANOVG_GL2_IMPLEMENTATION 
 CXXFLAGS += -I$(LIBDIR)/rtaudio
 UI_OBJ += main.o audio.o hit.o timer.o button.o ui.o btnreg.o gaze.o
 UI_OBJ += piano.o editpanel.o pianoroll.o
@@ -78,6 +78,9 @@ windows-highres:
 
 linux:
 	make -f Makefile -f Makefile.linux $(NAME)
+
+osx:
+	make -f Makefile -f Makefile.osx $(NAME)
 
 linux_debug:
 	make -f Makefile -f Makefile.linux debug

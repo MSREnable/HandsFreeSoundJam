@@ -1,0 +1,10 @@
+LDFLAGS = -lm -lglfw -lstdc++ 
+CXXFLAGS += -D__MACOSX_CORE__ 
+LDFLAGS += -lsoundpipe -lsndfile -ldl
+LDFLAGS += -framework CoreAudio -framework OpenGL -framework CoreFoundation
+CFLAGS += -DEXPORT=""
+CXXFLAGS += -DEXPORT=""
+CFLAGS += -DFULLSCREEN -g
+CFLAGS += -DDRAW_POINTER -DIS_MACOSX
+debug: eyejam
+	gdb -ex=r eyejam

@@ -6,8 +6,15 @@
 #ifdef NANOVG_GLEW
 #include <GL/glew.h>
 #endif
+
+#ifdef IS_MACOSX
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#else
 #include <GL/gl.h>
 #include <GL/glext.h>
+#endif
+
 #include <GLFW/glfw3.h>
 #include <time.h>
 #include "nanovg.h"
