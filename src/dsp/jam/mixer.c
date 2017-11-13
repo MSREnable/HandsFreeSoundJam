@@ -5,6 +5,7 @@
 
 #include <math.h>
 #include "dsp.h"
+#include "moongazing/moongazing.h"
 #define NSENDS 2
 #define DB2LIN(A) pow(10, (double)(A)/20)
 
@@ -18,6 +19,8 @@ struct whisper_effect {
 struct whisper_mixer {
     SPFLOAT send[WHISPER_NTRACKS][NSENDS];
     whisper_effect effect[NSENDS];
+    SPFLOAT throw[NSENDS];
+    mg_synth *moonjam;
 };
 
 
@@ -33,7 +36,8 @@ void whisper_mixer_init(int sr)
     for(e = 0; e < NSENDS; e++) {
         mixer.effect[e].init(&mixer.effect[e], sr);
     }
-
+    mg_synth_create(&mixer.moonjam, sr);
+    mg_bind_synth(mixer.moonjam);
 }
 void whisper_mixer_destroy()
 {
@@ -41,6 +45,7 @@ void whisper_mixer_destroy()
     for(e = 0; e < NSENDS; e++) {
         mixer.effect[e].destroy(&mixer.effect[e]);
     }
+    mg_synth_destroy(&mixer.moonjam);
 }
 
 void whisper_mixer_setup()
@@ -59,6 +64,7 @@ void whisper_mixer_setup()
     /* set up effects */
     for(e = 0; e < NSENDS; e++) {
         whisper_effect_setup(&mixer.effect[e]);
+        mixer.throw[e] = 0.f;
     }
 
     /* bind reverb unit to effect slot 0 */
@@ -81,6 +87,7 @@ void whisper_mixer_setup()
     
     /* send a little bit of track 4 (alt melody) to reverb in slot 0 */
     whisper_mixer_send(4, 0, -10.f);
+
 }
 
 
@@ -96,7 +103,10 @@ void whisper_mixer_tick(SPFLOAT *clock, SPFLOAT *L, SPFLOAT *R)
     *L = 0.f;
     *R = 0.f;
 
-    for(s = 0; s < NSENDS; s++) send[s] = 0.f; 
+    for(s = 0; s < NSENDS; s++) {
+        send[s] = 0.f; 
+        mixer.throw[s] = 0.f;
+    }
 
     for(t = 0; t < WHISPER_NTRACKS; t++ ) {
         whisper_tracks_tick_track(clock, &s_track, t);
@@ -107,9 +117,16 @@ void whisper_mixer_tick(SPFLOAT *clock, SPFLOAT *L, SPFLOAT *R)
         for(s = 0; s < NSENDS; s++) send[s] += s_track * mixer.send[t][s];
     }
 
+
+    /* compute moonjam */
+
+    mg_synth_tick(mixer.moonjam, &tmpL);
+    *L += tmpL;
+    *R += tmpL;
     /* compute global effects */
 
     for(s = 0; s < NSENDS; s++) {
+        send[s] += mixer.throw[s];
         mixer.effect[s].compute(&mixer.effect[s], &send[s], &tmpL, &tmpR);
         *L += tmpL;
         *R += tmpR;
@@ -179,4 +196,9 @@ void whisper_mixer_reset()
 {
     /* reset delay line in effect slot 1 */
     whisper_delay_reset(&mixer.effect[1]);
+}
+
+void whisper_mixer_throw(int send, SPFLOAT val)
+{
+    mixer.throw[send] += val;
 }

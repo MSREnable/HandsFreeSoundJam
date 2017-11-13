@@ -19,6 +19,7 @@ typedef struct mg_synth mg_synth;
 void mg_init();
 void mg_clean();
 void mg_draw(NVGcontext *vg, double x, double y, double t);
+void mg_bind_synth(mg_synth *synth);
 
 /* moon */
 
@@ -74,5 +75,6 @@ void mg_synth_change_chord(mg_synth *synth);
 
 /* fade out alpha for smooth close */
 float mg_time_fade(void);
+
 
 #endif

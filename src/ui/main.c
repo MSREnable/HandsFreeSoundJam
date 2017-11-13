@@ -77,7 +77,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 #ifdef DEMO_MSAA
-	glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 #endif
   
     const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -91,8 +91,8 @@ int main()
         glfwTerminate();
         return -1;
     }
-	
-	glfwMakeContextCurrent(window);
+
+    glfwMakeContextCurrent(window);
 #ifdef NANOVG_GLEW
     if(glewInit() != GLEW_OK) {
         printf("could not init GLEW\n");
@@ -102,10 +102,10 @@ int main()
 
     vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
 
-	if (vg == NULL) {
-		printf("Could not init nanovg.\n");
-		return -1;
-	}
+    if (vg == NULL) {
+        printf("Could not init nanovg.\n");
+        return -1;
+    }
 
     /* RGB: 28, 11, 43 */
     glClearColor(0.1093, 0.0431, 0.1686, 1.0);
@@ -124,24 +124,24 @@ int main()
     jam_ui_init(ui);
     jam_tobii_setup();
 #ifdef USE_ONEEURO
-	filt_x.config.frequency = 0.1;
-	filt_x.config.cutoffSlope = 1;
-	filt_x.config.derivativeCutoffFrequency = 1;
-	filt_x.config.minCutoffFrequency = 1;
-	SF1eFilterInit(&filt_x);
+    filt_x.config.frequency = 0.1;
+    filt_x.config.cutoffSlope = 1;
+    filt_x.config.derivativeCutoffFrequency = 1;
+    filt_x.config.minCutoffFrequency = 1;
+    SF1eFilterInit(&filt_x);
 
-	filt_y.config.frequency = 0.1;
-	filt_y.config.cutoffSlope = 1;
-	filt_y.config.derivativeCutoffFrequency = 1;
-	filt_y.config.minCutoffFrequency = 1;
-	SF1eFilterInit(&filt_y);
+    filt_y.config.frequency = 0.1;
+    filt_y.config.cutoffSlope = 1;
+    filt_y.config.derivativeCutoffFrequency = 1;
+    filt_y.config.minCutoffFrequency = 1;
+    SF1eFilterInit(&filt_y);
 #endif
 
 
     nvgCreateFont(vg, "sans", "fonts/Roboto-Regular.ttf"); 
 
     while(!glfwWindowShouldClose(window)) {
-		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 #ifdef USE_EYETRACKING
         jam_tobii_getxy(&mx, &my);
         /* clamp values to be between 0 and 1 */
@@ -169,7 +169,7 @@ int main()
         glfwGetWindowSize(window, &win_width, &win_height);
         glfwGetFramebufferSize(window, &fbwidth, &fbheight);
 
-		glViewport(0, 0, fbwidth, fbheight);
+        glViewport(0, 0, fbwidth, fbheight);
         pxratio = (float)fbwidth / (float)fbheight;
         nvgBeginFrame(vg, win_width, win_height, pxratio);
 

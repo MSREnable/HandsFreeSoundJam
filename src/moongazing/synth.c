@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <soundpipe.h>
+#include "dsp.h"
 #include "moongazing.h"
 
 #define NPADS 4
@@ -9,23 +10,24 @@
 
 static int synth_notes[] =
 {
-62, 64, 66, 69, 73,
-62, 66, 67, 74, 76
+63, 65, 67, 70, 74,
+63, 67, 68, 75, 77
 };
 
+/* pitch and LFO rate */
 static SPFLOAT pad_params[][2] =
 {
     /* 0 2 7 11 */
-    {50, 10.},
-    {52, 13.},
-    {57, 16.5},
-    {61, 11.0},
+    {51, 10.},
+    {53, 13.},
+    {58, 16.5},
+    {62, 11.0},
    
     /*0 4 5 14 */ 
-    {38, 10.},
-    {54, 4.},
-    {55, 16.5},
-    {64, 11.0},
+    {39, 10.},
+    {55, 4.},
+    {56, 16.5},
+    {65, 11.0},
 };
 
 typedef struct {
@@ -207,6 +209,7 @@ void mg_synth_create(mg_synth **synth, int sr)
         pad_synth_set_rate(&psynth->pad[i], pad_params[i][1]);
     }
 
+/*
     sp_revsc_create(&psynth->rev);
     sp_revsc_init(sp, psynth->rev);
     psynth->rev->feedback = 0.97f;
@@ -214,7 +217,7 @@ void mg_synth_create(mg_synth **synth, int sr)
     sp_delay_create(&psynth->del);
     sp_delay_init(sp, psynth->del, 1.1f);
     psynth->del->feedback = 0.8f;
-
+*/
     sp_moogladder_create(&psynth->lpf);
     sp_moogladder_init(sp, psynth->lpf);
     psynth->lpf->freq = 600.f;
@@ -233,9 +236,10 @@ void mg_synth_destroy(mg_synth **synth)
 
     for(i = 0; i < NMOONS; i++) synthlet_destroy(&psynth->s[i]);
     for(i = 0; i < NPADS; i++) pad_synth_destroy(&psynth->pad[i]);
-
+/*
     sp_delay_destroy(&psynth->del);
     sp_revsc_destroy(&psynth->rev);
+*/
     sp_ftbl_destroy(&psynth->ft);
     sp_moogladder_destroy(&psynth->lpf);
     sp_port_destroy(&psynth->fade);
@@ -261,14 +265,16 @@ void mg_synth_tick(mg_synth *synth, float *out)
     sp = synth->sp;
     *out = 0;
     dry = 0;
+    
+    if(mg_time_fade() > 0.999) return;
 
     for(i = 0; i < NMOONS; i++) {
         synthlet_tick(sp, &synth->s[i], &tmp);
         dry += tmp;
     }
 
-    sp_delay_compute(sp, synth->del, &dry, &s_del);
-   
+        
+
     pads = 0;
     for(i = 0; i < NPADS; i++) {
         pad_synth_tick(sp, &synth->pad[i], &tmp);
@@ -278,14 +284,17 @@ void mg_synth_tick(mg_synth *synth, float *out)
     sp_moogladder_compute(sp, synth->lpf, &pads, &s_lpf);
     dry += s_lpf * 0.25;
     s_rev_in = dry + s_del * 0.5f;
-    sp_revsc_compute(sp, synth->rev, &s_rev_in, &s_rev_in, &s_revL, &s_revR);
-
-    *out = 0.9 * dry + (0.2f*s_revL + s_del * 0.1f) * 0.5f;
+    *out = dry;
    
     fade = (SPFLOAT)(1 - mg_time_fade());
     /* fade out for clean exit */
     sp_port_compute(sp, synth->fade, &fade, &s_fade);
     *out *= s_fade;
+
+    /* throw signal to reverb effect in slot 0 */
+    whisper_mixer_throw(0, *out * 0.8);
+    /* throw signal to delay effect in slot 1 */
+    whisper_mixer_throw(1, *out * 0.8);
 
 }
 

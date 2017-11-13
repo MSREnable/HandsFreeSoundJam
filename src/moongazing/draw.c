@@ -4,7 +4,7 @@
 #include "ui/eyejam.h"
 
 #define CLOSE_DWELL 0.45
-#define CLOSE_RADIUS CONSTANT(75)
+#define CLOSE_RADIUS CONSTANT(150)
 
 
 static double x_c = 100;
@@ -38,8 +38,6 @@ static void mg_setup(moongazing_data *mg)
 {
     int i;
 
-    mg_synth_create(&mg->synth, 44100);
-
     mg_moon_init_colorhist();
     for(i = 0; i < NMOONS; i++) {
         mg_moon_create(&mg->moon[i]);
@@ -52,7 +50,8 @@ static void mg_setup(moongazing_data *mg)
     mg->hit_last_time = 0;
     mg->delta = 0;
     mg->timer = 0;
-    mg->timer_alpha = 0;
+    /* set timer_alpha to 1 so it is quiet on start */
+    mg->timer_alpha = 1;
     mg->closing = 0;
     mg->please_close = 0;
 
@@ -68,7 +67,6 @@ static void mg_destroy(moongazing_data *mg)
     for(i = 0; i < NMOONS; i++) {
         mg_moon_destroy(&mg->moon[i]);
     }
-    mg_synth_destroy(&mg->synth);
 }
 
 
@@ -181,4 +179,9 @@ float mg_time_fade(void)
 int mg_window_closing(void)
 {
     return moon_data.please_close;
+}
+
+void mg_bind_synth(mg_synth *synth)
+{
+    moon_data.synth = synth;
 }

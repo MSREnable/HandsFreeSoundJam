@@ -204,6 +204,7 @@ static void please_close(jam_button *but, void *ud)
 static void xy_toggle(jam_button *but, void *ud)
 {
     /* whisper_eyejam_xy_toggle(); */
+    /* HACK: turn on moonjam */
     jam_ui *ui;
     ui = ud;
     ui->screen = 2;
@@ -380,8 +381,10 @@ static void launcher_init(cliplauncher_ui *ui)
     jam_button_pos(ui->xy, 
         centerw - CONSTANT(512), 
         centerh - CONSTANT(384));
+
     jam_button_cb_trigger(ui->xy, xy_toggle);
-    jam_button_text(ui->xy, "XY Mode");
+    /* HACK: spawn moongazing for now */ 
+    jam_button_text(ui->xy, "MoonJam");
     jam_button_data(ui->xy, ui->top);
     
     /* make reset button */

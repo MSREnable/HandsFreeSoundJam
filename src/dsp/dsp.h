@@ -343,6 +343,7 @@ void whisper_mixer_destroy();
 void whisper_mixer_tick(SPFLOAT *clock, SPFLOAT *L, SPFLOAT *R);
 void whisper_mixer_send(int track, int send, SPFLOAT amt);
 void whisper_mixer_reset();
+void whisper_mixer_throw(int send, SPFLOAT val);
 
 void whisper_effect_setup(whisper_effect *effect);
 void whisper_effect_cb_init(whisper_effect *effect, whisper_effect_init init);
