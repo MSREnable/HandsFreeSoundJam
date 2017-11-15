@@ -81,13 +81,9 @@ static void eyejam_setup(whisper_eyejam *ej)
 
 static void eyejam_init(whisper_eyejam *ej, int sr)
 {
-    /* TODO: remove local sp instances */
-    sp_create(&ej->sp);
-    
-    /* instantiate global soundpipe data struct */
 
-    ej->sp->sr = sr;
-
+    /* retrieve global soundpipe struct */
+    ej->sp = whisper_sp_data();
     /* max duration of recording, in samples */
 
     ej->max_dur = MAX_DUR * ej->sp->sr;
@@ -217,7 +213,6 @@ static void eyejam_destroy(whisper_eyejam *ej)
     sp_osc_destroy(&ej->osc);
     sp_tenvx_destroy(&ej->env);
     sp_tenv_destroy(&ej->pulse);
-    /*TODO: remove local sp data instances */
     whisper_xy_cleanup(ej->xy);
     sp_clip_destroy(&ej->clipL);
     sp_clip_destroy(&ej->clipR);
@@ -227,7 +222,6 @@ static void eyejam_destroy(whisper_eyejam *ej)
         sp_wavout_destroy(&ej->wavout);
     }
 
-    sp_destroy(&ej->sp);
     whisper_sp_destroy();
 }
 
