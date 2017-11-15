@@ -12,6 +12,8 @@
 
 #define LENGTH(x) ((int)(sizeof(x) / sizeof *(x)))
 
+#define MAX_DUR 900 /* max duration of 15 minutes */ 
+
 typedef struct whisper_eyejam whisper_eyejam;
 
 struct whisper_eyejam
@@ -50,6 +52,8 @@ struct whisper_eyejam
     int please_record;
     int am_i_playing;
     int am_i_recording;
+    unsigned long max_dur;
+    unsigned long time;
 
     sp_wavout *wavout;
 };
@@ -83,6 +87,11 @@ static void eyejam_init(whisper_eyejam *ej, int sr)
     /* instantiate global soundpipe data struct */
 
     ej->sp->sr = sr;
+
+    /* max duration of recording, in samples */
+
+    ej->max_dur = MAX_DUR * ej->sp->sr;
+    ej->time = 0;
 
     sp_clock_create(&ej->clk);
     sp_clock_init(ej->sp, ej->clk);
@@ -212,6 +221,12 @@ static void eyejam_destroy(whisper_eyejam *ej)
     whisper_xy_cleanup(ej->xy);
     sp_clip_destroy(&ej->clipL);
     sp_clip_destroy(&ej->clipR);
+
+    /* if eyejam is still recording, close the file */
+    if(ej->am_i_recording) {
+        sp_wavout_destroy(&ej->wavout);
+    }
+
     sp_destroy(&ej->sp);
     whisper_sp_destroy();
 }
@@ -264,6 +279,7 @@ void whisper_eyejam_tick_stereo(SPFLOAT *sampleL, SPFLOAT *sampleR)
         if(eyejam.am_i_recording == 0) {
             eyejam.am_i_recording = 1;
             sp_wavout_create(&eyejam.wavout);
+            eyejam.time = 0;
             sp_wavout_init(eyejam.sp, eyejam.wavout, "output.wav");
         } else {
             eyejam.am_i_recording = 0;
@@ -326,6 +342,11 @@ void whisper_eyejam_tick_stereo(SPFLOAT *sampleL, SPFLOAT *sampleR)
     
     if(eyejam.am_i_recording) {
         sp_wavout_compute(eyejam.sp, eyejam.wavout, sampleL, &xyL);
+        if(eyejam.time >= eyejam.max_dur) {
+            /* turn off recording after maximum duration reached */
+            whisper_eyejam_record();
+        }
+        eyejam.time++;
     }
 
 /*
