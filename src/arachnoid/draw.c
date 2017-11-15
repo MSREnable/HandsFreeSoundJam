@@ -3,12 +3,6 @@
  * Licensed under the MIT license.
  */
 
-#ifdef NANOVG_GLEW
-#include <GL/glew.h>
-#endif
-#include <GL/gl.h>
-#include <GL/glext.h>
-#include <GLFW/glfw3.h>
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
