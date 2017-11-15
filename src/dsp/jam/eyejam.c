@@ -47,7 +47,11 @@ struct whisper_eyejam
     sp_clip *clipR;
     int please_play;
     int please_stop;
+    int please_record;
     int am_i_playing;
+    int am_i_recording;
+
+    sp_wavout *wavout;
 };
 
 static whisper_eyejam eyejam;
@@ -65,7 +69,10 @@ static void eyejam_setup(whisper_eyejam *ej)
     ej->s_pulse = 0.f;
     ej->please_play = 0;
     ej->please_stop = 0;
+    ej->please_record = 0;
     ej->am_i_playing = 1;
+    ej->am_i_recording = 0;
+    ej->wavout = NULL;
 }
 
 static void eyejam_init(whisper_eyejam *ej, int sr)
@@ -252,6 +259,18 @@ void whisper_eyejam_tick_stereo(SPFLOAT *sampleL, SPFLOAT *sampleR)
 
     if(eyejam.am_i_playing == 0) return;
 
+    if(eyejam.please_record) {
+        eyejam.please_record = 0;
+        if(eyejam.am_i_recording == 0) {
+            eyejam.am_i_recording = 1;
+            sp_wavout_create(&eyejam.wavout);
+            sp_wavout_init(eyejam.sp, eyejam.wavout, "output.wav");
+        } else {
+            eyejam.am_i_recording = 0;
+            sp_wavout_destroy(&eyejam.wavout);
+        }
+    }
+
     s_clk = 0.f;
     s_beat = 0.f; 
     s_click = 0.f;
@@ -304,6 +323,11 @@ void whisper_eyejam_tick_stereo(SPFLOAT *sampleL, SPFLOAT *sampleR)
 
     *sampleL = xyL;
     *sampleR = xyR;
+    
+    if(eyejam.am_i_recording) {
+        sp_wavout_compute(eyejam.sp, eyejam.wavout, sampleL, &xyL);
+    }
+
 /*
     sp_clip_compute(eyejam.sp, eyejam.clipL, &xyL, &s_clipL);
     sp_clip_compute(eyejam.sp, eyejam.clipR, &xyR, &s_clipR);
@@ -531,4 +555,14 @@ EXPORT void whisper_eyejam_xy_toggle()
 EXPORT int whisper_eyejam_xy_is_on()
 {
     return whisper_xy_is_on(eyejam.xy);
+}
+
+EXPORT void whisper_eyejam_record()
+{
+    eyejam.please_record = 1;
+}
+
+EXPORT int whisper_eyejam_am_i_recording()
+{
+    return eyejam.am_i_recording;
 }

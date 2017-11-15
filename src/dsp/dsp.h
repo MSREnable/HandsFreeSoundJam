@@ -264,6 +264,8 @@ void eyejam_populate_clip_with_args(int track, int clip,
 whisper_eyejam * whisper_eyejam_global_data();
 EXPORT void whisper_eyejam_play();
 EXPORT void whisper_eyejam_stop();
+EXPORT void whisper_eyejam_record();
+EXPORT int whisper_eyejam_am_i_recording();
 
 EXPORT void whisper_eyejam_xy_state_set(int state);
 EXPORT int whisper_eyejam_xy_state_get();

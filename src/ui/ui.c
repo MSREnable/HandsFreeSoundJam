@@ -584,6 +584,14 @@ void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
             launcher_step(vg, &ui->launcher, x, y, delta);
             break;
     }
+
+    if(whisper_eyejam_am_i_recording()) {
+        nvgBeginPath(vg);
+        nvgStrokeColor(vg, nvgRGB(255, 0, 0));
+        nvgStrokeWidth(vg, CONSTANT(5));
+        nvgRect(vg, 0, 0, jam_win_width(), jam_win_height());
+        nvgStroke(vg);
+    }
 }
 
 void jam_xy_state_set(int state)

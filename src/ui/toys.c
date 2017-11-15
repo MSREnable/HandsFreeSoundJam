@@ -9,7 +9,7 @@
 #include "dsp/dsp.h"
 #include "eyejam.h"
 #include "nanovg.h"
-#define NTOYS 3
+#define NTOYS 4
 #define RADIUS CONSTANT(250)
 
 struct jam_toys {
@@ -18,6 +18,7 @@ struct jam_toys {
     jam_button *moonjam;
     jam_button *xy;
     jam_button *arachnoid;
+    jam_button *record;
 };
 
 static void goto_launcher(jam_button *but, void *ud)
@@ -47,6 +48,11 @@ static void goto_arachnoid(jam_button *but, void *ud)
     ui = ud;
         
     jam_ui_screen(ui, JAM_ARACHNOID);
+}
+
+static void please_record(jam_button *but, void *ud)
+{
+    whisper_eyejam_record();
 }
 
 size_t jam_toys_size()
@@ -122,6 +128,18 @@ void jam_toys_init(jam_toys *toys, jam_ui *ui)
     jam_button_text(toys->arachnoid, "Arachnoid");
     jam_button_data(toys->arachnoid, toys->top);
     theta += incr;
+    
+    /* Record */
+    toys->record = malloc(jam_button_size());
+    jam_button_init(toys->record);
+    jam_button_setsize(toys->record, butsize, butsize);
+    jam_button_pos(toys->record, 
+        centerw - sin(theta)*RADIUS, 
+        centerh - cos(theta)*RADIUS);
+    jam_button_cb_trigger(toys->record, please_record);
+    jam_button_text(toys->record, "Record");
+    jam_button_data(toys->record, toys->top);
+    theta += incr;
 }
 
 void jam_toys_free(jam_toys *toys)
@@ -134,6 +152,8 @@ void jam_toys_free(jam_toys *toys)
     free(toys->xy);
     jam_button_free(toys->arachnoid);
     free(toys->arachnoid);
+    jam_button_free(toys->record);
+    free(toys->record);
 }
 
 void jam_toys_interact(jam_toys *toys, double x, double y, double step)
@@ -142,6 +162,7 @@ void jam_toys_interact(jam_toys *toys, double x, double y, double step)
     jam_button_interact(toys->moonjam, x, y, step);
     jam_button_interact(toys->xy, x, y, step);
     jam_button_interact(toys->arachnoid, x, y, step);
+    jam_button_interact(toys->record, x, y, step);
 }
 
 void jam_toys_draw(NVGcontext *vg, jam_toys *toys)
@@ -150,6 +171,14 @@ void jam_toys_draw(NVGcontext *vg, jam_toys *toys)
     jam_button_draw(vg, toys->moonjam);
     jam_button_draw(vg, toys->xy);
     jam_button_draw(vg, toys->arachnoid);
+
+    if(whisper_eyejam_am_i_recording()) {
+        jam_button_alt_color(toys->record, 1);
+    } else {
+        jam_button_alt_color(toys->record, 0);
+    }
+
+    jam_button_draw(vg, toys->record);
 }
 
 void jam_toys_step(NVGcontext *vg, jam_toys *toys, double x, double y, double step)
