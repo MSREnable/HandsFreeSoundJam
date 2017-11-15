@@ -50,9 +50,9 @@ Go into the newly cloned soundpipe project in msys2, and run
 
 Then add the following lines to the end of the file config.mk
 
-	echo "CFLAGS += -I/mingw64/include" >> config.mk
-	echo "EXT=x86_64-w64-mingw32" >> config.mk
-	echo "CC=$(EXT)-gcc" >> config.mk
+	echo 'CFLAGS += -I/mingw64/include' >> config.mk
+	echo 'EXT=x86_64-w64-mingw32' >> config.mk
+	echo 'CC=$(EXT)-gcc' >> config.mk
 
 Compile soundpipe with:
 
