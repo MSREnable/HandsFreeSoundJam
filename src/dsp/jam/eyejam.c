@@ -365,6 +365,7 @@ static void eyejam_populate_clip(int track, int clip,
 {
     unsigned int i;
 
+    whisper_clip_modified(track, clip);
     for(i = 0; i < len; i+=3) {
         whisper_clip_set_note(track, clip, data[i], data[i+1], data[i+2]); 
     }
@@ -380,6 +381,7 @@ void eyejam_populate_clip_with_args(int track, int clip,
 
     argsize = 3 + nargs;
 
+    whisper_clip_modified(track, clip);
     for(i = 0; i < len; i+=argsize) {
         whisper_clip_set_note(track, clip, data[i], data[i+1], data[i+2]); 
         for(a = 0; a < nargs; a++) {
@@ -399,6 +401,7 @@ static void eyejam_populate_clip_with_gates(int track, int clip,
         whisper_clip_set_gate(track, clip, data[i], data[i+1], data[i+3]); 
     }
     */
+    whisper_clip_modified(track, clip);
     eyejam_populate_clip_with_args(track, clip, data, len, 1);
 }
 

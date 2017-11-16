@@ -140,6 +140,11 @@ static int db_save_clip(whisper_db *db, whisper_clip *clip, int id, int *row_id)
 
     sqlite3_stmt *stmt;
 
+    if(!wclip_get_modflag(clip)) {
+        *row_id = id;
+        return 0;
+    }
+
     if(!db->is_open) {
         fprintf(stderr, "db_save: db not open! aborting...\n");
         return 0;
@@ -209,6 +214,7 @@ static int db_save_clip(whisper_db *db, whisper_clip *clip, int id, int *row_id)
        fprintf(stderr, "new ID of %d created\n", *row_id);
     }
 
+    fprintf(stderr, "Saved clip %d\n", *row_id);
     return rc;
 }
 
@@ -314,6 +320,10 @@ static int save_track(whisper_db *db,
 
     track = whisper_tracks_get_track(track_id);
 
+    if(!wtrack_is_modified(track)) {
+        *row_id = id;
+        return 0;
+    }
 
     /* first, save track clips into clip table */
     if(is_default) {
@@ -393,6 +403,8 @@ static int save_track(whisper_db *db,
        *row_id = sqlite3_column_int(stmt, 0);
        fprintf(stderr, "track: new ID of %d created\n", *row_id);
     }
+
+    fprintf(stderr, "---saved track %d\n", *row_id);
     return rc;
 }
 

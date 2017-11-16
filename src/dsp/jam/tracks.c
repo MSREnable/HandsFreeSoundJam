@@ -45,6 +45,7 @@ struct whisper_track {
 
     int row_id;
     unsigned int timer;
+    unsigned char modflag;
 };
 
 
@@ -86,6 +87,7 @@ void whisper_tracks_init(int sr)
         tracks[t].gain = 1.0;
         tracks[t].row_id = -1.0;
         tracks[t].timer = 0;
+        tracks[t].modflag = 0;
     }
 
 }
@@ -279,6 +281,7 @@ EXPORT void whisper_clip_set_arg(int track, int clip, int pos, int voice, int ar
     t = &tracks[track]; 
     c = t->clipspace[clip];
 
+    whisper_clip_modified(track, clip);
     wclip_set_arg(c, pos, voice, arg, (unsigned char)value);
 }
 
@@ -406,11 +409,13 @@ EXPORT void whisper_tracks_turnoff(int track)
 
 EXPORT void whisper_clip_clear(int track, int clip)
 {
+    whisper_clip_modified(track, clip);
     wclip_clear(tracks[track].clipspace[clip]);
 }
 
 EXPORT void whisper_clip_clear_note(int track, int clip, int voice, int pos)
 {
+    whisper_clip_modified(track, clip);
     wclip_clear_note(tracks[track].clipspace[clip], voice, pos);
 }
 
@@ -439,4 +444,33 @@ EXPORT int whisper_tracks_am_i_alive(int track)
         (mode == WHISPER_PLEASE_LAUNCH);
 
     return rc;
+}
+
+EXPORT void whisper_track_modified(int track)
+{
+    wtrack_modified(&tracks[track]);
+}
+
+void wtrack_modified(whisper_track *track)
+{
+    track->modflag = 1;
+}
+
+int wtrack_is_modified(whisper_track *track)
+{
+    return track->modflag;
+}
+
+EXPORT int whisper_track_is_modified(int track)
+{
+    return wtrack_is_modified(&tracks[track]);
+}
+
+EXPORT void whisper_clip_modified(int track, int clip)
+{
+    whisper_clip *c;
+
+    c = whisper_clip_get(track, clip);
+    wclip_set_modflag(c);
+    whisper_track_modified(track);
 }

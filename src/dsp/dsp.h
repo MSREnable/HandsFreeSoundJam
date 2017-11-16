@@ -186,6 +186,7 @@ EXPORT void whisper_clip_set_arg(int track, int clip, int pos, int voice, int ar
 EXPORT void whisper_clip_set_nvoices(int track, int clip, int nvoices);
 EXPORT void whisper_clip_clear(int track, int clip);
 EXPORT void whisper_clip_clear_note(int track, int clip, int voice, int pos);
+EXPORT void whisper_clip_modified(int track, int clip);
 whisper_clip * whisper_clip_get(int track, int clip);
 unsigned char * wclip_get_data(whisper_clip *clip);
 size_t wclip_get_data_size(whisper_clip *clip);
@@ -200,6 +201,8 @@ void wclip_set_nvoices(whisper_clip *clip, unsigned int nvoices);
 void wclip_set_maxlength(whisper_clip *clip, unsigned int maxlength);
 void wclip_set_length(whisper_clip *clip, unsigned int length);
 void wclip_set_row_id(whisper_clip *clip, int row_id);
+void wclip_set_modflag(whisper_clip *clip);
+int wclip_get_modflag(whisper_clip *clip);
 
 
 /* track */
@@ -234,6 +237,10 @@ int wtrack_get_meter(whisper_track *t);
 EXPORT void whisper_tracks_turnoff(int track);
 EXPORT double whisper_tracks_get_playhead(int track);
 EXPORT int whisper_tracks_am_i_alive(int track);
+EXPORT void whisper_track_modified(int track);
+EXPORT int whisper_track_is_modified(int track);
+void wtrack_modified(whisper_track *track);
+int wtrack_is_modified(whisper_track *track);
 
 /* EyeJam */
 

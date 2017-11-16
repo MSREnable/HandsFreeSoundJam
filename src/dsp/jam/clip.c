@@ -19,6 +19,7 @@ struct whisper_clip {
     unsigned char *prev_note;
     size_t data_size;
     int row_id;
+    unsigned char modflag;
 };
 
 void wclip_create(whisper_clip **clip, 
@@ -38,6 +39,7 @@ void wclip_create(whisper_clip **clip,
     (*clip)->nvoices = maxvoices;
     (*clip)->pos = 0;
     (*clip)->row_id = -1;
+    (*clip)->modflag = 0;
 }
 
 void wclip_set_length(whisper_clip *clip, unsigned int length)
@@ -211,4 +213,14 @@ void wclip_clear_note(whisper_clip *clip, int voice, int pos)
     for(i = 0; i < CLIP_NPARAMS - 1; i++) {
         wclip_set_arg(clip, voice, pos, i, 0);
     }
+}
+
+void wclip_set_modflag(whisper_clip *clip)
+{
+    clip->modflag = 1;
+}
+
+int wclip_get_modflag(whisper_clip *clip)
+{
+    return clip->modflag;
 }
