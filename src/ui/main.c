@@ -196,6 +196,7 @@ int main()
 //#define DRAW_GRID
 #ifdef DRAW_GRID
         nvgBeginPath(vg);
+        nvgStrokeWidth(vg, 1.5);
         nvgMoveTo(vg, win_width / 2, 0);
         nvgLineTo(vg, win_width / 2, win_height);
         nvgStrokeColor(vg, nvgRGB(255, 255, 255));
