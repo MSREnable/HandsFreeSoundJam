@@ -29,6 +29,8 @@ struct jam_pianoroll {
     int y;
     int nlines;
     int base;
+    int did_note_hit;
+    double alpha;
     NVGcolor bgcolor;
     NVGcolor fgcolor;
     NVGcolor darkcolor;
@@ -154,6 +156,9 @@ void jam_pianoroll_init(jam_pianoroll *roll, double x, double y)
     jam_button_text(roll->right, "RIGHT");
     jam_button_data(roll->right, roll);
     jam_button_dwell_set(roll->right, DEFAULT_DWELL * 0.8);
+
+    roll->did_note_hit = 0;
+    roll->alpha = 0;
 }
 
 static void draw_note (
@@ -224,6 +229,7 @@ void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll)
     int offset;
 
     NVGcolor tmpcolor;
+    NVGcolor hit_color;
     mode = 0;
     step_height = (double)roll->height/roll->nlines;
 
@@ -366,6 +372,35 @@ void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll)
     jam_button_draw(vg, roll->down);
     jam_button_draw(vg, roll->left);
     jam_button_draw(vg, roll->right);
+
+    if(roll->alpha > 0.001) {
+
+        tmpcolor = nvgRGBA(0, 0, 0, 0);
+        hit_color = nvgRGBA(0, 255, 255, 255);
+
+
+        nvgBeginPath(vg);
+        nvgRect(vg, roll->x, roll->y, roll->width, roll->height);
+        nvgFillPaint(vg, 
+            nvgLinearGradient(vg,
+            roll->x, roll->y, 
+            roll->x, roll->y + roll->height * 0.3,
+            hit_color, tmpcolor)
+        );
+        nvgFill(vg);
+
+        nvgBeginPath(vg);
+        nvgRect(vg, roll->x, roll->y, roll->width, roll->height);
+        nvgFillPaint(vg, 
+            nvgLinearGradient(vg,
+            roll->x, roll->height, 
+            roll->x, roll->height - roll->height * 0.3, 
+            hit_color, tmpcolor)
+        );
+        nvgFill(vg);
+    }
+
+    
 }
 
 void jam_pianoroll_free(jam_pianoroll  *roll)
