@@ -48,13 +48,17 @@ struct jam_ui {
 /* XY values are offsets from the center */
 static double region_positions[] = {
 /* top left */
--250, 150,
+/* +10 x bias */
+-190, 130,
 /* top right */
-250, 150,
+200, 130,
 /* bottom left */
--250, -150,
+/* + 10 x bias */
+/* - 10 y bias */
+-190, -140,
 /* bottom right */
-250, -150
+/* - 10 y bias */
+200, -140
 };
 
 /* set up which tracks correspond to which region */
