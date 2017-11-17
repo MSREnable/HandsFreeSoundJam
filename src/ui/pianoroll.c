@@ -10,6 +10,7 @@
 #include "nanovg.h"
 
 #define MAX_NOTES 4
+#define BEAM_SIZE 0.1
 
 enum {
 NO_NOTE,
@@ -29,8 +30,8 @@ struct jam_pianoroll {
     int y;
     int nlines;
     int base;
-    int did_note_hit;
-    double alpha;
+    int notes_above;
+    int notes_below;
     NVGcolor bgcolor;
     NVGcolor fgcolor;
     NVGcolor darkcolor;
@@ -157,8 +158,8 @@ void jam_pianoroll_init(jam_pianoroll *roll, double x, double y)
     jam_button_data(roll->right, roll);
     jam_button_dwell_set(roll->right, DEFAULT_DWELL * 0.8);
 
-    roll->did_note_hit = 0;
-    roll->alpha = 0;
+    roll->notes_above = 0;
+    roll->notes_below = 0;
 }
 
 static void draw_note (
@@ -178,8 +179,12 @@ static void draw_note (
 
     ypos = (nn - roll->base);
 
-    if(ypos < 0 || ypos >= roll->nlines) {
-        /* note is out of range, do not draw anything */
+    /* check for out of range notes */
+    if(ypos < 0) {
+        roll->notes_below = 1;
+        return;
+    } else if(ypos >= roll->nlines) {
+        roll->notes_above = 1;
         return;
     }
     
@@ -286,6 +291,8 @@ void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll)
     note = 0;
     dur = 1;
     pos = 0;
+    roll->notes_above = 0;
+    roll->notes_below = 0;
     for(n = 0; n < nvoices; n++) {
         mode = NO_NOTE; 
         for(p = 0; p <= length; p++) {
@@ -372,34 +379,34 @@ void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll)
     jam_button_draw(vg, roll->down);
     jam_button_draw(vg, roll->left);
     jam_button_draw(vg, roll->right);
+        
+    tmpcolor = nvgRGBA(0, 0, 0, 0);
+    hit_color = nvgRGBA(255, 0, 255, 128);
 
-    if(roll->alpha > 0.001) {
-
-        tmpcolor = nvgRGBA(0, 0, 0, 0);
-        hit_color = nvgRGBA(0, 255, 255, 255);
-
+    if(roll->notes_above) {
 
         nvgBeginPath(vg);
         nvgRect(vg, roll->x, roll->y, roll->width, roll->height);
         nvgFillPaint(vg, 
             nvgLinearGradient(vg,
             roll->x, roll->y, 
-            roll->x, roll->y + roll->height * 0.3,
-            hit_color, tmpcolor)
-        );
-        nvgFill(vg);
-
-        nvgBeginPath(vg);
-        nvgRect(vg, roll->x, roll->y, roll->width, roll->height);
-        nvgFillPaint(vg, 
-            nvgLinearGradient(vg,
-            roll->x, roll->height, 
-            roll->x, roll->height - roll->height * 0.3, 
+            roll->x, roll->y + roll->height * BEAM_SIZE,
             hit_color, tmpcolor)
         );
         nvgFill(vg);
     }
 
+    if(roll->notes_below) {
+        nvgBeginPath(vg);
+        nvgRect(vg, roll->x, roll->y, roll->width, roll->height);
+        nvgFillPaint(vg, 
+            nvgLinearGradient(vg,
+            roll->x, roll->height, 
+            roll->x, roll->height - roll->height * BEAM_SIZE, 
+            hit_color, tmpcolor)
+        );
+        nvgFill(vg);
+    }
     
 }
 
