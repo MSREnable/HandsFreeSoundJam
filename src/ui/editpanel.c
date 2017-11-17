@@ -335,6 +335,13 @@ void jam_panel_draw(NVGcontext *vg, jam_panel *panel)
 {
     jam_button_draw(vg, panel->back);
     jam_button_draw(vg, panel->clear);
+
+    if(whisper_eyejam_edit_playing()) {
+        jam_button_alt_color(panel->play, 1);
+    } else {
+        jam_button_alt_color(panel->play, 0);
+    }
+
     jam_button_draw(vg, panel->play);
     jam_button_draw(vg, panel->next_clip);
     jam_button_draw(vg, panel->prev_clip);
