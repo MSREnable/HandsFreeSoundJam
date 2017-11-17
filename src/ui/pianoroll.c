@@ -16,6 +16,11 @@ NO_NOTE,
 IN_NOTE
 };
 
+/* black/white key pattern of piano keyboard, starting on C */
+const unsigned char key_pattern[] = {
+0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0
+};
+
 struct jam_pianoroll {
     jam_ui *top;
     int width;
@@ -27,6 +32,8 @@ struct jam_pianoroll {
     NVGcolor bgcolor;
     NVGcolor fgcolor;
     NVGcolor darkcolor;
+    NVGcolor black_key;
+    NVGcolor white_key;
     NVGcolor notesel_clr[MAX_NOTES];
     NVGcolor note_clr[MAX_NOTES];
     jam_button *up;
@@ -74,8 +81,10 @@ void jam_pianoroll_init(jam_pianoroll *roll, double x, double y)
     roll->width = CONSTANT(760);
     roll->height = CONSTANT(250);
     roll->bgcolor = nvgRGB(240, 240, 240);
-    roll->fgcolor = nvgRGB(200, 200, 200);
+    roll->fgcolor = nvgRGB(180, 180, 180);
     roll->darkcolor = nvgRGB(50, 50, 50); /* for beat gridlines */
+    roll->black_key = nvgRGB(230, 230, 230);
+    roll->white_key= nvgRGB(255, 255, 255); 
 
     /* yellow */
     roll->note_clr[0] = nvgRGB(226, 187, 0); 
@@ -165,6 +174,7 @@ static void draw_note (
     ypos = (nn - roll->base);
 
     if(ypos < 0 || ypos >= roll->nlines) {
+        /* note is out of range, do not draw anything */
         return;
     }
     
@@ -211,6 +221,7 @@ void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll)
     int n;
     int curchan;
     double playpos;
+    int offset;
 
     NVGcolor tmpcolor;
     mode = 0;
@@ -226,6 +237,20 @@ void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll)
     nvgFill(vg);
 
     nvgStrokeColor(vg, roll->fgcolor);
+
+    /* piano bars */
+    for(i = 0; i < roll->nlines; i++) {
+        offset = (roll->base + i) % 12;
+        if(key_pattern[offset]) {
+            nvgFillColor(vg, roll->black_key);
+        } else {
+            nvgFillColor(vg, roll->white_key);
+        }
+        nvgBeginPath(vg);
+        nvgRect(vg, roll->x, roll->y + (roll->nlines - i - 1)*step_height, 
+                roll->width, step_height);
+        nvgFill(vg);
+    }
 
     /* horizontal lines */
     for(i = 1; i <= roll->nlines; i++) {
@@ -252,6 +277,9 @@ void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll)
 
     nvoices = whisper_eyejam_edit_clip_nvoices();
 
+    note = 0;
+    dur = 1;
+    pos = 0;
     for(n = 0; n < nvoices; n++) {
         mode = NO_NOTE; 
         for(p = 0; p <= length; p++) {
