@@ -19,9 +19,7 @@ int main(int argc, char *argv[])
 */
     whisper_eyejam_demo_clips();
 
-    whisper_trinity_preset(0, 5);
-    whisper_schedule(0, 0);
-    sp_process(sp, NULL, process);
+    sp_process(sp, NULL, process); 
 /*
     whisper_eyejam_db_save_default();
     whisper_eyejam_db_close();

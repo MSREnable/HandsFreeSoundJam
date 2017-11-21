@@ -171,6 +171,10 @@ void whisper_eyejam_init(int sr)
     /* initialize all instruments */
     whisper_tracks_init_instruments(sr);
 
+    /* select default preset for surgeon instruments */
+    whisper_surgeon_preset(0, 1);
+    whisper_surgeon_preset(1, 2); 
+
     /* set trinity voice state to be ON */
     whisper_trinity_voice_state(0, 0, 1);
     

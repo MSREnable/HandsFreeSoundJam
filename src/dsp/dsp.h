@@ -346,6 +346,7 @@ void whisper_surgeon_preset_setup(whisper_surgeon *surg);
 EXPORT void whisper_surgeon_preset(int instr, int preset);
 surgeon_instr * whisper_surgeon_get_instr(int instr);
 EXPORT int whisper_surgeon_preset_number(int instr);
+EXPORT void whisper_surgeon_dump(int instr);
 
 /* Mixer and Effects */
 

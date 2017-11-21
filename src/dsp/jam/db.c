@@ -593,6 +593,11 @@ static int db_load_presets(whisper_db *db, unsigned int song_id)
     whisper_trinity_preset(0, tmp);
     tmp = sqlite3_column_int(stmt, 2);
     whisper_trinity_preset(1, tmp);
+    tmp = sqlite3_column_int(stmt, 3);
+    whisper_surgeon_preset(0, tmp);
+    tmp = sqlite3_column_int(stmt, 4);
+    whisper_surgeon_preset(1, tmp);
+    
     sqlite3_finalize(stmt);
     return 1;
 }

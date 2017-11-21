@@ -263,17 +263,103 @@ static void surgeon_deepbass(surgeon_instr *surg)
     surgeon_op_mode(surg, 3, 3);
 }
 
+static void surgeon_defaultpluck(surgeon_instr *surg)
+{
+    surgeon_algo(surg, 3);
+    surgeon_transpose(surg, 0);
+    surgeon_op_scale(surg, 0, 1.000000f);
+    surgeon_op_freq(surg, 0, 440.000000f);
+    surgeon_op_index(surg, 0, 1.000000f);
+    surgeon_op_amp(surg, 0, 0.100000f);
+    surgeon_op_atk(surg, 0, 0.001000f);
+    surgeon_op_dec(surg, 0, 0.200000f);
+    surgeon_op_sus(surg, 0, 0.000000f);
+    surgeon_op_rel(surg, 0, 0.100000f);
+    surgeon_op_mode(surg, 0, 1);
+    surgeon_op_scale(surg, 1, 4.000000f);
+    surgeon_op_freq(surg, 1, 440.000000f);
+    surgeon_op_index(surg, 1, 3.100000f);
+    surgeon_op_amp(surg, 1, 0.500000f);
+    surgeon_op_atk(surg, 1, 0.001000f);
+    surgeon_op_dec(surg, 1, 0.010000f);
+    surgeon_op_sus(surg, 1, 0.000000f);
+    surgeon_op_rel(surg, 1, 0.100000f);
+    surgeon_op_mode(surg, 1, 3);
+    surgeon_op_scale(surg, 2, 1.000000f);
+    surgeon_op_freq(surg, 2, 440.000000f);
+    surgeon_op_index(surg, 2, 1.000000f);
+    surgeon_op_amp(surg, 2, 0.100000f);
+    surgeon_op_atk(surg, 2, 0.001000f);
+    surgeon_op_dec(surg, 2, 0.200000f);
+    surgeon_op_sus(surg, 2, 0.000000f);
+    surgeon_op_rel(surg, 2, 0.100000f);
+    surgeon_op_mode(surg, 2, 1);
+    surgeon_op_scale(surg, 3, 4.005000f);
+    surgeon_op_freq(surg, 3, 440.000000f);
+    surgeon_op_index(surg, 3, 2.100000f);
+    surgeon_op_amp(surg, 3, 0.500000f);
+    surgeon_op_atk(surg, 3, 0.001000f);
+    surgeon_op_dec(surg, 3, 0.010000f);
+    surgeon_op_sus(surg, 3, 0.000000f);
+    surgeon_op_rel(surg, 3, 0.100000f);
+    surgeon_op_mode(surg, 3, 3);
+}
+
+static void surgeon_defaultpad(surgeon_instr *surg)
+{
+    surgeon_algo(surg, 2);
+    surgeon_transpose(surg, 0);
+    surgeon_op_scale(surg, 0, 1.000000f);
+    surgeon_op_freq(surg, 0, 440.000000f);
+    surgeon_op_index(surg, 0, 1.000000f);
+    surgeon_op_amp(surg, 0, 0.100000f);
+    surgeon_op_atk(surg, 0, 0.010000f);
+    surgeon_op_dec(surg, 0, 0.100000f);
+    surgeon_op_sus(surg, 0, 0.100000f);
+    surgeon_op_rel(surg, 0, 0.100000f);
+    surgeon_op_mode(surg, 0, 1);
+    surgeon_op_scale(surg, 1, 1.000000f);
+    surgeon_op_freq(surg, 1, 440.000000f);
+    surgeon_op_index(surg, 1, 1.100000f);
+    surgeon_op_amp(surg, 1, 0.500000f);
+    surgeon_op_atk(surg, 1, 0.010000f);
+    surgeon_op_dec(surg, 1, 0.100000f);
+    surgeon_op_sus(surg, 1, 0.100000f);
+    surgeon_op_rel(surg, 1, 0.100000f);
+    surgeon_op_mode(surg, 1, 3);
+    surgeon_op_scale(surg, 2, 1.000000f);
+    surgeon_op_freq(surg, 2, 440.000000f);
+    surgeon_op_index(surg, 2, 1.000000f);
+    surgeon_op_amp(surg, 2, 0.500000f);
+    surgeon_op_atk(surg, 2, 0.010000f);
+    surgeon_op_dec(surg, 2, 0.100000f);
+    surgeon_op_sus(surg, 2, 0.100000f);
+    surgeon_op_rel(surg, 2, 0.100000f);
+    surgeon_op_mode(surg, 2, 1);
+    surgeon_op_scale(surg, 3, 1.000000f);
+    surgeon_op_freq(surg, 3, 440.000000f);
+    surgeon_op_index(surg, 3, 1.000000f);
+    surgeon_op_amp(surg, 3, 0.500000f);
+    surgeon_op_atk(surg, 3, 0.010000f);
+    surgeon_op_dec(surg, 3, 0.100000f);
+    surgeon_op_sus(surg, 3, 0.100000f);
+    surgeon_op_rel(surg, 3, 0.100000f);
+    surgeon_op_mode(surg, 3, 1);
+}
+
 void surgeon_preset_list_init()
 {
     int i;
     for(i = 0; i < WHISPER_MAXPRESETS; i++) {
         presets[i] = surgeon_default;
     }
-    presets[1] = surgeon_toypiano;
-    presets[2] = surgeon_choruspiano;
-    presets[3] = surgeon_organ;
-    presets[4] = surgeon_clangybell;
-    presets[5] = surgeon_deepbass;
+    presets[1] = surgeon_defaultpad;
+    presets[2] = surgeon_defaultpluck;
+    presets[3] = surgeon_toypiano;
+    presets[4] = surgeon_choruspiano;
+    presets[5] = surgeon_organ;
+    presets[6] = surgeon_clangybell;
+    presets[7] = surgeon_deepbass;
 }
 
 void surgeon_preset(surgeon_instr *ins, int preset)

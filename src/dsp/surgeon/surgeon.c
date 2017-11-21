@@ -305,7 +305,6 @@ static void compute_1(SPFLOAT *out)
 
 static void init_1(int sr)
 {
-
     surgeon_instr *surg;
     surg = &surgeon.synth[1];
     surgeon_instr_alloc(whisper_sp_data(), surg);
@@ -402,7 +401,9 @@ static void surgeon_setup(whisper_surgeon *surg)
 void whisper_surgeon_setup()
 {
     surgeon_setup(&surgeon);
+    /* TODO: remove whisper_surgeon_preset_setup */
     whisper_surgeon_preset_setup(&surgeon);
+    surgeon_preset_list_init();
 }
 
 /* bind a surgeon instrument to a track */
@@ -669,7 +670,7 @@ whisper_arg1* whisper_surgeon_preset_data(whisper_surgeon *surg)
 
 EXPORT void whisper_surgeon_preset(int instr, int preset)
 {
-    surgeon.preset[preset](instr);
+    surgeon_preset(&surgeon.synth[instr], preset);
     surgeon.synth[instr].preset = preset;
 }
 
@@ -691,4 +692,9 @@ int surgeon_preset_number(surgeon_instr *ins)
 EXPORT int whisper_surgeon_preset_number(int instr)
 {
     return surgeon_preset_number(&surgeon.synth[instr]);
+}
+
+EXPORT void whisper_surgeon_dump(int instr)
+{
+    surgeon_dump(&surgeon.synth[instr]);
 }
