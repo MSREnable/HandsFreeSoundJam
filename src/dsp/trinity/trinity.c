@@ -930,9 +930,9 @@ void whisper_trinity_init(int sr)
 
         whisper_trinity_vibrato_rate(g, 0.);
         whisper_trinity_vibrato_depth(g, 0.);
-        whisper_trinity_preset(g, trinity.vgroup[g].preset);
         trinity.vgroup[g].cutoff = 1000.f;
         trinity.vgroup[g].res = 0.f;
+        whisper_trinity_preset(g, trinity.vgroup[g].preset);
     }
 
 

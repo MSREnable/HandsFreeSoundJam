@@ -577,6 +577,26 @@ EXPORT void whisper_eyejam_db_save_song(int id)
     db_save_song(&the_db, id);
 }
 
+static int db_load_presets(whisper_db *db, unsigned int song_id)
+{
+    sqlite3_stmt *stmt;
+    int tmp;
+    sqlite3_prepare_v2(db->db, 
+    "SELECT * FROM PRESETS WHERE(ID == ?1)",
+    -1, 
+    &stmt,
+    NULL);
+    sqlite3_bind_int(stmt, 1, song_id);
+    sqlite3_step(stmt);
+
+    tmp = sqlite3_column_int(stmt, 1);
+    whisper_trinity_preset(0, tmp);
+    tmp = sqlite3_column_int(stmt, 2);
+    whisper_trinity_preset(1, tmp);
+    sqlite3_finalize(stmt);
+    return 1;
+}
+
 static int db_load_song(whisper_db *db, unsigned int song_id)
 {
     int t;
@@ -624,6 +644,8 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
     }
     
     sqlite3_finalize(stmt);
+
+    db_load_presets(db, song_id);
 
     return 0;
 }
