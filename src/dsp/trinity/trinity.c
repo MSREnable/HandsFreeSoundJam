@@ -1237,6 +1237,7 @@ whisper_arg1* whisper_trinity_preset_data(whisper_trinity *tri)
 EXPORT void whisper_trinity_preset(int instr, int preset)
 {
     trinity.presets[preset](instr);
+    trinity.vgroup[instr].preset = preset;
 }
 
 EXPORT void whisper_trinity_default(int instr)

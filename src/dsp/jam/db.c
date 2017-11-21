@@ -80,6 +80,16 @@ static void create_tables(whisper_db *db)
     "TRACK_4 INTEGER"
     ");"
     );
+    
+    db_exec(db,
+    "CREATE TABLE IF NOT EXISTS PRESETS(ID INTEGER PRIMARY KEY,"
+    "TRINITY_0 INTEGER,"
+    "TRINITY_1 INTEGER,"
+    "SURGEON_0 INTEGER,"
+    "SURGEON_1 INTEGER,"
+    "DRUMKIT INTEGER"
+    ");"
+    );
 }
 
 static int db_open(whisper_db *db, const char *name)
@@ -466,6 +476,11 @@ EXPORT void whisper_eyejam_db_load_track(int track, int id)
     db_load_track(&the_db, track, id);
 }
 
+static int db_save_preset(whisper_db *db, unsigned int song_id)
+{
+    return 1;
+}
+
 static int db_save_song(whisper_db *db, unsigned int song_id)
 {
     int t;
@@ -527,6 +542,10 @@ static int db_save_song(whisper_db *db, unsigned int song_id)
     if(rc != SQLITE_DONE) {
         fprintf(stderr, "Error: %s\n", sqlite3_errmsg(db->db));
     }
+
+    sqlite3_finalize(stmt);
+
+    db_save_preset(db, song_id);
     
     return rc;
 }
