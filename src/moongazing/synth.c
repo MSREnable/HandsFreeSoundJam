@@ -65,7 +65,10 @@ struct mg_synth {
     sp_revsc *rev;
     sp_delay *del;
     sp_port *fade;
+    double alpha;
 };
+
+static mg_synth g_synth;
 
 static void synthlet_set_ftbl(synthlet *s, sp_ftbl *ft)
 {
@@ -187,13 +190,12 @@ static void pad_synth_tick(sp_data *sp, pad_voice *pad, SPFLOAT *out)
     *out = s_osc * s_lfo; 
 }
 
-void mg_synth_create(mg_synth **synth, int sr)
+void mg_synth_create(mg_synth *synth, int sr)
 {
     mg_synth *psynth;
     sp_data *sp;
     int i;
-    *synth = malloc(sizeof(mg_synth));
-    psynth = *synth;
+    psynth = synth;
    
     psynth->sp = whisper_sp_data();
     sp = psynth->sp;
@@ -231,14 +233,16 @@ void mg_synth_create(mg_synth **synth, int sr)
 
     sp_port_create(&psynth->fade);
     sp_port_init(sp, psynth->fade, 0.007);
+
+    psynth->alpha = 1;
 }
 
-void mg_synth_destroy(mg_synth **synth)
+void mg_synth_destroy(mg_synth *synth)
 {
     mg_synth *psynth;
     int i;
 
-    psynth = *synth;
+    psynth = synth;
 
     for(i = 0; i < NMOONS; i++) synthlet_destroy(&psynth->s[i]);
     for(i = 0; i < NPADS; i++) pad_synth_destroy(&psynth->pad[i]);
@@ -249,7 +253,6 @@ void mg_synth_destroy(mg_synth **synth)
     sp_ftbl_destroy(&psynth->ft);
     sp_moogladder_destroy(&psynth->lpf);
     sp_port_destroy(&psynth->fade);
-    free(*synth);
 }
 
 void mg_synth_tick(mg_synth *synth, float *out)
@@ -267,7 +270,7 @@ void mg_synth_tick(mg_synth *synth, float *out)
     *out = 0;
     dry = 0;
     
-    if(mg_time_fade() > 0.999) return;
+    if(synth->alpha > 0.999) return;
 
     for(i = 0; i < NMOONS; i++) {
         synthlet_tick(sp, &synth->s[i], &tmp);
@@ -286,7 +289,7 @@ void mg_synth_tick(mg_synth *synth, float *out)
     dry += s_lpf * 0.25;
     *out = dry;
    
-    fade = (SPFLOAT)(1 - mg_time_fade());
+    fade = (SPFLOAT)(1 - synth->alpha);
     /* fade out for clean exit */
     sp_port_compute(sp, synth->fade, &fade, &s_fade);
     *out *= s_fade;
@@ -323,4 +326,14 @@ void mg_synth_change_chord(mg_synth *synth)
         synth->pad[i].next_rate = pad_params[synth->chord*NPADS + i][1];
         synth->pad[i].please_change = 1;
     }
+}
+
+mg_synth * mg_synth_data()
+{
+    return &g_synth;
+}
+
+double * mg_synth_alpha()
+{
+    return &g_synth.alpha;
 }

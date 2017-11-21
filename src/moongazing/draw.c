@@ -31,7 +31,8 @@ typedef struct {
     int hit_last_time;
     double timer;
     double delta;
-    double timer_alpha;
+    double *timer_alpha;
+    double itimer_alpha;
     int closing;
     int please_close;
     float time_elapsed;
@@ -56,7 +57,8 @@ static void mg_setup(moongazing_data *mg)
     mg->delta = 0;
     mg->timer = 0;
     /* set timer_alpha to 1 so it is quiet on start */
-    mg->timer_alpha = 1;
+    mg->itimer_alpha = 1;
+    mg->timer_alpha = &mg->itimer_alpha;
     mg->closing = 0;
     mg->please_close = 0;
 
@@ -107,13 +109,13 @@ static void pos_callback(double xpos, double ypos)
     }
 
     if(moon_data.timer > CLOSE_DWELL * (1 - moon_data.closing)) {
-        moon_data.timer_alpha = (moon_data.timer - 
+        *moon_data.timer_alpha = (moon_data.timer - 
                 (CLOSE_DWELL * (1 - moon_data.closing))) / 1.5;
     } else {
-        moon_data.timer_alpha = 0;
+        *moon_data.timer_alpha = 0;
     }
 
-    if(moon_data.timer_alpha >= 1.0) moon_data.please_close = 1;
+    if(*moon_data.timer_alpha >= 1.0) moon_data.please_close = 1;
 
     if(moon_data.count >= 32) {
         printf("changing chord!\n");
@@ -125,7 +127,9 @@ static void pos_callback(double xpos, double ypos)
 
 void mg_init(jam_ui *top)
 {
+    mg_bind_synth(mg_synth_data());
     mg_setup(&moon_data); 
+    mg_override_alpha(mg_synth_alpha());
     moon_data.top = top;
 }
 
@@ -167,7 +171,7 @@ void mg_draw(NVGcontext *vg, double x, double y, double delta)
 
     nvgBeginPath(vg);
     nvgRect(vg, 0, 0, win_width, win_height);
-    nvgFillColor(vg, nvgRGBA(255, 255, 255, 255 * moon_data.timer_alpha));
+    nvgFillColor(vg, nvgRGBA(255, 255, 255, 255 * *moon_data.timer_alpha));
     nvgFill(vg);
 
     if(mg_window_closing()) {
@@ -178,7 +182,7 @@ void mg_draw(NVGcontext *vg, double x, double y, double delta)
 
 float mg_time_fade(void)
 {
-    return (float)moon_data.timer_alpha;
+    return (float)*moon_data.timer_alpha;
 }
 
 int mg_window_closing(void)
@@ -189,4 +193,9 @@ int mg_window_closing(void)
 void mg_bind_synth(mg_synth *synth)
 {
     moon_data.synth = synth;
+}
+
+void mg_override_alpha(double *val)
+{
+    moon_data.timer_alpha = val;
 }

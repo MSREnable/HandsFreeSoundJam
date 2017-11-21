@@ -1,0 +1,45 @@
+# BEGIN TRINITY DUMP
+
+1 filt_type
+2291.18 cutoff
+0 res
+0 dist
+0.1 filt_atk
+0.1 filt_dec
+0.5 filt_sus
+0.3 filt_rel
+0 filt_amt
+0.001 amp_atk
+0.001 amp_dec
+1 amp_sus
+0.001 amp_rel
+7.08661 vib_rate
+0.299213 vib_depth
+0 legato
+0.01 legato_time
+
+0 oscillator
+2 osc_type
+1 osc_gain
+24 osc_trans
+-0.05 osc_detune
+1 osc_is_on
+0.5 osc_width
+
+1 oscillator
+4 osc_type
+0 osc_gain
+0 osc_trans
+0 osc_detune
+0 osc_is_on
+0.5 osc_width
+
+2 oscillator
+0 osc_type
+1 osc_gain
+0 osc_trans
+0.07 osc_detune
+0 osc_is_on
+0.5 osc_width
+
+# END TRINITY DUMP

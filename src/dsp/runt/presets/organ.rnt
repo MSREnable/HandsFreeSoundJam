@@ -1,0 +1,50 @@
+# BEGIN SURGEON DUMP
+
+# 4 nvoices
+5 algo
+
+0 operator
+1 scale
+440 freq
+1 index
+0.1 amp
+0.01 atk
+0.01 dec
+0.89 sus
+0.001 rel
+1 mode
+
+1 operator
+2 scale
+1 freq
+1 index
+0.1 amp
+0.01 atk
+0.01 dec
+0.8 sus
+0.001 rel
+1 mode
+
+2 operator
+3 scale
+6 freq
+1 index
+0.06 amp
+0.01 atk
+0.01 dec
+0.8 sus
+0.1 rel
+1 mode
+
+3 operator
+0.5 scale
+440 freq
+1 index
+0.5 amp
+0.01 atk
+0.01 dec
+0.8 sus
+0.1 rel
+1 mode
+
+# END SURGEON DUMP

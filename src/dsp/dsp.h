@@ -323,6 +323,7 @@ void surgeon_compute_voice(sp_data *sp, surgeon_instr *ins, int v, SPFLOAT *o);
 void surgeon_dump(surgeon_instr *ins);
 void surgeon_preset(surgeon_instr *ins, int preset);
 void surgeon_preset_list_init();
+int surgeon_preset_number(surgeon_instr *ins);
 
 EXPORT void whisper_surgeon_noteon(int instr, int voice);
 EXPORT void whisper_surgeon_noteoff(int instr, int voice);
@@ -344,6 +345,7 @@ whisper_arg1* whisper_surgeon_preset_data(whisper_surgeon *surg);
 void whisper_surgeon_preset_setup(whisper_surgeon *surg);
 EXPORT void whisper_surgeon_preset(int instr, int preset);
 surgeon_instr * whisper_surgeon_get_instr(int instr);
+EXPORT int whisper_surgeon_preset_number(int instr);
 
 /* Mixer and Effects */
 

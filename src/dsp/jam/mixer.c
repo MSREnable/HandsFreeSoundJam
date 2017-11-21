@@ -37,8 +37,9 @@ void whisper_mixer_init(int sr)
     for(e = 0; e < NSENDS; e++) {
         mixer.effect[e].init(&mixer.effect[e], sr);
     }
-    mg_synth_create(&mixer.moonjam, sr);
-    mg_bind_synth(mixer.moonjam);
+    mixer.moonjam = mg_synth_data();
+    mg_synth_create(mixer.moonjam, sr);
+    arachnoid_audio_init();
 }
 
 void whisper_mixer_destroy()
@@ -47,7 +48,8 @@ void whisper_mixer_destroy()
     for(e = 0; e < NSENDS; e++) {
         mixer.effect[e].destroy(&mixer.effect[e]);
     }
-    mg_synth_destroy(&mixer.moonjam);
+    mg_synth_destroy(mixer.moonjam);
+    arachnoid_audio_stop();
 }
 
 void whisper_mixer_setup()

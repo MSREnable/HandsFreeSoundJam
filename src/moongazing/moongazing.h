@@ -71,9 +71,11 @@ void mg_audio_set_synth(mg_audio *mga, mg_synth *synth);
 int mg_audio_samplerate(mg_audio *mga);
 
 /* synth */
-void mg_synth_create(mg_synth **synth, int sr);
-void mg_synth_destroy(mg_synth **synth);
+void mg_synth_create(mg_synth *synth, int sr);
+void mg_synth_destroy(mg_synth *synth);
 void mg_synth_tick(mg_synth *synth, float *out);
+mg_synth * mg_synth_data();
+double * mg_synth_alpha();
 
 /* cause a trigger event to happen on a particular object id */
 void mg_synth_trigger(mg_synth *synth, int id);
@@ -82,10 +84,10 @@ void mg_synth_trigger(mg_synth *synth, int id);
 void mg_synth_bind_color(mg_synth *synth, int id, int *color);
 
 /* change chords */
-void mg_synth_change_chord(mg_synth *synth);
-
+void mg_synth_change_chord(mg_synth *synth); 
 /* fade out alpha for smooth close */
 float mg_time_fade(void);
+void mg_override_alpha(double *val);
 
 
 #endif

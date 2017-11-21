@@ -95,7 +95,7 @@ void arachnoid_init(jam_ui *ui)
         );
         count++;
     }
-    arachnoid_audio_init();
+    /* arachnoid_audio_init(); */
 
     /* make stop button */
     exit_btn = malloc(jam_button_size());
@@ -111,7 +111,6 @@ void arachnoid_init(jam_ui *ui)
 
 void arachnoid_clean()
 {
-    arachnoid_audio_clean();
     jam_button_free(exit_btn);
     free(exit_btn);
 }

@@ -70,6 +70,7 @@ struct surgeon_instr {
     /* TODO: shoudln't params be SURGEON_NOP and not SURGEON_NALGO? */
     operator_params params[SURGEON_NOP]; /* operator parameters */
     int transpose;
+    int preset; /* last chosen preset */
 };
 
 /* callbacks needed for track bindings */
@@ -503,6 +504,7 @@ static void surgeon_instr_setup(surgeon_instr *surg)
     operator_params *params;
     surg->nvoices = SURGEON_MAXVOICES;
     surg->algo = 0;
+    surg->preset = 0;
 
     params = surg->params;
     for(o = 0; o < SURGEON_NOP; o++) {
@@ -668,6 +670,7 @@ whisper_arg1* whisper_surgeon_preset_data(whisper_surgeon *surg)
 EXPORT void whisper_surgeon_preset(int instr, int preset)
 {
     surgeon.preset[preset](instr);
+    surgeon.synth[instr].preset = preset;
 }
 
 surgeon_instr * whisper_surgeon_get_instr(int instr)
@@ -678,4 +681,14 @@ surgeon_instr * whisper_surgeon_get_instr(int instr)
 void surgeon_transpose(surgeon_instr *surg, int transpose)
 {
     surg->transpose = transpose;
+}
+
+int surgeon_preset_number(surgeon_instr *ins)
+{
+    return ins->preset;
+}
+
+EXPORT int whisper_surgeon_preset_number(int instr)
+{
+    return surgeon_preset_number(&surgeon.synth[instr]);
 }
