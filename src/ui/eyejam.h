@@ -179,4 +179,8 @@ void jam_toys_draw(NVGcontext *vg, jam_toys *toys);
 void jam_toys_step(NVGcontext *vg, jam_toys *toys, double x, double y, double step);
 
 void jam_clear_color(float r, float g, float b);
+
+/* labels */
+
+const char *jam_track_label(int track);
 #endif

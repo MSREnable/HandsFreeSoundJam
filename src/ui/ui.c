@@ -13,6 +13,14 @@
 
 #define NREGIONS 4
 
+static const char *region_text[] = {
+"Melody",
+"Drums",
+"Bass",
+"Chords",
+"Melody 2",
+};
+
 typedef struct {
     jam_ui *top;
     jam_btnreg *reg[NREGIONS];
@@ -361,10 +369,10 @@ static void launcher_init(cliplauncher_ui *ui)
         jam_btnreg_set_track(ui->reg[i], track_bindings[i]);
     }
 
-    jam_btnreg_text(ui->reg[0], "Melody");
-    jam_btnreg_text(ui->reg[1], "Drums");
-    jam_btnreg_text(ui->reg[2], "Chords");
-    jam_btnreg_text(ui->reg[3], "Melody 2");
+    jam_btnreg_text(ui->reg[0], region_text[0]);
+    jam_btnreg_text(ui->reg[1], region_text[1]);
+    jam_btnreg_text(ui->reg[2], region_text[3]);
+    jam_btnreg_text(ui->reg[3], region_text[4]);
 
     /* make close button */
     centerw = jam_win_width() / 2;
@@ -625,4 +633,9 @@ int jam_xy_is_on()
 void jam_ui_screen(jam_ui *ui, int screen)
 {
     ui->screen = screen;
+}
+
+const char *jam_track_label(int track)
+{
+    return region_text[track];
 }

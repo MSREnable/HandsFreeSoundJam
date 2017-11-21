@@ -175,12 +175,12 @@ void jam_piano_draw(NVGcontext *vg, jam_piano *piano)
         buf, 
         NULL
     );
+    /* write track */
 
-    /* write clip */
+    track = whisper_eyejam_edit_get_track();
 
-    clip = whisper_eyejam_edit_get_clip();
+    sprintf(buf, "Track: %s", jam_track_label(track));
 
-    sprintf(buf, "Clip: %d", clip);
     nvgText(
         vg, 
         piano->x + CONSTANT(715), 
@@ -189,11 +189,12 @@ void jam_piano_draw(NVGcontext *vg, jam_piano *piano)
         NULL
     );
     
-    /* write track */
+    /* write clip */
 
-    track = whisper_eyejam_edit_get_track();
+    clip = whisper_eyejam_edit_get_clip();
 
-    sprintf(buf, "Track: %d", track);
+    sprintf(buf, "Clip: %d", clip);
+    
     nvgText(
         vg, 
         piano->x + CONSTANT(715), 
