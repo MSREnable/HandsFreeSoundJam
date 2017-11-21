@@ -50,7 +50,7 @@ static void trinity_bass(int instr)
     /* detune 2nd oscillator */
     whisper_trinity_osc_detune(instr, 1, 0.05);
 
-    /* transpose first oscillotar one octave */
+    /* transpose first oscillator one octave */
     whisper_trinity_osc_transpose(instr, 0, -12);
 
     /* all saw */

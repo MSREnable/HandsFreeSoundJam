@@ -933,13 +933,9 @@ void whisper_trinity_init(int sr)
         whisper_trinity_preset(g, trinity.vgroup[g].preset);
         trinity.vgroup[g].cutoff = 1000.f;
         trinity.vgroup[g].res = 0.f;
-        trinity.vgroup[g].preset = 0;
-
     }
 
 
-    /* set to default sound */
-    whisper_trinity_default(0);
     /* turn first voice ON by default */
     whisper_trinity_voice_state(0, 0, 1);
    
@@ -1243,6 +1239,11 @@ EXPORT void whisper_trinity_preset(int instr, int preset)
 EXPORT void whisper_trinity_default(int instr)
 {
     whisper_trinity_preset(instr, 0);
+}
+
+EXPORT int whisper_trinity_preset_number(int instr)
+{
+    return trinity.vgroup[instr].preset;
 }
 
 EXPORT void whisper_trinity_filter_amt(int instr, SPFLOAT val)

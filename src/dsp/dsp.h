@@ -152,6 +152,7 @@ EXPORT void whisper_trinity_set_master(int track);
 
 void whisper_trinity_bind_track(int instr, int track);
 EXPORT void whisper_trinity_preset(int instr, int preset);
+EXPORT int whisper_trinity_preset_number(int instr);
 void whisper_trinity_preset_setup(whisper_trinity *tri);
 whisper_arg1* whisper_trinity_preset_data(whisper_trinity *tri);
 
