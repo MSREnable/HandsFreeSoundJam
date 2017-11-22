@@ -8,35 +8,41 @@
 
 static void trinity_default(int instr)
 {
-    /* toggle all oscillators */
-    whisper_trinity_osc_toggle(instr, 0, 1);
-    whisper_trinity_osc_toggle(instr, 1, 1);
-    whisper_trinity_osc_toggle(instr, 2, 1);
-
-    /* detune 1 + 3 oscillators */
-    whisper_trinity_osc_detune(instr, 0, -0.05);
-    whisper_trinity_osc_detune(instr, 2, 0.07);
-
-    /* all saw */
+    whisper_trinity_filter_moog(instr);
+    whisper_trinity_cutoff(instr, 3000.000000f);
+    whisper_trinity_res(instr, 0.000000f);
+    whisper_trinity_filt_dist(instr, 0.000000f);
+    whisper_trinity_filter_atk(instr, 0.100000f);
+    whisper_trinity_filter_dec(instr, 0.100000f);
+    whisper_trinity_filter_sus(instr, 0.500000f);
+    whisper_trinity_filter_rel(instr, 0.300000f);
+    whisper_trinity_filter_amt(instr, 0.000000f);
+    whisper_trinity_amp_atk(instr, 0.005000f);
+    whisper_trinity_amp_dec(instr, 0.100000f);
+    whisper_trinity_amp_sus(instr, 0.500000f);
+    whisper_trinity_amp_rel(instr, 0.100000f);
+    whisper_trinity_vibrato_rate(instr, 7.000000f);
+    whisper_trinity_vibrato_depth(instr, 0.200000f);
+    whisper_trinity_legato(instr, 0);
+    whisper_trinity_port_time(instr, 0.010000f);
     whisper_trinity_osc_saw(instr, 0);
+    whisper_trinity_osc_gain(instr, 0, 1.000000f);
+    whisper_trinity_osc_transpose(instr, 0, 0.000000f);
+    whisper_trinity_osc_detune(instr, 0, -0.050000f);
+    whisper_trinity_osc_toggle(instr, 0, 1);
+    whisper_trinity_osc_pulsewidth(instr, 0, 0.500000f);
     whisper_trinity_osc_saw(instr, 1);
-
-    /* filter */
-    whisper_trinity_cutoff(instr, 3000.f);
-    whisper_trinity_res(instr, 0.);
-
-    /* ADSR envelop */
-
-    whisper_trinity_amp_atk(instr, 0.005f);
-    whisper_trinity_amp_dec(instr, 0.1f);
-    whisper_trinity_amp_sus(instr, 0.5f);
-    whisper_trinity_amp_rel(instr, 0.1f);
-    whisper_trinity_filter_amt(instr, 0.0f);
-
-    /* vibrato */
-
-    whisper_trinity_vibrato_rate(instr, 7.f);
-    whisper_trinity_vibrato_depth(instr, 0.2);
+    whisper_trinity_osc_gain(instr, 1, 1.000000f);
+    whisper_trinity_osc_transpose(instr, 1, 0.000000f);
+    whisper_trinity_osc_detune(instr, 1, 0.000000f);
+    whisper_trinity_osc_toggle(instr, 1, 1);
+    whisper_trinity_osc_pulsewidth(instr, 1, 0.500000f);
+    whisper_trinity_osc_sine(instr, 2);
+    whisper_trinity_osc_gain(instr, 2, 1.000000f);
+    whisper_trinity_osc_transpose(instr, 2, 0.000000f);
+    whisper_trinity_osc_detune(instr, 2, 0.070000f);
+    whisper_trinity_osc_toggle(instr, 2, 1);
+    whisper_trinity_osc_pulsewidth(instr, 2, 0.500000f);
 }
 
 static void trinity_bass(int instr)
