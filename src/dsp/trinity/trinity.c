@@ -1360,3 +1360,4 @@ EXPORT void whisper_trinity_dump(int instr)
     fprintf(fp, "\n# END TRINITY DUMP");
     fclose(fp);
 }
+

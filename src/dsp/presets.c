@@ -4,6 +4,7 @@
  */
 
 #include "dsp.h"
+#define TRINITY_ACTIVE_PRESETS 5
 
 static void trinity_default(int instr)
 {
@@ -287,4 +288,21 @@ void whisper_surgeon_preset_setup(whisper_surgeon *surg)
     for(p = 0; p < WHISPER_MAXPRESETS; p++) {
         presets[p] = surgeon_default;
     }
+}
+
+EXPORT void whisper_trinity_preset_next(int instr)
+{
+    unsigned int current;
+
+    current = whisper_trinity_preset_number(instr);
+    whisper_trinity_preset(instr, (current + 1) % TRINITY_ACTIVE_PRESETS);
+}
+
+EXPORT void whisper_trinity_preset_prev(int instr)
+{
+    unsigned int current;
+    current = whisper_trinity_preset_number(instr);
+    if(current == 0) current = TRINITY_ACTIVE_PRESETS - 1;
+    else current--;
+    whisper_trinity_preset(instr, current);
 }
