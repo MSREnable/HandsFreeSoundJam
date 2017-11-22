@@ -45,6 +45,7 @@ typedef struct jam_piano jam_piano;
 typedef struct jam_panel jam_panel;
 typedef struct jam_pianoroll jam_pianoroll;
 typedef struct jam_toys jam_toys;
+typedef struct jam_config jam_config;
 
 typedef void (*jam_button_cb)(jam_button*,void*);
 
@@ -178,9 +179,21 @@ void jam_toys_interact(jam_toys *toys, double x, double y, double step);
 void jam_toys_draw(NVGcontext *vg, jam_toys *toys);
 void jam_toys_step(NVGcontext *vg, jam_toys *toys, double x, double y, double step);
 
+/* needed for some toys with alternate background color */
 void jam_clear_color(float r, float g, float b);
+
+/* Config Screen */
+
+size_t jam_config_size();
+void jam_config_init(jam_config *config, jam_ui *ui);
+void jam_config_free(jam_config *config);
+void jam_config_interact(jam_config *config, double x, double y, double step);
+void jam_config_draw(NVGcontext *vg, jam_config *config);
+void jam_config_step(NVGcontext *vg, jam_config *config, double x, double y, double step);
+
 
 /* labels */
 
 const char *jam_track_label(int track);
+
 #endif

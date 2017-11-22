@@ -32,6 +32,7 @@ typedef struct {
     jam_button *stop;
     jam_button *tempo_up;
     jam_button *tempo_down;
+    jam_button *config;
     int centerw;
     int centerh;
 } cliplauncher_ui;
@@ -214,6 +215,11 @@ static void tempo_down(jam_button *but, void *ud)
 static void please_close(jam_button *but, void *ud)
 {
     jam_close();
+}
+
+static void open_config(jam_button *but, void *ud)
+{
+    /*TODO: implement me!*/
 }
 
 static void toy_screen(jam_button *but, void *ud)
@@ -463,6 +469,16 @@ static void launcher_init(cliplauncher_ui *ui)
     jam_button_cb_trigger(ui->tempo_down, tempo_down);
     jam_button_text(ui->tempo_down, "-");
     jam_button_data(ui->tempo_down, ui->top);
+    
+    
+    ui->config = malloc(jam_button_size());
+    jam_button_init(ui->config);
+    jam_button_setsize(ui->config, CONSTANT(100), CONSTANT(100));
+    jam_button_pos(ui->config, 
+        centerw - CONSTANT(512), 
+        centerh - CONSTANT(50));
+    jam_button_cb_trigger(ui->config, open_config);
+    jam_button_text(ui->config, "Config");
 }
 
 static void launcher_step(NVGcontext *vg, cliplauncher_ui *ui,
@@ -497,6 +513,8 @@ static void launcher_step(NVGcontext *vg, cliplauncher_ui *ui,
     jam_button_draw(vg, ui->tempo_up);
     jam_button_interact(ui->tempo_down, x, y, delta);
     jam_button_draw(vg, ui->tempo_down);
+    jam_button_interact(ui->config, x, y, delta);
+    jam_button_draw(vg, ui->config);
 
     /* write bpm */
 
@@ -544,6 +562,8 @@ static void launcher_destroy(cliplauncher_ui *ui)
     free(ui->tempo_up);
     jam_button_free(ui->tempo_down);
     free(ui->tempo_down);
+    jam_button_free(ui->config);
+    free(ui->config);
 }
 
 void jam_ui_init(jam_ui *ui)
