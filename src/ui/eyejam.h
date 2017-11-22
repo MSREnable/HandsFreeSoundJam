@@ -33,6 +33,8 @@ enum {
     JAM_TOYS,
     JAM_MOONJAM,
     JAM_ARACHNOID,
+    JAM_CONFIG,
+    JAM_PRESETS
 };
 
 typedef struct jam_audio jam_audio;

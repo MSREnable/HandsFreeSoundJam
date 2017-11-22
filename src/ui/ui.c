@@ -50,6 +50,7 @@ struct jam_ui {
     cliplauncher_ui launcher;
     editor_ui editor;
     jam_toys *toys;
+    jam_config *config;
     int screen;
 };
 
@@ -219,7 +220,10 @@ static void please_close(jam_button *but, void *ud)
 
 static void open_config(jam_button *but, void *ud)
 {
-    /*TODO: implement me!*/
+    jam_ui *ui;
+    ui = ud;
+        
+    jam_ui_screen(ui, JAM_CONFIG);
 }
 
 static void toy_screen(jam_button *but, void *ud)
@@ -479,6 +483,7 @@ static void launcher_init(cliplauncher_ui *ui)
         centerh - CONSTANT(50));
     jam_button_cb_trigger(ui->config, open_config);
     jam_button_text(ui->config, "Config");
+    jam_button_data(ui->config, ui->top);
 }
 
 static void launcher_step(NVGcontext *vg, cliplauncher_ui *ui,
@@ -579,6 +584,8 @@ void jam_ui_init(jam_ui *ui)
     ui->toys = malloc(jam_toys_size());
     jam_toys_init(ui->toys, ui);
     arachnoid_init(ui);
+    ui->config = malloc(jam_config_size());
+    jam_config_init(ui->config, ui);
 
     jam_ui_screen(ui, JAM_LAUNCHER);
 }
@@ -592,6 +599,8 @@ void jam_ui_free(jam_ui *ui)
     mg_clean();
     free(ui->toys);
     arachnoid_clean();
+    jam_config_free(ui->config);
+    free(ui->config);
 }
 
 void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
@@ -611,6 +620,9 @@ void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
         case JAM_ARACHNOID:
             /* RGB: 20, 26, 19*/
             arachnoid_step(vg, x, y, delta);
+            break;
+        case JAM_CONFIG:
+            jam_config_step(vg, ui->config, x, y, delta);
             break;
         default:
             launcher_step(vg, &ui->launcher, x, y, delta);
