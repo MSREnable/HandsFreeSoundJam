@@ -160,6 +160,8 @@ EXPORT void whisper_trinity_preset_prev(int instr);
 
 EXPORT void whisper_trinity_dump(int instr);
 
+EXPORT const char * whisper_trinity_preset_name(int preset);
+
 /* clip */
 
 void wclip_create(whisper_clip **clip, 

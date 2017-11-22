@@ -175,7 +175,8 @@ void jam_presets_draw(NVGcontext *vg, jam_presets *presets)
     nvgFillColor(vg, nvgRGB(255, 255, 255));
     
     nvgBeginPath(vg);
-    sprintf(buf, "Trinity 0 Preset: %d", whisper_trinity_preset_number(0));
+    sprintf(buf, "Trinity 0 Preset: %s", 
+        whisper_trinity_preset_name(whisper_trinity_preset_number(0)));
     nvgText(
         vg, 
         presets->centerw, 
@@ -186,7 +187,8 @@ void jam_presets_draw(NVGcontext *vg, jam_presets *presets)
     nvgFill(vg);
     
     nvgBeginPath(vg);
-    sprintf(buf, "Trinity 1 Preset: %d", whisper_trinity_preset_number(1));
+    sprintf(buf, "Trinity 1 Preset: %s", 
+        whisper_trinity_preset_name(whisper_trinity_preset_number(1)));
     nvgText(
         vg, 
         presets->centerw, 

@@ -4,7 +4,17 @@
  */
 
 #include "dsp.h"
-#define TRINITY_ACTIVE_PRESETS 5
+#define TRINITY_ACTIVE_PRESETS 6
+
+static const char *trinity_preset_names[] = {
+    "Default Lead",
+    "Bass",
+    "Saxophony",
+    "Whistle",
+    "Woosh",
+    "Gameboy"
+};
+
 
 static void trinity_default(int instr)
 {
@@ -311,4 +321,12 @@ EXPORT void whisper_trinity_preset_prev(int instr)
     if(current == 0) current = TRINITY_ACTIVE_PRESETS - 1;
     else current--;
     whisper_trinity_preset(instr, current);
+}
+
+EXPORT const char * whisper_trinity_preset_name(int preset)
+{
+    /* bounds checking */
+    if(preset < 0) preset = 0;
+    preset %= TRINITY_ACTIVE_PRESETS;
+    return trinity_preset_names[preset];
 }
