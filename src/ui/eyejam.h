@@ -48,6 +48,7 @@ typedef struct jam_panel jam_panel;
 typedef struct jam_pianoroll jam_pianoroll;
 typedef struct jam_toys jam_toys;
 typedef struct jam_config jam_config;
+typedef struct jam_presets jam_presets;
 
 typedef void (*jam_button_cb)(jam_button*,void*);
 
@@ -192,6 +193,15 @@ void jam_config_free(jam_config *config);
 void jam_config_interact(jam_config *config, double x, double y, double step);
 void jam_config_draw(NVGcontext *vg, jam_config *config);
 void jam_config_step(NVGcontext *vg, jam_config *config, double x, double y, double step);
+
+/* Config Screen */
+
+size_t jam_presets_size();
+void jam_presets_init(jam_presets *presets, jam_ui *ui);
+void jam_presets_free(jam_presets *presets);
+void jam_presets_interact(jam_presets *presets, double x, double y, double step);
+void jam_presets_draw(NVGcontext *vg, jam_presets *presets);
+void jam_presets_step(NVGcontext *vg, jam_presets *presets, double x, double y, double step);
 
 
 /* labels */

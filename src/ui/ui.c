@@ -51,6 +51,7 @@ struct jam_ui {
     editor_ui editor;
     jam_toys *toys;
     jam_config *config;
+    jam_presets *presets;
     int screen;
 };
 
@@ -586,6 +587,8 @@ void jam_ui_init(jam_ui *ui)
     arachnoid_init(ui);
     ui->config = malloc(jam_config_size());
     jam_config_init(ui->config, ui);
+    ui->presets = malloc(jam_presets_size());
+    jam_presets_init(ui->presets, ui);
 
     jam_ui_screen(ui, JAM_LAUNCHER);
 }
@@ -601,6 +604,8 @@ void jam_ui_free(jam_ui *ui)
     arachnoid_clean();
     jam_config_free(ui->config);
     free(ui->config);
+    jam_presets_free(ui->presets);
+    free(ui->presets);
 }
 
 void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
@@ -623,6 +628,9 @@ void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
             break;
         case JAM_CONFIG:
             jam_config_step(vg, ui->config, x, y, delta);
+            break;
+        case JAM_PRESETS:
+            jam_presets_step(vg, ui->presets, x, y, delta);
             break;
         default:
             launcher_step(vg, &ui->launcher, x, y, delta);
