@@ -6,9 +6,22 @@
 #include <time.h>
 #include "dsp.h"
 
+#define SURGEON_ACTIVE_PRESETS 8
+
 typedef void (*surgeon_preset_proc)(surgeon_instr*);
 
 static surgeon_preset_proc presets[WHISPER_MAXPRESETS];
+
+static const char *surgeon_preset_names[] = {
+    "Default Sound",
+    "Default Pad",
+    "Default Pluck",
+    "Toy Piano",
+    "Chorus Piano",
+    "Organ",
+    "Clangy Bell",
+    "Deep Bass"
+};
 
 static void surgeon_toypiano(surgeon_instr *surg)
 {
@@ -365,4 +378,29 @@ void surgeon_preset_list_init()
 void surgeon_preset(surgeon_instr *ins, int preset)
 {
     if(preset >= 0 && preset < WHISPER_MAXPRESETS) presets[preset](ins);
+}
+
+EXPORT void whisper_surgeon_preset_next(int instr)
+{
+    unsigned int current;
+
+    current = whisper_surgeon_preset_number(instr);
+    whisper_surgeon_preset(instr, (current + 1) % SURGEON_ACTIVE_PRESETS);
+}
+
+EXPORT void whisper_surgeon_preset_prev(int instr)
+{
+    unsigned int current;
+    current = whisper_surgeon_preset_number(instr);
+    if(current == 0) current = SURGEON_ACTIVE_PRESETS - 1;
+    else current--;
+    whisper_surgeon_preset(instr, current);
+}
+
+EXPORT const char * whisper_surgeon_preset_name(int preset)
+{
+    /* bounds checking */
+    if(preset < 0) preset = 0;
+    preset %= SURGEON_ACTIVE_PRESETS;
+    return surgeon_preset_names[preset];
 }

@@ -38,6 +38,26 @@ static void trinity_1_prev(jam_button *but, void *ud)
     whisper_trinity_preset_prev(1);
 }
 
+static void surgeon_0_next(jam_button *but, void *ud)
+{
+    whisper_surgeon_preset_next(0);
+}
+
+static void surgeon_0_prev(jam_button *but, void *ud)
+{
+    whisper_surgeon_preset_prev(0);
+}
+
+static void surgeon_1_next(jam_button *but, void *ud)
+{
+    whisper_surgeon_preset_next(1);
+}
+
+static void surgeon_1_prev(jam_button *but, void *ud)
+{
+    whisper_surgeon_preset_prev(1);
+}
+
 typedef struct {
     jam_presets *top;
     jam_button *prev;
@@ -50,6 +70,8 @@ struct jam_presets {
     jam_button *config;
     preset_select trinity_0;
     preset_select trinity_1;
+    preset_select surgeon_0;
+    preset_select surgeon_1;
     int centerw;
     int centerh;
 };
@@ -139,7 +161,7 @@ void jam_presets_init(jam_presets *presets, jam_ui *ui)
     preset_select_init(presets, 
         &presets->trinity_0,
         CONSTANT(100),
-        CONSTANT(140),
+        CONSTANT(210),
         trinity_0_prev,
         trinity_0_next);
     
@@ -147,9 +169,25 @@ void jam_presets_init(jam_presets *presets, jam_ui *ui)
     preset_select_init(presets, 
         &presets->trinity_1,
         CONSTANT(100),
-        0,
+        CONSTANT(70),
         trinity_1_prev,
         trinity_1_next);
+    
+    /* Surgeon 0*/
+    preset_select_init(presets, 
+        &presets->surgeon_0,
+        CONSTANT(100),
+        CONSTANT(-70),
+        surgeon_0_prev,
+        surgeon_0_next);
+    
+    /* Surgeon 1*/
+    preset_select_init(presets, 
+        &presets->surgeon_1,
+        CONSTANT(100),
+        CONSTANT(-210),
+        surgeon_1_prev,
+        surgeon_1_next);
 }
 
 void jam_presets_free(jam_presets *presets)
@@ -158,6 +196,8 @@ void jam_presets_free(jam_presets *presets)
     free(presets->config);
     preset_select_free(&presets->trinity_0);
     preset_select_free(&presets->trinity_1);
+    preset_select_free(&presets->surgeon_0);
+    preset_select_free(&presets->surgeon_1);
 }
 
 void jam_presets_interact(jam_presets *presets, double x, double y, double step)
@@ -197,6 +237,30 @@ void jam_presets_draw(NVGcontext *vg, jam_presets *presets)
         NULL
     );
     nvgFill(vg);
+    
+    nvgBeginPath(vg);
+    sprintf(buf, "Surgeon 0 Preset: %s", 
+        whisper_surgeon_preset_name(whisper_surgeon_preset_number(0)));
+    nvgText(
+        vg, 
+        presets->centerw, 
+        presets->centerh - (CONSTANT(60.f) + presets->surgeon_0.off_y),
+        buf, 
+        NULL
+    );
+    nvgFill(vg);
+    
+    nvgBeginPath(vg);
+    sprintf(buf, "Surgeon 1 Preset: %s", 
+        whisper_surgeon_preset_name(whisper_surgeon_preset_number(1)));
+    nvgText(
+        vg, 
+        presets->centerw, 
+        presets->centerh - (CONSTANT(60.f) + presets->surgeon_1.off_y),
+        buf, 
+        NULL
+    );
+    nvgFill(vg);
 }
 
 void jam_presets_step(NVGcontext *vg, jam_presets *presets, double x, double y, double step)
@@ -205,4 +269,6 @@ void jam_presets_step(NVGcontext *vg, jam_presets *presets, double x, double y, 
     jam_presets_draw(vg, presets);
     preset_select_step(vg, &presets->trinity_0, x, y, step);
     preset_select_step(vg, &presets->trinity_1, x, y, step);
+    preset_select_step(vg, &presets->surgeon_0, x, y, step);
+    preset_select_step(vg, &presets->surgeon_1, x, y, step);
 }
