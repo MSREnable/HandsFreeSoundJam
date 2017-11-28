@@ -12,16 +12,10 @@
 
 #define NBUTTONS 3
 #define BSPACING CONSTANT(50)
-#define OPENSCREEN(name, MACRO) \
-static void open_##name(jam_button *but, void *ud) \
-{\
-    jam_ui *ui;\
-    ui = ud;\
-    jam_ui_screen(ui, MACRO);\
-}
 
 OPENSCREEN(presets, JAM_PRESETS);
 OPENSCREEN(launcher, JAM_LAUNCHER);
+OPENSCREEN(loopmode, JAM_LOOPMODE);
 
 typedef struct {
     const char *name;
@@ -30,7 +24,7 @@ typedef struct {
 
 static preset_button_config bconfig[] = {
     {"Presets", open_presets},
-    {"Loop Mode", open_launcher},
+    {"Loop Mode", open_loopmode},
     {"Mixer", open_launcher},
 };
 

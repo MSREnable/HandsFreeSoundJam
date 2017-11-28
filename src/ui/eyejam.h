@@ -14,6 +14,14 @@
 
 #define CONSTANT(X) ((X)*SCALING)
 
+#define OPENSCREEN(name, MACRO) \
+static void open_##name(jam_button *but, void *ud) \
+{\
+    jam_ui *ui;\
+    ui = ud;\
+    jam_ui_screen(ui, MACRO);\
+}
+
 typedef struct NVGcontext NVGcontext;
 
 enum {
@@ -34,7 +42,8 @@ enum {
     JAM_MOONJAM,
     JAM_ARACHNOID,
     JAM_CONFIG,
-    JAM_PRESETS
+    JAM_PRESETS,
+    JAM_LOOPMODE,
 };
 
 typedef struct jam_audio jam_audio;
@@ -49,6 +58,7 @@ typedef struct jam_pianoroll jam_pianoroll;
 typedef struct jam_toys jam_toys;
 typedef struct jam_config jam_config;
 typedef struct jam_presets jam_presets;
+typedef struct jam_loopmode jam_loopmode;
 
 typedef void (*jam_button_cb)(jam_button*,void*);
 
@@ -194,7 +204,7 @@ void jam_config_interact(jam_config *config, double x, double y, double step);
 void jam_config_draw(NVGcontext *vg, jam_config *config);
 void jam_config_step(NVGcontext *vg, jam_config *config, double x, double y, double step);
 
-/* Config Screen */
+/* Presets Screen */
 
 size_t jam_presets_size();
 void jam_presets_init(jam_presets *presets, jam_ui *ui);
@@ -202,6 +212,15 @@ void jam_presets_free(jam_presets *presets);
 void jam_presets_interact(jam_presets *presets, double x, double y, double step);
 void jam_presets_draw(NVGcontext *vg, jam_presets *presets);
 void jam_presets_step(NVGcontext *vg, jam_presets *presets, double x, double y, double step);
+
+/* Loop Mode Screen */
+
+size_t jam_loopmode_size();
+void jam_loopmode_init(jam_loopmode *loopmode, jam_ui *ui);
+void jam_loopmode_free(jam_loopmode *loopmode);
+void jam_loopmode_interact(jam_loopmode *loopmode, double x, double y, double step);
+void jam_loopmode_draw(NVGcontext *vg, jam_loopmode *loopmode);
+void jam_loopmode_step(NVGcontext *vg, jam_loopmode *loopmode, double x, double y, double step);
 
 
 /* labels */

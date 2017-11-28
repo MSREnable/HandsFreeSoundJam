@@ -10,7 +10,8 @@ CFLAGS = -I$(LIBDIR)/nanovg/src/ -Wall
 CFLAGS += -DGLFW_INCLUDE_EXT -DNANOVG_GL2_IMPLEMENTATION 
 CXXFLAGS += -I$(LIBDIR)/rtaudio
 UI_OBJ += audio.o hit.o timer.o button.o ui.o btnreg.o gaze.o
-UI_OBJ += piano.o editpanel.o pianoroll.o toys.o config.o presets.o
+UI_OBJ += piano.o editpanel.o pianoroll.o toys.o config.o presets.o 
+UI_OBJ += loopmode.o
 
 MAIN_O = src/ui/main.o
 

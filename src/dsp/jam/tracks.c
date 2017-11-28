@@ -474,3 +474,12 @@ EXPORT void whisper_clip_modified(int track, int clip)
     wclip_set_modflag(c);
     whisper_track_modified(track);
 }
+
+EXPORT int whisper_tracks_get_loopmode(int track)
+{
+    whisper_track *t;
+
+    t = whisper_tracks_get_track(track);
+
+    return wtrack_get_loopmode(t);
+}

@@ -237,6 +237,7 @@ whisper_track * whisper_tracks_get_track(int track);
 whisper_clip * wtrack_get_clip(whisper_track *track, int clip);
 SPFLOAT wtrack_get_gain(whisper_track *track);
 int wtrack_get_loopmode(whisper_track *track);
+EXPORT int whisper_tracks_get_loopmode(int track);
 whisper_track * whisper_tracks_global_data();
 int wtrack_get_meter(whisper_track *t);
 EXPORT void whisper_tracks_turnoff(int track);

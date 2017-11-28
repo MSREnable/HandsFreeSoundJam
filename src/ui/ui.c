@@ -52,6 +52,7 @@ struct jam_ui {
     jam_toys *toys;
     jam_config *config;
     jam_presets *presets;
+    jam_loopmode *loopmode;
     int screen;
 };
 
@@ -589,6 +590,8 @@ void jam_ui_init(jam_ui *ui)
     jam_config_init(ui->config, ui);
     ui->presets = malloc(jam_presets_size());
     jam_presets_init(ui->presets, ui);
+    ui->loopmode = malloc(jam_loopmode_size());
+    jam_loopmode_init(ui->loopmode, ui);
 
     jam_ui_screen(ui, JAM_LAUNCHER);
 }
@@ -606,6 +609,8 @@ void jam_ui_free(jam_ui *ui)
     free(ui->config);
     jam_presets_free(ui->presets);
     free(ui->presets);
+    jam_loopmode_free(ui->loopmode);
+    free(ui->loopmode);
 }
 
 void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
@@ -631,6 +636,9 @@ void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
             break;
         case JAM_PRESETS:
             jam_presets_step(vg, ui->presets, x, y, delta);
+            break;
+        case JAM_LOOPMODE:
+            jam_loopmode_step(vg, ui->loopmode, x, y, delta);
             break;
         default:
             launcher_step(vg, &ui->launcher, x, y, delta);
