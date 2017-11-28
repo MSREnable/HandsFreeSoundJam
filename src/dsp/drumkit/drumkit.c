@@ -106,6 +106,9 @@ static void drumkit_create(sp_data *sp, whisper_drumkit *kit)
     
     /* turn down snare */
     kit->sample[1].gain = 0.5f;
+    
+    /* turn up kick */
+    kit->sample[0].gain = 2.5f;
 
     for(v = 0; v < DK_NVOICES; v++) {
         drumkit_voice_init(sp, kit, &kit->voice[v], &kit->sample[0]);
