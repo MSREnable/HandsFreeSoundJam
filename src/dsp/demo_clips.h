@@ -753,7 +753,7 @@ F Ab Bb  Eb
 3,   0,  PREV_NOTE,
 4,   0,  PREV_NOTE,
 
-6,   0,  52,
+6,   0,  53,
 7,   0,  PREV_NOTE,
 8,   0,  PREV_NOTE,
 9,   0,  PREV_NOTE,
