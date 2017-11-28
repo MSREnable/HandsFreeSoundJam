@@ -29,6 +29,8 @@ struct jam_loopmode {
     jam_button *on;
     jam_button *off;
     jam_button *launcher;
+    int centerw;
+    int centerh;
 };
 
 size_t jam_loopmode_size()
@@ -44,6 +46,8 @@ void jam_loopmode_init(jam_loopmode *loopmode, jam_ui *ui)
     centerw = jam_win_width() / 2;
     centerh = jam_win_height() / 2;
     loopmode->top = ui;
+    loopmode->centerw = centerw;
+    loopmode->centerh = centerh;
     
     /* Off */
     loopmode->off= malloc(jam_button_size());
@@ -91,7 +95,6 @@ void jam_loopmode_free(jam_loopmode *loopmode)
 
 void jam_loopmode_interact(jam_loopmode *loopmode, double x, double y, double step)
 {
-
     if(whisper_tracks_get_loopmode(0)) {
         jam_button_alt_color(loopmode->off, 0);
         jam_button_alt_color(loopmode->on, 2);
@@ -107,8 +110,27 @@ void jam_loopmode_interact(jam_loopmode *loopmode, double x, double y, double st
 
 void jam_loopmode_draw(NVGcontext *vg, jam_loopmode *loopmode)
 {
+    char buf[128];
+    nvgTextAlign(vg, NVG_ALIGN_RIGHT|NVG_ALIGN_CENTER);
+    nvgFontSize(vg, CONSTANT(28.0f));
+    
+    nvgFillColor(vg, nvgRGB(255, 255, 255));
+
+
+    nvgBeginPath(vg);
+    sprintf(buf, "%s", jam_track_label(0));
+    nvgText(
+        vg, 
+        loopmode->centerw - CONSTANT(180), 
+        loopmode->centerh,
+        buf, 
+        NULL
+    );
+    nvgFill(vg);
     jam_button_draw(vg, loopmode->off);
     jam_button_draw(vg, loopmode->on);
+
+
     jam_button_draw(vg, loopmode->launcher);
 }
 
