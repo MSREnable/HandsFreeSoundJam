@@ -130,6 +130,25 @@ int main()
     prev_t = 0;
     t = 0;
 
+    /* set up loading screen */
+    nvgCreateFont(vg, "sans", "fonts/Roboto-Regular.ttf"); 
+        
+    glfwGetWindowSize(window, &win_width, &win_height);
+    glfwGetFramebufferSize(window, &fbwidth, &fbheight);
+    glViewport(0, 0, fbwidth, fbheight);
+    pxratio = (float)fbwidth / (float)fbheight;
+
+    nvgBeginFrame(vg, win_width, win_height, pxratio);
+    nvgTextAlign(vg, NVG_ALIGN_CENTER|NVG_ALIGN_BOTTOM);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
+    nvgFontSize(vg, CONSTANT(72.0f));
+    nvgFillColor(vg, nvgRGB(255, 255, 255));
+    nvgText(vg, win_width / 2, win_height / 2, 
+    "Loading...", NULL);
+    nvgFill(vg);
+    nvgEndFrame(vg);
+    glfwSwapBuffers(window);
+
     ui = malloc(jam_ui_size());
     jam_ui_init(ui);
 #ifdef USE_EYETRACKING
@@ -150,8 +169,6 @@ int main()
     SF1eFilterInit(&filt_y);
 #endif
 
-
-    nvgCreateFont(vg, "sans", "fonts/Roboto-Regular.ttf"); 
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
