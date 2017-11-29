@@ -100,6 +100,9 @@ static void trinity_bass(int instr)
 
     whisper_trinity_vibrato_rate(instr, 0.f);
     whisper_trinity_vibrato_depth(instr, 0.0);
+    
+    whisper_trinity_osc_gain(instr, 0, 2.000000f);
+    whisper_trinity_osc_gain(instr, 1, 2.000000f);
 }
 
 static void trinity_saxophony(int instr)
