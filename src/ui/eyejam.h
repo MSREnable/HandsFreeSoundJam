@@ -116,6 +116,7 @@ void jam_button_data(jam_button *but, void *ud);
 void jam_button_id(jam_button *but, int id);
 int jam_button_id_get(jam_button *but);
 void jam_button_dwell_set(jam_button *but, double time);
+void jam_button_stroke_mode(jam_button *but, int mode);
 
 /* Main UI */
 

@@ -35,6 +35,7 @@ struct jam_button {
     const char *text;
     char usetext;
     int id;
+    int stroke_mode;
 }; 
 
 static void do_nothing(jam_button *but, void *ud)
@@ -72,6 +73,7 @@ void jam_button_init(jam_button *but)
     jam_button_color_over(but, 255, 0, 0);
     jam_button_color_select(but, 0, 0, 255);
     but->usetext = 0;
+    but->stroke_mode = 0;
 }
 
 void jam_button_free(jam_button *but)
@@ -192,8 +194,18 @@ void jam_button_draw(NVGcontext *vg, jam_button *but)
             nvgFillColor(vg, but->color_normal_alt[but->alt_color - 1]); 
         }
     }
-
     nvgFill(vg);
+   
+    if(but->stroke_mode) {
+        nvgBeginPath(vg);
+        nvgRect(vg, x - CONSTANT(5), y - CONSTANT(5),
+            w + CONSTANT(10), h + CONSTANT(10));
+            
+        nvgStrokeWidth(vg, CONSTANT(2.0));
+        nvgStrokeColor(vg, but->color_normal);
+        nvgStroke(vg);
+    }
+
 
     if(but->usetext) {
         nvgTextAlign(vg, NVG_ALIGN_CENTER|NVG_ALIGN_BOTTOM);
@@ -278,4 +290,9 @@ int jam_button_id_get(jam_button *but)
 void jam_button_dwell_set(jam_button *but, double time)
 {
     jam_timer_set_length(but->timer, time);
+}
+
+void jam_button_stroke_mode(jam_button *but, int mode)
+{
+    but->stroke_mode = mode;
 }

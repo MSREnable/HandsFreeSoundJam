@@ -72,8 +72,8 @@ static void loopmode_entry_init(
     jam_button_init(ent->off);
     jam_button_setsize(ent->off, CONSTANT(100), CONSTANT(100));
     jam_button_pos(ent->off, 
-        loopmode->centerw - (CONSTANT(offx + 100)), 
-        loopmode->centerh - CONSTANT(offy));
+        loopmode->centerw - (offx + CONSTANT(100)), 
+        loopmode->centerh - offy);
     jam_button_cb_trigger(ent->off, cb_off); 
     jam_button_text(ent->off, "Off");
     jam_button_data(ent->off, loopmode->top);
@@ -83,13 +83,12 @@ static void loopmode_entry_init(
     jam_button_init(ent->on);
     jam_button_setsize(ent->on, CONSTANT(100), CONSTANT(100));
     jam_button_pos(ent->on, 
-        loopmode->centerw + (CONSTANT(offx)), 
-        loopmode->centerh - CONSTANT(offy));
+        loopmode->centerw + (offx), 
+        loopmode->centerh - offy);
     jam_button_cb_trigger(ent->on, cb_on);
     jam_button_text(ent->on, "On");
     jam_button_data(ent->on, loopmode->top);
 }
-
 
 void jam_loopmode_init(jam_loopmode *loopmode, jam_ui *ui)
 {
@@ -106,7 +105,7 @@ void jam_loopmode_init(jam_loopmode *loopmode, jam_ui *ui)
     for(i = 0; i < NUMTRACKS; i++) {
         loopmode_entry_init(loopmode, &loopmode->entry[i], 
             CONSTANT(50),
-            CONSTANT(-250 + 150 * i),
+            CONSTANT(-250) + CONSTANT(150) * i,
             bcb[2 * i],
             bcb[2 * i + 1]);
     }
@@ -145,11 +144,15 @@ static void loopmode_entry_interact(loopmode_entry *ent, int track,
     double x, double y, double step)
 {
     if(whisper_tracks_get_loopmode(track)) {
-        jam_button_alt_color(ent->off, 0);
-        jam_button_alt_color(ent->on, 2);
-    } else {
-        jam_button_alt_color(ent->off, 2);
+        jam_button_alt_color(ent->off, 1);
         jam_button_alt_color(ent->on, 0);
+        jam_button_stroke_mode(ent->on, 1);
+        jam_button_stroke_mode(ent->off, 0);
+    } else {
+        jam_button_alt_color(ent->off, 0);
+        jam_button_alt_color(ent->on, 1);
+        jam_button_stroke_mode(ent->on, 0);
+        jam_button_stroke_mode(ent->off, 1);
     }
 
     jam_button_interact(ent->off, x, y, step);
