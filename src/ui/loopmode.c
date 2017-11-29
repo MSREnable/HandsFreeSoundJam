@@ -105,7 +105,7 @@ void jam_loopmode_init(jam_loopmode *loopmode, jam_ui *ui)
     for(i = 0; i < NUMTRACKS; i++) {
         loopmode_entry_init(loopmode, &loopmode->entry[i], 
             CONSTANT(50),
-            CONSTANT(-250) + CONSTANT(150) * i,
+            CONSTANT(-250) + CONSTANT(150) * (NUMTRACKS - i - 1),
             bcb[2 * i],
             bcb[2 * i + 1]);
     }
@@ -186,7 +186,7 @@ void jam_loopmode_draw(NVGcontext *vg, jam_loopmode *loopmode)
 
     for(i = 0; i < NUMTRACKS; i++) {
         nvgBeginPath(vg);
-        sprintf(buf, "%s", jam_track_label(i));
+        sprintf(buf, "%s", jam_track_label(NUMTRACKS - i - 1));
         nvgText(
             vg, 
             loopmode->centerw - CONSTANT(180), 
