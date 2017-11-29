@@ -401,8 +401,8 @@ void jam_pianoroll_draw(NVGcontext *vg, jam_pianoroll *roll)
         nvgRect(vg, roll->x, roll->y, roll->width, roll->height);
         nvgFillPaint(vg, 
             nvgLinearGradient(vg,
-            roll->x, roll->height, 
-            roll->x, roll->height - roll->height * BEAM_SIZE, 
+            roll->x, roll->y + roll->height, 
+            roll->x, roll->y + roll->height - (roll->height * BEAM_SIZE), 
             hit_color, tmpcolor)
         );
         nvgFill(vg);
