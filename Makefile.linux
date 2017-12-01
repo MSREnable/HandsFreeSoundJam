@@ -1,4 +1,4 @@
-LDFLAGS = -lm -lGL -lglfw -lstdc++ -lGLEW
+LDFLAGS = -lm -lGL -lglfw -lstdc++ -lpthread
 CXXFLAGS += -D__UNIX_JACK__
 LDFLAGS += -ljack -lsoundpipe -lsndfile -ldl
 CFLAGS += -DEXPORT=""

@@ -92,6 +92,8 @@ Dwelling on the +/- buttons will increase/decrease the tempo by 5 BPM.
 
 ### XY control
 
+**NOTE: This button has now been moved to another screen**
+
 Dwelling on the XY control button turns on XY mode. In XY mode, 
 a global filter and feedback delay effect is turned on. The XY position of the
 eye pointer continuously maps to the effect parameters. The X-axis maps to
@@ -99,6 +101,15 @@ delay feedback amount and filter resonance, and the Y-axis maps to filter
 cutoff.
 
 ![XY Control](images/xy.png)
+
+### Config
+
+TODO
+
+### Toys
+
+TODO
+
 
 ### Edit Screen
 
@@ -229,3 +240,19 @@ The current voice channel can be changed using the **voice++** and the
 is indicated by the colored tint of the edit cursor bar. 
 
 ![Voice Buttons](images/voice_buttons.png)
+
+## The Toys Screen
+
+TODO
+
+## The Configuration Screen
+
+TODO
+
+## The Preset Screen
+
+TODO
+
+## The Loop Mode Screen
+
+TODO
