@@ -90,26 +90,15 @@ Dwelling on the +/- buttons will increase/decrease the tempo by 5 BPM.
 
 ![Tempo Control](images/tempo.png)
 
-### XY control
+### Toys
 
-**NOTE: This button has now been moved to another screen**
-
-Dwelling on the XY control button turns on XY mode. In XY mode, 
-a global filter and feedback delay effect is turned on. The XY position of the
-eye pointer continuously maps to the effect parameters. The X-axis maps to
-delay feedback amount and filter resonance, and the Y-axis maps to filter 
-cutoff.
-
-![XY Control](images/xy.png)
+Dwelling on the Toys button takes you to the "Toys" screen, where
+miscellaneous features and toys in SoundJam are contained.
 
 ### Config
 
-TODO
-
-### Toys
-
-TODO
-
+Dwelling on the Config button takes you to the configuration screen
+for fine-tuned configuration options.
 
 ### Edit Screen
 
@@ -243,16 +232,65 @@ is indicated by the colored tint of the edit cursor bar.
 
 ## The Toys Screen
 
-TODO
+SoundJam has many experimental and quirky eye-controlled interfaces.
+These can be found in the Toys Screen. 
+
+The Toys screen conists of 5 buttons total. 
+
+### The Launcher Button
+
+The Launcher button is located in the top left corner. 
+Dwelling on it will take you back to the main clip launcher screen.
+
+### XY Mode
+
+Dwelling on the XY control button turns on XY mode. In XY mode, 
+a global filter and feedback delay effect is turned on. The XY position of the
+eye pointer continuously maps to the effect parameters. The X-axis maps to
+delay feedback amount and filter resonance, and the Y-axis maps to filter 
+cutoff.
+
+![XY Control](images/xy.png)
+
+### MoonJam
+
+Dwelling on the MoonJam button launches the MoonJam musical interface. 
+
+Moon Jam is an interactive and generative audio-visual work by Paul Batchelor, 
+driven entirely through eye tracking. In Moon Jam, one is presented with a set 
+of pastel colored circles called "moons". Gazing at a moon causes it to burst, 
+creating a musical note which contributes to the ambient soundtrack. Looking at 
+the red circle in the bottom left corner causes the screen to whitewash and 
+fade out.
+
+### Arachnoid
+
+Dwelling on the Arachnoid button launches the Arachnoid Musical interface.
+
+Arachnoid is an eye controlled virtual sound sculpture by Paul Batchelor. 
+Inspired by insects and trypophobia, Arachnoid presents a set of circles 
+reminiscent of the eyes on a spider. Gazing at any of the circles causes it to 
+pop, creating a chittering gurgle that aims to be both satisfying, 
+uncomfortable, and for some, even playful. 
+
+### Record
+
+Dwelling on the Record button will begin recording audio. Audio will be 
+saved to a file called "output.wav" inside the current working directory.
+Record mode is indicated by the greyed out button as well as a thin red border
+along the edges of the screen. Dwelling on the record button again will stop
+recording. Each time recording is turned on, it will overwrite the previous 
+file.
 
 ## The Configuration Screen
 
+The configuration screen contains a button menu for fine-tuned configuration
+of SoundJam. 
+
+### Presets
+
 TODO
 
-## The Preset Screen
-
-TODO
-
-## The Loop Mode Screen
+### Loop Mode
 
 TODO
