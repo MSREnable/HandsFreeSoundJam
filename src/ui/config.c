@@ -10,7 +10,7 @@
 #include "eyejam.h"
 #include "nanovg.h"
 
-#define NBUTTONS 3
+#define NBUTTONS 2
 #define BSPACING CONSTANT(50)
 
 OPENSCREEN(presets, JAM_PRESETS);
