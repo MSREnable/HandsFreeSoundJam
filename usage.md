@@ -289,8 +289,23 @@ of SoundJam.
 
 ### Presets
 
-TODO
+The various synths that power MSHFSJ have parameters that can be reconfigured
+to play different sounds and timbres through the use of presets. Hitting "+"
+or "-" will navigate through the presets. After each instrument label,
+the name of the preset will be printed, 
+(ex: "Trinity 0 Preset: Default Lead").
+
+The synths are associated to the
+following tracks:
+
+- Trinity 0 is bound to the Melody track
+- Trinity 1 is bound to the Chords track (typically a bassline)
+- Surgeon 0 is bound to the Chords track (typically for Chords)
+- Surgeon 1 is bound to the Melody 2 track
 
 ### Loop Mode
 
-TODO
+The loop mode screen toggles loop mode on a particular track. When loop mode
+is enabled, launched clips associated with that track will continuously loop.
+It should be noted that the bass track and the chords track are merged 
+together into the "Chords" button region.
