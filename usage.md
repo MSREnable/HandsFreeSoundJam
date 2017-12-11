@@ -289,6 +289,8 @@ of SoundJam.
 
 ### Presets
 
+Dwelling on the "Presets" button takes you to the preset screen.
+
 The various synths that power MSHFSJ have parameters that can be reconfigured
 to play different sounds and timbres through the use of presets. Hitting "+"
 or "-" will navigate through the presets. After each instrument label,
@@ -304,6 +306,8 @@ following tracks:
 - Surgeon 1 is bound to the Melody 2 track
 
 ### Loop Mode
+
+Dwelling on the "Loop Mode" button takes you to the loop mode screen.
 
 The loop mode screen toggles loop mode on a particular track. When loop mode
 is enabled, launched clips associated with that track will continuously loop.
