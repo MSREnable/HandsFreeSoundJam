@@ -254,7 +254,11 @@ cutoff.
 
 ### MoonJam
 
+![MoonJam Button](images/moonjam_button.png)
+
 Dwelling on the MoonJam button launches the MoonJam musical interface. 
+
+![MoonJam](images/moons.png)
 
 Moon Jam is an interactive and generative audio-visual work by Paul Batchelor, 
 driven entirely through eye tracking. In Moon Jam, one is presented with a set 
@@ -265,7 +269,11 @@ fade out.
 
 ### Arachnoid
 
+![Arachnoid Button](images/arachnoid_button.png)
+
 Dwelling on the Arachnoid button launches the Arachnoid Musical interface.
+
+![Arachnoid](images/arachnoid.png)
 
 Arachnoid is an eye controlled virtual sound sculpture by Paul Batchelor. 
 Inspired by insects and trypophobia, Arachnoid presents a set of circles 
@@ -274,6 +282,8 @@ pop, creating a chittering gurgle that aims to be both satisfying,
 uncomfortable, and for some, even playful. 
 
 ### Record
+
+![Record Button](images/record.png)
 
 Dwelling on the Record button will begin recording audio. Audio will be 
 saved to a file called "output.wav" inside the current working directory.
@@ -284,12 +294,18 @@ file.
 
 ## The Configuration Screen
 
+![Configuration Screen](images/config.png)
+
 The configuration screen contains a button menu for fine-tuned configuration
 of SoundJam. 
 
 ### Presets
 
+![Presets Button](images/presets_button.png)
+
 Dwelling on the "Presets" button takes you to the preset screen.
+
+![Presets Screen](images/presets.png)
 
 The various synths that power MSHFSJ have parameters that can be reconfigured
 to play different sounds and timbres through the use of presets. Hitting "+"
@@ -307,7 +323,11 @@ following tracks:
 
 ### Loop Mode
 
+![Loop Mode Button](images/loopmode_button.png)
+
 Dwelling on the "Loop Mode" button takes you to the loop mode screen.
+
+![Loop Mode Screen](images/loopmode_screen.png)
 
 The loop mode screen toggles loop mode on a particular track. When loop mode
 is enabled, launched clips associated with that track will continuously loop.
