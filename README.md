@@ -69,7 +69,7 @@ Then the program can be run with:
 
 ## Screenshots
 
-![The Main Screen](images/launcher.png)
+![The Main Screen](images/main.png)
 
 
 ![The Clip Editor Screen](images/editor.png)

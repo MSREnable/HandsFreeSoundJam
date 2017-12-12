@@ -92,10 +92,14 @@ Dwelling on the +/- buttons will increase/decrease the tempo by 5 BPM.
 
 ### Toys
 
+![Toys Button](images/toys_button.png)
+
 Dwelling on the Toys button takes you to the "Toys" screen, where
 miscellaneous features and toys in SoundJam are contained.
 
 ### Config
+
+![Configuration Button](images/config_button.png)
 
 Dwelling on the Config button takes you to the configuration screen
 for fine-tuned configuration options.
@@ -232,6 +236,8 @@ is indicated by the colored tint of the edit cursor bar.
 
 ## The Toys Screen
 
+![The Toys Screen](images/toys.png)
+
 SoundJam has many experimental and quirky eye-controlled interfaces.
 These can be found in the Toys Screen. 
 
@@ -327,7 +333,7 @@ following tracks:
 
 Dwelling on the "Loop Mode" button takes you to the loop mode screen.
 
-![Loop Mode Screen](images/loopmode_screen.png)
+![Loop Mode Screen](images/loopmode.png)
 
 The loop mode screen toggles loop mode on a particular track. When loop mode
 is enabled, launched clips associated with that track will continuously loop.
