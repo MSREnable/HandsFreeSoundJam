@@ -6,14 +6,11 @@
 
 #include "loadflac.h"
 
-int sp_ftbl_loadflac(sp_data *sp, sp_ftbl **ft, const char *filename)
+int sp_ftbl_loadflac(sp_data *sp, sp_ftbl *ft, const char *filename)
 {
     size_t size;
     unsigned int channels;
     unsigned int samplerate;
-    sp_ftbl *ftp;
-    *ft = malloc(sizeof(sp_ftbl));
-    ftp = *ft;
 /*
     SNDFILE *snd = sf_open(filename, SFM_READ, &info);
     if(snd == NULL) {
@@ -25,24 +22,27 @@ int sp_ftbl_loadflac(sp_data *sp, sp_ftbl **ft, const char *filename)
     fprintf(stderr, "Doubles not supported yet.\n");
     return SP_NOT_OK;
 #else
-    ftp->tbl = drflac_open_and_decode_file_f32(filename, 
+    ft->tbl = drflac_open_and_decode_file_f32(filename, 
             &channels,
             &samplerate,
             &size);
 #endif
 
-    if(ftp->tbl == NULL) {
-        ftp->del = 0;
+    if(ft->tbl == NULL) {
+        ft->del = 0;
         fprintf(stderr, "Could not open %s\n", filename);
         return SP_NOT_OK;
     }
 
-    ftp->size = size;
-    ftp->sicvt = 1.0f * SP_FT_MAXLEN / sp->sr;
-    ftp->lobits = (uint32_t)log2(SP_FT_MAXLEN / (double)size);
-    ftp->lomask = (1<<ftp->lobits) - 1;
-    ftp->lodiv = 1.0f / (1 << ftp->lobits);
-    ftp->del = 1;
+    sp_ftbl_init(sp, ft, size);
+/*
+    ft->size = size;
+    ft->sicvt = 1.0f * SP_FT_MAXLEN / sp->sr;
+    ft->lobits = (uint32_t)log2(SP_FT_MAXLEN / (double)size);
+    ft->lomask = (1<<ftp->lobits) - 1;
+    ft->lodiv = 1.0f / (1 << ftp->lobits);
+    ft->del = 1;
+*/
 
     return SP_OK;
 }

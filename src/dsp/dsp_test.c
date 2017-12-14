@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     whisper_eyejam_db_open("data.db");
     whisper_eyejam_db_load_default();
 */
+    whisper_schedule(1, 0);
     whisper_eyejam_demo_clips();
 
     whisper_trinity_dump(0);

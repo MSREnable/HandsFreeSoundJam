@@ -16,7 +16,7 @@ typedef struct drumkit_voice drumkit_voice;
 typedef struct drumkit_sample drumkit_sample;
 
 struct drumkit_sample {
-    sp_ftbl *ft;
+    sp_ftbl ft;
     SPFLOAT dur;
     SPFLOAT gain;
 }; 
@@ -48,7 +48,7 @@ static void drumkit_voice_set_samp(drumkit_voice *voc, drumkit_sample *smp)
     voc->tg->time = smp->dur;
     voc->ph->freq = 1.f / smp->dur;
     voc->ph->curphs = 0.f;
-    voc->tr->ft = smp->ft;
+    voc->tr->ft = &smp->ft;
     voc->gain = &smp->gain;
     voc->cur = smp;
     voc->pos = 0;
@@ -67,24 +67,30 @@ static void drumkit_voice_init(sp_data *sp,
 
 
     sp_tabread_create(&voc->tr);
-    sp_tabread_init(sp, voc->tr, smp->ft, 1);
+    sp_tabread_init(sp, voc->tr, &smp->ft, 1);
 
     drumkit_voice_set_samp(voc, smp);
     voc->next_samp = 0;
     voc->playing = 0;
 }
 
+static void drumkit_sample_silence(whisper_drumkit *k, drumkit_sample *s)
+{
+    s->ft.del = 0;
+    s->ft.tbl = k->silence;
+    s->ft.size = k->sp->sr * 0.5f;
+}
+
 static void drumkit_sample_load(whisper_drumkit *kit,
         drumkit_sample *smp, const char *filename)
 {
     int r;
+    /* TODO: make sure previously allocated samples get freed somehow */
     r = sp_ftbl_loadflac(kit->sp, &smp->ft, filename);
     if(r == SP_NOT_OK) {
-        smp->ft->del = 0;
-        smp->ft->tbl = kit->silence;
-        smp->ft->size = kit->sp->sr * 0.5f;
+        drumkit_sample_silence(kit, smp);
     }
-    smp->dur = (SPFLOAT)smp->ft->size / kit->sp->sr;
+    smp->dur = (SPFLOAT)smp->ft.size / kit->sp->sr;
     smp->gain = 1.f;
 }
 
@@ -93,14 +99,15 @@ static void drumkit_create(sp_data *sp, whisper_drumkit *kit)
     int v;
     kit->sp = sp;
     kit->silence = malloc(sizeof(SPFLOAT) * sp->sr * 0.5f);
-/*
-    drumkit_sample_load(kit, &kit->sample[0], "samples/808/kick1.flac");
-    drumkit_sample_load(kit, &kit->sample[1], "samples/808/snare.flac");
-    drumkit_sample_load(kit, &kit->sample[2], "samples/808/cl_hihat.flac");
-*/
+  
+    for(v = 0; v < DK_NSAMPLES; v++) {
+        drumkit_sample_silence(kit, &kit->sample[v]);
+    }
+
     drumkit_sample_load(kit, &kit->sample[0], "samples/simplekit/kick.flac");
     drumkit_sample_load(kit, &kit->sample[1], "samples/simplekit/snare.flac");
     drumkit_sample_load(kit, &kit->sample[2], "samples/simplekit/hh.flac");
+
     /* turn down hihat */
     kit->sample[2].gain = 0.3f;
     
@@ -124,7 +131,9 @@ static void drumkit_voice_destroy(drumkit_voice *voc)
 
 static void drumkit_sample_destroy(drumkit_sample *samp)
 {
-    sp_ftbl_destroy(&samp->ft);
+    if(samp->ft.del) {
+        free(samp->ft.tbl);
+    }
 }
 
 static void drumkit_destroy(whisper_drumkit *kit)
@@ -192,8 +201,8 @@ static void drumkit_voice_tick(whisper_drumkit *kit,
     } 
 */
     if(voc->playing) {
-        if(voc->pos < voc->cur->ft->size) {
-            *sample = voc->cur->ft->tbl[voc->pos] * *voc->gain ;
+        if(voc->pos < voc->cur->ft.size) {
+            *sample = voc->cur->ft.tbl[voc->pos] * *voc->gain ;
             voc->pos++;
         }else {
             voc->playing = 0;
