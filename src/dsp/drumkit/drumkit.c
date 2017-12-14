@@ -76,9 +76,9 @@ static void drumkit_voice_init(sp_data *sp,
 
 static void drumkit_sample_silence(whisper_drumkit *k, drumkit_sample *s)
 {
+    sp_ftbl_init(k->sp, &s->ft, k->sp->sr * 0.5f);
     s->ft.del = 0;
     s->ft.tbl = k->silence;
-    s->ft.size = k->sp->sr * 0.5f;
 }
 
 static void drumkit_sample_load(whisper_drumkit *kit,
@@ -173,33 +173,14 @@ void whisper_drumkit_destroy(void)
 static void drumkit_voice_tick(whisper_drumkit *kit, 
         drumkit_voice *voc, SPFLOAT *sample)
 {
-    sp_data *sp;
-    SPFLOAT s_tick;
-    SPFLOAT s_ph;
-    SPFLOAT s_tg;
-    SPFLOAT s_tr;
-
-    sp = kit->sp;
     *sample = 0.f;
 
     if(voc->please_tick) {
         voc->please_tick = 0;
         voc->playing = 1;
-        s_tick = 1.f;
         drumkit_voice_set_samp(voc, &kit->sample[voc->next_samp]); 
-    } else {
-        s_tick = 0.f;
     }
-/*
-    sp_tgate_compute(sp, voc->tg, &s_tick, &s_tg);
-    if(s_tg > 0) {
-        sp_phasor_compute(sp, voc->ph, NULL, &s_ph);
-        voc->tr->index = s_ph;
-        sp_tabread_compute(sp, voc->tr, &s_tick, &s_tr);
 
-        *sample = s_tr * s_tg * *voc->gain;
-    } 
-*/
     if(voc->playing) {
         if(voc->pos < voc->cur->ft.size) {
             *sample = voc->cur->ft.tbl[voc->pos] * *voc->gain ;
