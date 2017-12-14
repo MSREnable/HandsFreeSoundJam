@@ -301,6 +301,10 @@ void whisper_drumkit_compute(SPFLOAT *output, unsigned int nframes);
 void whisper_drumkit_tick(SPFLOAT *sample);
 void whisper_drumkit_destroy(void);
 void whisper_drumkit_bind_track(int track);
+void whisper_drumkit_load_sample(int sample, const char *path);
+void whisper_drumkit_default_drums();
+int whisper_drumkit_kit();
+void whisper_drumkit_kit_set(int kit);
 
 /* Surgeon */
 void whisper_surgeon_setup();

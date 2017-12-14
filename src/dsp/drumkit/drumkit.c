@@ -8,7 +8,7 @@
 #include "loadflac.h"
 
 #define DK_NVOICES 4
-#define DK_NSAMPLES 3
+#define DK_NSAMPLES 8
 #define DK_NOTEBIAS 60
 
 typedef struct whisper_drumkit whisper_drumkit;
@@ -39,6 +39,7 @@ struct whisper_drumkit {
     SPFLOAT *silence;
     drumkit_sample sample[DK_NSAMPLES];
     drumkit_voice voice[DK_NVOICES];
+    int kit;
 };
 
 static whisper_drumkit drumkit;
@@ -104,9 +105,11 @@ static void drumkit_create(sp_data *sp, whisper_drumkit *kit)
         drumkit_sample_silence(kit, &kit->sample[v]);
     }
 
+    /*
     drumkit_sample_load(kit, &kit->sample[0], "samples/simplekit/kick.flac");
     drumkit_sample_load(kit, &kit->sample[1], "samples/simplekit/snare.flac");
     drumkit_sample_load(kit, &kit->sample[2], "samples/simplekit/hh.flac");
+    */
 
     /* turn down hihat */
     kit->sample[2].gain = 0.3f;
@@ -156,7 +159,8 @@ void whisper_drumkit_init(int sr)
     sp->sr = sr;
 
     drumkit_create(sp, &drumkit);
-
+    
+    drumkit.kit = -1;
 }
 
 void whisper_drumkit_destroy(void)
@@ -246,4 +250,31 @@ void whisper_drumkit_bind_track(int track)
     whisper_tracks_set_set_note(track, whisper_drumkit_set_note);
     whisper_tracks_set_noteon(track, whisper_drumkit_noteon);
     whisper_tracks_set_noteoff(track, whisper_drumkit_noteoff);
+}
+
+void whisper_drumkit_load_sample(int sample, const char *path)
+{
+    if(sample < 0) return;
+    else if(sample >= DK_NSAMPLES) return;
+
+    drumkit_sample_load(&drumkit, &drumkit.sample[sample], path);
+}
+
+void whisper_drumkit_default_drums()
+{
+    whisper_drumkit_load_sample(0, "samples/simplekit/kick.flac");
+    whisper_drumkit_load_sample(1, "samples/simplekit/snare.flac");
+    whisper_drumkit_load_sample(2, "samples/simplekit/hh.flac");
+    /* set kit to be -1, so it knows to save */
+    drumkit.kit = -1;
+}
+
+int whisper_drumkit_kit()
+{
+    return drumkit.kit;
+}
+
+void whisper_drumkit_kit_set(int kit)
+{
+    drumkit.kit = kit;
 }

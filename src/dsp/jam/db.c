@@ -90,6 +90,19 @@ static void create_tables(whisper_db *db)
     "DRUMKIT INTEGER"
     ");"
     );
+    
+    db_exec(db,
+    "CREATE TABLE IF NOT EXISTS DRUMKITS(ID INTEGER PRIMARY KEY,"
+    "SAMPLE_0 STRING,"
+    "SAMPLE_1 STRING,"
+    "SAMPLE_2 STRING,"
+    "SAMPLE_3 STRING,"
+    "SAMPLE_4 STRING,"
+    "SAMPLE_5 STRING,"
+    "SAMPLE_6 STRING,"
+    "SAMPLE_7 STRING"
+    ");"
+    );
 }
 
 static int db_open(whisper_db *db, const char *name)
@@ -232,7 +245,7 @@ EXPORT void whisper_eyejam_db_save_clip(int track_id, int clip_id, int id)
 {
     int row_id;
     whisper_clip *clip;
-
+    row_id = id;  /* temporary value */
     clip = whisper_clip_get(track_id, clip_id);
     db_save_clip(&the_db, clip, id, &row_id);
 }
@@ -480,6 +493,7 @@ static int db_save_presets(whisper_db *db, unsigned int song_id)
 {
     sqlite3_stmt *stmt;
     int rc;
+    int kit;
     sqlite3_prepare_v2(db->db, 
     "REPLACE INTO PRESETS"
     "(ID, TRINITY_0, TRINITY_1, SURGEON_0, SURGEON_1, DRUMKIT) "
@@ -492,7 +506,12 @@ static int db_save_presets(whisper_db *db, unsigned int song_id)
     sqlite3_bind_int(stmt, 3, whisper_trinity_preset_number(1));
     sqlite3_bind_int(stmt, 4, whisper_surgeon_preset_number(0));
     sqlite3_bind_int(stmt, 5, whisper_surgeon_preset_number(1));
-    sqlite3_bind_int(stmt, 6, -100);
+    kit = whisper_drumkit_kit();
+    if(kit == -1) {
+        sqlite3_bind_int(stmt, 6, 1);
+    } else {
+        sqlite3_bind_int(stmt, 6, kit);
+    }
 
     rc = sqlite3_step(stmt);
     if(rc != SQLITE_DONE) {
@@ -500,6 +519,40 @@ static int db_save_presets(whisper_db *db, unsigned int song_id)
     }
 
     sqlite3_finalize(stmt);
+
+    if(whisper_drumkit_kit() == -1) {
+        fprintf(stderr, "Creating new drumkit entry at position 1\n");
+        sqlite3_prepare_v2(db->db,
+            "REPLACE INTO DRUMKITS"
+            "(ID, SAMPLE_0, SAMPLE_1, SAMPLE_2) "
+            "VALUES(?1, ?2, ?3, ?4)",
+            -1,
+            &stmt,
+            NULL
+        );
+
+        sqlite3_bind_int(stmt, 1, 1);
+        sqlite3_bind_text(stmt, 2, 
+            "samples/simplekit/kick.flac", 
+            27, 
+            NULL
+        );
+        sqlite3_bind_text(stmt, 3, 
+            "samples/simplekit/snare.flac",
+            28, 
+            NULL
+        );
+        sqlite3_bind_text(stmt, 4, 
+            "samples/simplekit/hh.flac",
+            25,
+            NULL
+        );
+
+        rc = sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+    }
+
+
     return 1;
 }
 
@@ -577,10 +630,25 @@ EXPORT void whisper_eyejam_db_save_song(int id)
     db_save_song(&the_db, id);
 }
 
+static void load_drumkit_sample(sqlite3_stmt *stmt, int sample)
+{
+    const char *str;
+    int column;
+
+    column = sample + 1;
+
+    if(sqlite3_column_bytes(stmt, column) > 0) {
+        str = (const char *)sqlite3_column_text(stmt, column);
+        fprintf(stderr, "Loading sample '%s'\n", str);
+        whisper_drumkit_load_sample(sample, str);
+    }
+}
+
 static int db_load_presets(whisper_db *db, unsigned int song_id)
 {
     sqlite3_stmt *stmt;
     int tmp;
+    int i;
     sqlite3_prepare_v2(db->db, 
     "SELECT * FROM PRESETS WHERE(ID == ?1)",
     -1, 
@@ -597,8 +665,26 @@ static int db_load_presets(whisper_db *db, unsigned int song_id)
     whisper_surgeon_preset(0, tmp);
     tmp = sqlite3_column_int(stmt, 4);
     whisper_surgeon_preset(1, tmp);
+
+    /* store drumkit kit number in tmp */
+    tmp = sqlite3_column_int(stmt, 5);
     
-    sqlite3_finalize(stmt);
+    if(tmp > 0) {
+        fprintf(stderr, "loading drumkit %d\n", tmp);
+        whisper_drumkit_kit_set(tmp);
+        sqlite3_prepare_v2(db->db, 
+        "SELECT * FROM DRUMKITS WHERE(ID == ?1)",
+        -1, 
+        &stmt,
+        NULL);
+        sqlite3_bind_int(stmt, 1, tmp);
+        sqlite3_step(stmt);
+        /* load drumkits from table */
+        for(i = 0; i < 8; i++) {
+            load_drumkit_sample(stmt, i);
+        }
+        sqlite3_finalize(stmt);
+    }
     return 1;
 }
 
@@ -681,9 +767,11 @@ static int db_load_default(whisper_db *db)
 */
     if(get_song_count(db) == 0) {
         whisper_eyejam_demo_clips();
+        whisper_drumkit_default_drums();
     } else {
         db_load_song(db, 1);
     }
+
     return 0;
 }
 
