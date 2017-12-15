@@ -70,7 +70,7 @@ endif
 AUX_OBJ+=$(DSP_OBJ) $(LIB_OBJ) 
 
 clean:
-	rm -rf $(OBJ) $(NAME)
+	rm -rf $(OBJ) $(NAME) dsp_test jamedit
 
 $(NAME): $(OBJ) $(MAIN_O)
 	$(CC) $(CFLAGS) -DBUILD_MAIN $(MAIN_O) $(OBJ) -o $@ $(LDFLAGS)
@@ -98,6 +98,14 @@ osx:
 
 linux_debug:
 	make -f Makefile -f Makefile.linux debug
+
+# to make building jamedit easier on linux, "je" phony target is used 
+je: 
+	make -f Makefile -f Makefile.linux jamedit
+
+jamedit: src/dsp/runt/jamedit.c $(AUX_OBJ)
+	$(CC) $(CFLAGS) -I$(HOME)/.runt/include \
+		$< -o $@ $(AUX_OBJ) -L$(HOME)/.runt/lib $(LDFLAGS) -lrunt 
 
 transfer: 
 	rsync -rvt src/dsp/samples .

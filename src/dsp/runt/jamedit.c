@@ -23,6 +23,8 @@ static runt_int loader(runt_vm *vm)
 int main(int argc, char *argv[])
 {
     int rc;
+    whisper_eyejam_init(44100);
     rc = irunt_begin(argc, argv, loader);
+    whisper_eyejam_destroy();
     return rc;
 }

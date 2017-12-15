@@ -11,8 +11,5 @@ trinity_parser: trinity_parser.c
 surgeon_parser: surgeon_parser.c
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
 
-jamedit: jamedit.c
-	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
-
 clean:
-	rm -rf trinity_parser surgeon_parser jamedit
+	rm -rf trinity_parser surgeon_parser 
