@@ -108,7 +108,7 @@ EXPORT void whisper_eyejam_edit_nextnote()
 
 EXPORT void whisper_eyejam_edit_set_pos(int pos)
 {
-    g_edit.pos = 0;
+    g_edit.pos = pos;
 }
 
 EXPORT int whisper_eyejam_edit_get_pos()
@@ -393,4 +393,13 @@ EXPORT int whisper_eyejam_edit_playing()
     e = &g_edit;
 
     return whisper_tracks_am_i_alive(e->track);
+}
+
+EXPORT void whisper_eyejam_edit_set_clip_length(int length)
+{
+    whisper_clip_set_length(
+        whisper_eyejam_edit_get_track(), 
+        whisper_eyejam_edit_get_clip(),
+        length
+    );
 }

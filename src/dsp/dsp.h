@@ -437,6 +437,7 @@ EXPORT void whisper_eyejam_edit_nextclip();
 EXPORT void whisper_eyejam_edit_prevclip();
 EXPORT void whisper_eyejam_edit_play();
 EXPORT int whisper_eyejam_edit_clip_length();
+EXPORT void whisper_eyejam_edit_set_clip_length(int length);
 EXPORT int whisper_eyejam_edit_clip_nvoices();
 EXPORT int whisper_eyejam_edit_clip_note(int pos, int voice);
 EXPORT int whisper_eyejam_edit_clip_gate(int pos, int voice);
