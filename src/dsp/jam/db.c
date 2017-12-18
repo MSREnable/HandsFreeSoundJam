@@ -695,6 +695,7 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
     sqlite3_stmt *stmt;
     SPFLOAT gain;
     SPFLOAT tempo;
+    int exists;
 
     if(!db->is_open) {
         fprintf(stderr, "db_save_song: db is not open. aborting.\n");
@@ -704,6 +705,24 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
     if(song_id < 1) {
        fprintf(stderr, "song id must be greater than 0!\n"); 
        return 0;
+    }
+   
+    /* check and see if song id exists in sqlite database */
+    
+    sqlite3_prepare_v2(db->db, 
+    "SELECT EXISTS(SELECT * FROM SONGS WHERE(ID == ?1))",
+    -1, 
+    &stmt,
+    NULL);
+    sqlite3_bind_int(stmt, 1, song_id);
+    sqlite3_step(stmt);
+
+    exists = sqlite3_column_int(stmt, 0);
+
+    if(!exists) {
+        fprintf(stderr, "Could not find song_id %d\n", song_id);
+        sqlite3_finalize(stmt);
+        return 0;
     }
 
     
@@ -715,11 +734,6 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
         
     sqlite3_bind_int(stmt, 1, song_id);
     sqlite3_step(stmt);
-/*
-    if(rc != SQLITE_DONE) {
-        fprintf(stderr, "Error: %s\n", sqlite3_errmsg(db->db));
-    }
-*/
 
     /* get tempo and gain */
     gain = sqlite3_column_double(stmt, 1);
@@ -738,7 +752,7 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
 
     db_load_presets(db, song_id);
 
-    return 0;
+    return 1;
 }
 
 EXPORT void whisper_eyejam_db_load_song(int id)
@@ -748,28 +762,15 @@ EXPORT void whisper_eyejam_db_load_song(int id)
 
 static int db_load_default(whisper_db *db)
 {
-/*
-    int c, t;
-    int id;
-    if(!db->is_open) {
-        fprintf(stderr, "db_save_default: db is not open. aborting.\n");
-    }
-
-    id = 1;
-    for(t = 0; t < WHISPER_NTRACKS; t++) {
-        for(c = 0; c < WHISPER_NCLIPS; c++) {
-            db_load_clip(db, t, c, id);
-            id++;
-        }
-    }
-
-    return 0;
-*/
     if(get_song_count(db) == 0) {
         whisper_eyejam_demo_clips();
         whisper_drumkit_default_drums();
     } else {
-        db_load_song(db, 1);
+        if(!db_load_song(db, 1)) {
+            fprintf(stderr, "loading default clips instead...\n");
+            whisper_eyejam_demo_clips();
+            whisper_drumkit_default_drums();
+        }
     }
 
     return 0;
