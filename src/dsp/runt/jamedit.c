@@ -43,6 +43,20 @@ FUN(save_song)
     return RUNT_OK;
 }
 
+FUN(load_song)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int id;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    id = s->f;
+
+    whisper_eyejam_db_load_song(id);
+    return RUNT_OK;
+}
+
 FUN(clip_set_length)
 {
     runt_int rc;
@@ -210,12 +224,43 @@ FUN(surgeon_preset)
     return RUNT_OK;
 }
 
+FUN(set_title)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    const char *title;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    title = runt_to_string(s->p);
+
+    whisper_eyejam_title_set(title);
+
+    return RUNT_OK;
+}
+
+FUN(set_tempo)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_float tempo;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    tempo = s->f;
+
+    whisper_eyejam_tempo_set(tempo);
+
+    return RUNT_OK;
+}
+
 static runt_int loader(runt_vm *vm)
 {
     runt_load_stdlib(vm);
     KEYWORD("foo", 3, PROC(foo));
     KEYWORD("insert", 6, PROC(insert));
     KEYWORD("save_song", 9, PROC(save_song));
+    KEYWORD("load_song", 9, PROC(load_song));
     KEYWORD("set_clip_length", 15, PROC(clip_set_length));
     KEYWORD("loopmode", 8, PROC(loopmode));
     KEYWORD("set_notelen", 11, PROC(set_notelen));
@@ -229,6 +274,8 @@ static runt_int loader(runt_vm *vm)
     KEYWORD("set_base", 8, PROC(set_base));
     KEYWORD("trinity_preset", 14, PROC(trinity_preset));
     KEYWORD("surgeon_preset", 14, PROC(surgeon_preset));
+    KEYWORD("set_title", 9, PROC(set_title));
+    KEYWORD("set_tempo", 9, PROC(set_tempo));
     return runt_is_alive(vm);
 }
 

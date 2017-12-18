@@ -293,7 +293,10 @@ EXPORT void whisper_clip_set_length(int track, int clip, int length)
     t = &tracks[track]; 
     c = t->clipspace[clip];
 
-    wclip_set_length(c, (unsigned int)length);
+    if(wclip_get_length(c) != length) {
+        whisper_clip_modified(track, clip);
+        wclip_set_length(c, (unsigned int)length);
+    }
 }
 
 EXPORT void whisper_clip_set_nvoices(int track, int clip, int nvoices)
@@ -375,6 +378,11 @@ EXPORT void whisper_tracks_set_row_id(int track, int id)
 EXPORT int whisper_tracks_get_clip_row_id(int track, int clip)
 {
     return wclip_get_row_id(tracks[track].clipspace[clip]);
+}
+
+EXPORT void whisper_tracks_set_clip_row_id(int track, int clip, int id)
+{
+    wclip_set_row_id(tracks[track].clipspace[clip], id);
 }
 
 whisper_track * whisper_tracks_global_data()

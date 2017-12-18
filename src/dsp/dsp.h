@@ -232,6 +232,7 @@ EXPORT int whisper_tracks_next_clip(int track);
 EXPORT int whisper_tracks_get_row_id(int track);
 EXPORT void whisper_tracks_set_row_id(int track, int id);
 EXPORT int whisper_tracks_get_clip_row_id(int track, int clip);
+EXPORT void whisper_tracks_set_clip_row_id(int track, int clip, int id);
 whisper_track * whisper_tracks_get_global_data();
 whisper_track * whisper_tracks_get_track(int track);
 whisper_clip * wtrack_get_clip(whisper_track *track, int clip);
@@ -285,6 +286,9 @@ EXPORT int whisper_eyejam_xy_state_get();
 EXPORT void whisper_eyejam_xy_pos_set(SPFLOAT x, SPFLOAT y);
 EXPORT void whisper_eyejam_xy_toggle();
 EXPORT int whisper_eyejam_xy_is_on();
+
+EXPORT void whisper_eyejam_title_set(const char *title);
+EXPORT const char * whisper_eyejam_title_get();
 
 
 /* Soundpipe */

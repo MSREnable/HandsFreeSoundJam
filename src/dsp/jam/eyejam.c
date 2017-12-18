@@ -3,6 +3,7 @@
  * Licensed under the MIT license.
  */
 
+#include <string.h>
 #include <math.h>
 #include "dsp.h"
 #define DB2LIN(A) pow(10, (double)(A)/20)
@@ -56,6 +57,9 @@ struct whisper_eyejam
     unsigned long time;
 
     sp_wavout *wavout;
+
+    /* title of song */
+    char title[41];
 };
 
 static whisper_eyejam eyejam;
@@ -208,6 +212,9 @@ void whisper_eyejam_init(int sr)
 
     /* set eyejam tempo */
     whisper_eyejam_tempo_set(120);
+    
+    /* set default title */
+    whisper_eyejam_title_set("Untitled");
 }
 
 static void eyejam_destroy(whisper_eyejam *ej)
@@ -486,6 +493,9 @@ EXPORT void whisper_eyejam_demo_clips(void)
     eyejam_populate_clip(4, 3, altmelody_4, LENGTH(altmelody_4));
     whisper_clip_set_length(4, 4, 32);
     eyejam_populate_clip(4, 4, altmelody_5, LENGTH(altmelody_5));
+
+    /* set default title */
+    whisper_eyejam_title_set("Default");
 }
 
 EXPORT void whisper_eyejam_metro(int mode)
@@ -587,4 +597,14 @@ EXPORT void whisper_eyejam_record()
 EXPORT int whisper_eyejam_am_i_recording()
 {
     return eyejam.am_i_recording;
+}
+
+EXPORT void whisper_eyejam_title_set(const char *title)
+{
+    strncpy(eyejam.title, title, 40);
+}
+
+EXPORT const char * whisper_eyejam_title_get()
+{
+    return eyejam.title;
 }

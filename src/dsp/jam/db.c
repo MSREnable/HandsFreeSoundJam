@@ -3,6 +3,7 @@
  * Licensed under the MIT license.
  */
 
+#include <string.h>
 #include <stdlib.h>
 #include "dsp.h"
 #include "sqlite3.h"
@@ -71,6 +72,7 @@ static void create_tables(whisper_db *db)
 
     db_exec(db,
     "CREATE TABLE IF NOT EXISTS SONGS(ID INTEGER PRIMARY KEY,"
+    "TITLE TEXT,"
     "GAIN REAL,"
     "TEMPO REAL,"
     "TRACK_0 INTEGER,"
@@ -454,6 +456,10 @@ static int db_load_track(whisper_db *db, int track_id, int id)
     sqlite3_stmt *stmt;
     SPFLOAT gain;
     int loopmode;
+    whisper_track *track;
+    whisper_clip *clip;
+
+    track = whisper_tracks_get_track(track_id);
     
     if(!db->is_open) {
         fprintf(stderr, "db_load_track: db is not open. aborting.\n");
@@ -479,6 +485,8 @@ static int db_load_track(whisper_db *db, int track_id, int id)
         /* load clips */
         clip_row_id = sqlite3_column_int(stmt, c + 3);
         db_load_clip(db, track_id, c, clip_row_id);
+        clip = wtrack_get_clip(track, c);
+        wclip_set_row_id(clip, clip_row_id);
     }
 
     return 0;
@@ -566,6 +574,7 @@ static int db_save_song(whisper_db *db, unsigned int song_id)
     SPFLOAT tempo;
     sqlite3_stmt *stmt;
     int rc;
+    const char *title;
 
     if(!db->is_open) {
         fprintf(stderr, "db_save_song: db is not open. aborting.\n");
@@ -600,8 +609,8 @@ static int db_save_song(whisper_db *db, unsigned int song_id)
     /* set up SQL statement */
     sqlite3_prepare_v2(db->db, 
     "REPLACE INTO SONGS"
-    "(ID, GAIN, TEMPO, TRACK_0, TRACK_1, TRACK_2, TRACK_3, TRACK_4) "
-    "VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8);",
+    "(ID, GAIN, TEMPO, TRACK_0, TRACK_1, TRACK_2, TRACK_3, TRACK_4, TITLE) "
+    "VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9);",
     -1, 
     &stmt,
     NULL);
@@ -612,6 +621,8 @@ static int db_save_song(whisper_db *db, unsigned int song_id)
     for(t = 0; t < 5; t++) {
         sqlite3_bind_double(stmt, t + 4, tracks[t]);
     }
+    title = whisper_eyejam_title_get();
+    sqlite3_bind_text(stmt, 9, title, strnlen(title, 40), NULL);
     
     rc = sqlite3_step(stmt);
     if(rc != SQLITE_DONE) {
@@ -696,9 +707,10 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
     SPFLOAT gain;
     SPFLOAT tempo;
     int exists;
+    const char *title;
 
     if(!db->is_open) {
-        fprintf(stderr, "db_save_song: db is not open. aborting.\n");
+        fprintf(stderr, "db_load_song: db is not open. aborting.\n");
         return 0;
     }
 
@@ -735,17 +747,23 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
     sqlite3_bind_int(stmt, 1, song_id);
     sqlite3_step(stmt);
 
+    /* get title */
+    title = (const char *)sqlite3_column_text(stmt, 1);
+    printf("Loading %s\n", title);
+    whisper_eyejam_title_set(title);
+
     /* get tempo and gain */
-    gain = sqlite3_column_double(stmt, 1);
-    tempo = sqlite3_column_double(stmt, 2);
+    gain = sqlite3_column_double(stmt, 2);
+    tempo = sqlite3_column_double(stmt, 3);
 
     whisper_eyejam_tempo_set(tempo);
     whisper_eyejam_gain(gain);
 
     for(t = 0; t < 5; t++) {
         /* load tracks */
-        track_id = sqlite3_column_int(stmt, t + 3);
+        track_id = sqlite3_column_int(stmt, t + 4);
         db_load_track(db, t, track_id);
+        whisper_tracks_set_row_id(t, track_id);
     }
     
     sqlite3_finalize(stmt);
