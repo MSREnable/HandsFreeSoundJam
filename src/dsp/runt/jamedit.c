@@ -101,6 +101,36 @@ FUN(set_track)
     return RUNT_OK;
 }
 
+FUN(set_clip)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int clip;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    clip = s->f;
+
+    whisper_eyejam_edit_set_clip(clip);
+
+    return RUNT_OK;
+}
+
+FUN(set_base)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int base;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    base = s->f;
+
+    whisper_eyejam_edit_set_base(base);
+
+    return RUNT_OK;
+}
+
 FUN(set_pos)
 {
     runt_int rc;
@@ -122,6 +152,64 @@ FUN(voice_up)
     return RUNT_OK;
 }
 
+FUN(voice_down)
+{
+    whisper_eyejam_edit_voice_down();
+    return RUNT_OK;
+}
+
+FUN(stepsize_double)
+{
+    whisper_eyejam_edit_stepsize_double();
+    return RUNT_OK;
+}
+
+FUN(stepsize_half)
+{
+    whisper_eyejam_edit_stepsize_half();
+    return RUNT_OK;
+}
+
+FUN(trinity_preset)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int instr;
+    runt_int preset;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    instr = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    preset = s->f;
+
+    whisper_trinity_preset(instr, preset);
+
+    return RUNT_OK;
+}
+
+FUN(surgeon_preset)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int instr;
+    runt_int preset;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    instr = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    preset = s->f;
+
+    whisper_surgeon_preset(instr, preset);
+
+    return RUNT_OK;
+}
+
 static runt_int loader(runt_vm *vm)
 {
     runt_load_stdlib(vm);
@@ -132,8 +220,15 @@ static runt_int loader(runt_vm *vm)
     KEYWORD("loopmode", 8, PROC(loopmode));
     KEYWORD("set_notelen", 11, PROC(set_notelen));
     KEYWORD("set_track", 9, PROC(set_track));
+    KEYWORD("set_clip", 8, PROC(set_clip));
     KEYWORD("set_pos", 7, PROC(set_pos));
     KEYWORD("voice_up", 8, PROC(voice_up));
+    KEYWORD("voice_down", 8, PROC(voice_down));
+    KEYWORD("stepsize_double", 15, PROC(stepsize_double));
+    KEYWORD("stepsize_half", 13, PROC(stepsize_half));
+    KEYWORD("set_base", 8, PROC(set_base));
+    KEYWORD("trinity_preset", 14, PROC(trinity_preset));
+    KEYWORD("surgeon_preset", 14, PROC(surgeon_preset));
     return runt_is_alive(vm);
 }
 
