@@ -254,6 +254,24 @@ FUN(set_tempo)
     return RUNT_OK;
 }
 
+FUN(clear)
+{
+    whisper_eyejam_edit_clear();
+    return RUNT_OK;
+}
+
+FUN(step_left)
+{
+    whisper_eyejam_edit_step_left();
+    return RUNT_OK;
+}
+
+FUN(step_right)
+{
+    whisper_eyejam_edit_step_right();
+    return RUNT_OK;
+}
+
 static runt_int loader(runt_vm *vm)
 {
     runt_load_stdlib(vm);
@@ -276,6 +294,9 @@ static runt_int loader(runt_vm *vm)
     KEYWORD("surgeon_preset", 14, PROC(surgeon_preset));
     KEYWORD("set_title", 9, PROC(set_title));
     KEYWORD("set_tempo", 9, PROC(set_tempo));
+    KEYWORD("erase", 5, PROC(clear));
+    KEYWORD("step_left", 9, PROC(step_left));
+    KEYWORD("step_right", 10, PROC(step_right));
     return runt_is_alive(vm);
 }
 
