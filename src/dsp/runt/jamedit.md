@@ -63,7 +63,24 @@ The following words are implemented to help edit clips in Sound Jam.
 
 ### insert
 
+Usage:
+
+    note insert
+
+Inserts a note at the current edit cursor position. The note is a number 
+that is relative to base note. If the base note were 60 (middle C), then
+`0 insert` would insert C, `2 insert` would insert D, `-1 insert` would insert
+B, etc.
+
+
 ### save_song
+
+Usage:
+
+    song_id save_song
+
+Saves a song to disk with the song_id `song_id`. A song_id of 1 is the default
+song slot that Sound Jam opens by default.
 
 ### load_song
 
@@ -95,32 +112,140 @@ Turns on loopmode for the currently selected track, which can be set by
 
 ### set_notelen
 
+Usage:
+
+    length set_notelen
+
+Sets the note length of the edit cursor. These must be whole integer numbers. 
+A length of 4 is a quarter note, a length of 1 is a sixteenth note, and a 
+length of 8 is a half note.
+
 ### set_track
+
+Usage:
+
+    track_num set_track
+
+Sets the current track to be a particular track number. Should be in range
+0-4.
 
 ### set_clip
 
+Usage:
+
+    clip_num set_clip
+
+Sets the current clip to be a particular clip number. Should be in range
+0-4.
+
 ### set_pos
+
+Usage:
+
+    position set_pos
+
+Sets the edit cursor position.
 
 ### voice_up
 
+Usage:
+
+    voice_up
+
+Sets the current voice channel to go up by one.
+
 ### voice_down
+
+Usage:
+
+    voice_down
+
+Sets the current voice channel to go down by one.
 
 ### stepsize_double
 
+Usage:
+
+    stepsize_double
+
+Doubles the current edit step size and note insertion duration.
+
 ### stepsize_half
+
+Usage:
+
+    stepsize_half
+
+Halves the current edit step size and note insertion duration.
 
 ### set_base
 
+Usage:
+
+    base set_base
+
+Set the base note for the edit step inserter. This is a MIDI note number. 
+60 is middle C.
+
 ### trinity_preset
+
+Usage:
+
+    preset instr trinity_preset 
+
+Selects a preset sound from the built-in presets. `preset` should be value
+approximately in range 0-10, and `instr` should either be 0 or 1. Trinity 0
+controls the "Melody" instrument, and Trinity 1 controls the "Bass" instrument
+coupled with the "Chords". 
 
 ### surgeon_preset
 
+Usage:
+
+    preset instr surgeon_prese
+
+Selects a preset sound from the built-in presets. `preset` should be value
+approximately in range 0-10, and `instr` should either be 0 or 1. Surgeon 0
+controls the one of "Chords" instruments, and Trinity 1 controls the "Melody 2" 
+instrument.
+
 ### set_title
+
+Usage:
+
+    "title" set_title
+
+Sets the song title of the current song. The character limit for the song is
+40 characters.
 
 ### set_tempo
 
+Usage:
+
+    tempo set_tempo
+
+Sets the song tempo, in beats-per-minute (BPM).
+
 ### erase
+
+Usage:
+
+    erase
+
+Erases the note information in the currently selected clip. 
 
 ### step_left
 
+Usage:
+
+    step_left
+
+Moves the edit cursor to the left. 
+
 ### step_right
+
+Usage:
+
+    step_right
+
+Moves the edit cursor to the right. 
