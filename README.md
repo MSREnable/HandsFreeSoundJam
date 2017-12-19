@@ -83,3 +83,4 @@ Then the program can be run with:
 - [Mixer](src/dsp/jam/mixer.md)
 - [Data persistence and Database functionality](src/dsp/jam/db.md)
 - [Clip Editing Interface](src/dsp/jam/edit.md)
+- [Documentation for editing clips via Runt](src/dsp/jam/runt/jamedit.md)
