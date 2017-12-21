@@ -827,3 +827,54 @@ EXPORT void whisper_eyejam_db_exec(const char *cmd)
 {
     db_exec(&the_db, cmd);
 }
+
+EXPORT void whisper_eyejam_db_drumkit_slot(int slot)
+{
+    sqlite3_stmt *stmt;
+    int exists;
+    /* set the current drumkit to be the slot number */
+    whisper_drumkit_kit_set(slot);
+
+    /* check for existence of slot in table */
+
+    sqlite3_prepare_v2(the_db.db, 
+        "SELECT EXISTS(SELECT * FROM DRUMKITS WHERE(id == ?1))",
+        -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 1, slot);
+    sqlite3_step(stmt);
+    exists = sqlite3_column_int(stmt, 0);
+    sqlite3_finalize(stmt);
+
+    if(exists) {
+        return;
+    } 
+
+    fprintf(stderr, "Writing new drumkit slot %d.\n", slot);
+    sqlite3_prepare_v2(the_db.db,
+        "INSERT INTO DRUMKITS(id) VALUES(?1);",
+        -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 1, slot);
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+}
+
+EXPORT void whisper_eyejam_db_drumkit_sample(int pos, const char *path)
+{
+    char buf[128];
+    sqlite3_stmt *stmt;
+    if(pos > 7 || pos < 0) {
+        fprintf(stderr, "Drumkit position %d is out of range\n", pos);
+        return;
+    }
+
+    sprintf(buf, 
+        "UPDATE DRUMKITS SET SAMPLE_%d = ?1 WHERE id == ?2\n", 
+        pos);
+
+    sqlite3_prepare_v2(the_db.db, buf, -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 2, whisper_drumkit_kit());
+    sqlite3_bind_text(stmt, 1, path, strlen(path), NULL);
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}

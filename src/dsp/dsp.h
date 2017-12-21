@@ -398,6 +398,8 @@ EXPORT void whisper_eyejam_db_load_song(int id);
 EXPORT void whisper_eyejam_db_load_default();
 EXPORT void whisper_eyejam_db_save_default();
 EXPORT void whisper_eyejam_db_exec(const char *cmd);
+EXPORT void whisper_eyejam_db_drumkit_slot(int slot);
+EXPORT void whisper_eyejam_db_drumkit_sample(int pos, const char *path);
 
 /* XY Control */
 

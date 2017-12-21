@@ -272,6 +272,39 @@ FUN(step_right)
     return RUNT_OK;
 }
 
+FUN(kit_slot)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int slot;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    slot = s->f;
+
+    whisper_eyejam_db_drumkit_slot(slot);
+    return RUNT_OK;
+}
+
+FUN(kit_sample)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int pos;
+    const char *path;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    pos = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    path = runt_to_string(s->p);
+
+    whisper_eyejam_db_drumkit_sample(pos, path);
+    return RUNT_OK;
+}
+
 static runt_int loader(runt_vm *vm)
 {
     runt_load_stdlib(vm);
@@ -297,6 +330,9 @@ static runt_int loader(runt_vm *vm)
     KEYWORD("erase", 5, PROC(clear));
     KEYWORD("step_left", 9, PROC(step_left));
     KEYWORD("step_right", 10, PROC(step_right));
+    KEYWORD("step_right", 10, PROC(step_right));
+    KEYWORD("kit_slot", 8, PROC(kit_slot));
+    KEYWORD("kit_sample", 10, PROC(kit_sample));
     return runt_is_alive(vm);
 }
 
