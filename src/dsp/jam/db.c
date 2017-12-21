@@ -13,6 +13,7 @@ struct whisper_db {
     whisper_track *tracks;
     sqlite3 *db;
     int is_open;
+    sqlite3_stmt *stmt;
 };
 
 static whisper_db the_db;
@@ -877,4 +878,62 @@ EXPORT void whisper_eyejam_db_drumkit_sample(int pos, const char *path)
     sqlite3_bind_text(stmt, 1, path, strlen(path), NULL);
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
+}
+
+EXPORT int whisper_eyejam_db_songquery_begin()
+{
+    int count;
+    count = 0;
+
+    sqlite3_prepare_v2(the_db.db, 
+        "select count(*) from songs",
+        -1, 
+        &the_db.stmt,
+        NULL);
+
+    sqlite3_step(the_db.stmt);
+    count = sqlite3_column_int(the_db.stmt, 0);
+    sqlite3_finalize(the_db.stmt);
+    
+    sqlite3_prepare_v2(the_db.db, 
+        "select title from songs",
+        -1, 
+        &the_db.stmt,
+        NULL);
+
+
+    return count;
+}
+
+EXPORT void whisper_eyejam_db_songquery_end()
+{
+    sqlite3_finalize(the_db.stmt);
+}
+
+EXPORT void whisper_eyejam_db_songquery_step()
+{
+    sqlite3_step(the_db.stmt);
+}
+
+EXPORT void whisper_eyejam_db_songquery_copy(char *str)
+{
+    const char *text;
+    text = (const char *)sqlite3_column_text(the_db.stmt, 0);
+    strncpy(str, text, 40);
+}
+
+EXPORT void whisper_eyejam_db_songquery_print()
+{
+    int count;
+    int i;
+    char str[40];
+    count = whisper_eyejam_db_songquery_begin();
+  
+    for(i = 0; i < count; i++) {
+        whisper_eyejam_db_songquery_step();
+        whisper_eyejam_db_songquery_copy(str);
+        fprintf(stderr, "%s\n", str);
+    }
+
+    whisper_eyejam_db_songquery_end();
 }

@@ -305,6 +305,12 @@ FUN(kit_sample)
     return RUNT_OK;
 }
 
+FUN(songquery)
+{
+    whisper_eyejam_db_songquery_print();
+    return RUNT_OK;
+}
+
 static runt_int loader(runt_vm *vm)
 {
     runt_load_stdlib(vm);
@@ -333,6 +339,7 @@ static runt_int loader(runt_vm *vm)
     KEYWORD("step_right", 10, PROC(step_right));
     KEYWORD("kit_slot", 8, PROC(kit_slot));
     KEYWORD("kit_sample", 10, PROC(kit_sample));
+    KEYWORD("songquery", 9, PROC(songquery));
     return runt_is_alive(vm);
 }
 
