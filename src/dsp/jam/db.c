@@ -80,7 +80,8 @@ static void create_tables(whisper_db *db)
     "TRACK_1 INTEGER,"
     "TRACK_2 INTEGER,"
     "TRACK_3 INTEGER,"
-    "TRACK_4 INTEGER"
+    "TRACK_4 INTEGER,"
+    "READONLY INTEGER"
     ");"
     );
     
@@ -582,6 +583,11 @@ static int db_save_song(whisper_db *db, unsigned int song_id)
         return 0;
     }
 
+    if(whisper_eyejam_readonly_get()) {
+        fprintf(stderr, "Cannot save: song is in read-only mode.\n");
+        return 0;
+    }
+
     if(song_id < 1) {
        fprintf(stderr, "song id must be greater than 0!\n"); 
        return 0;
@@ -610,8 +616,8 @@ static int db_save_song(whisper_db *db, unsigned int song_id)
     /* set up SQL statement */
     sqlite3_prepare_v2(db->db, 
     "REPLACE INTO SONGS"
-    "(ID, GAIN, TEMPO, TRACK_0, TRACK_1, TRACK_2, TRACK_3, TRACK_4, TITLE) "
-    "VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9);",
+    "(ID, GAIN, TEMPO, TRACK_0, TRACK_1, TRACK_2, TRACK_3, TRACK_4, TITLE, READONLY) "
+    "VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, 0);",
     -1, 
     &stmt,
     NULL);
@@ -708,6 +714,7 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
     SPFLOAT gain;
     SPFLOAT tempo;
     int exists;
+    int readonly;
     const char *title;
 
     if(!db->is_open) {
@@ -766,6 +773,10 @@ static int db_load_song(whisper_db *db, unsigned int song_id)
         db_load_track(db, t, track_id);
         whisper_tracks_set_row_id(t, track_id);
     }
+
+    readonly = sqlite3_column_int(stmt, 9);
+    fprintf(stderr, "readonly mode is %d\n", readonly);
+    whisper_eyejam_readonly_set(readonly);
     
     sqlite3_finalize(stmt);
 
@@ -936,4 +947,17 @@ EXPORT void whisper_eyejam_db_songquery_print()
     }
 
     whisper_eyejam_db_songquery_end();
+}
+
+EXPORT void whisper_eyejam_db_readonly(int song, int readonly)
+{
+    sqlite3_stmt *stmt;
+
+    sqlite3_prepare_v2(the_db.db, 
+        "UPDATE SONGS SET READONLY = ?1 WHERE id == ?2\n", 
+        -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 2, song);
+    sqlite3_bind_int(stmt, 1, readonly);
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
 }

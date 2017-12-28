@@ -290,6 +290,9 @@ EXPORT int whisper_eyejam_xy_is_on();
 EXPORT void whisper_eyejam_title_set(const char *title);
 EXPORT const char * whisper_eyejam_title_get();
 
+EXPORT int whisper_eyejam_readonly_get(void);
+EXPORT void whisper_eyejam_readonly_set(int readonly);
+
 
 /* Soundpipe */
 
@@ -405,6 +408,7 @@ EXPORT void whisper_eyejam_db_songquery_end();
 EXPORT void whisper_eyejam_db_songquery_step();
 EXPORT void whisper_eyejam_db_songquery_copy(char *str);
 EXPORT void whisper_eyejam_db_songquery_print();
+EXPORT void whisper_eyejam_db_readonly(int song, int readonly);
 
 /* XY Control */
 

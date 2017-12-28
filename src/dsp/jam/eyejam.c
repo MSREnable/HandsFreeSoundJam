@@ -60,6 +60,9 @@ struct whisper_eyejam
 
     /* title of song */
     char title[41];
+
+    /* readonly mode */
+    int readonly;
 };
 
 static whisper_eyejam eyejam;
@@ -81,6 +84,7 @@ static void eyejam_setup(whisper_eyejam *ej)
     ej->am_i_playing = 1;
     ej->am_i_recording = 0;
     ej->wavout = NULL;
+    ej->readonly = 0;
 }
 
 static void eyejam_init(whisper_eyejam *ej, int sr)
@@ -607,4 +611,14 @@ EXPORT void whisper_eyejam_title_set(const char *title)
 EXPORT const char * whisper_eyejam_title_get()
 {
     return eyejam.title;
+}
+
+EXPORT int whisper_eyejam_readonly_get(void)
+{
+    return eyejam.readonly;
+}
+
+EXPORT void whisper_eyejam_readonly_set(int readonly)
+{
+    eyejam.readonly = readonly;
 }

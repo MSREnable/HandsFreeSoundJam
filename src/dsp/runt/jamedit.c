@@ -311,6 +311,25 @@ FUN(songquery)
     return RUNT_OK;
 }
 
+FUN(readonly)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int readonly;
+    runt_int song;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    readonly = s->f;
+    
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    song = s->f;
+
+    whisper_eyejam_db_readonly(song, readonly);
+    return RUNT_OK;
+}
+
 static runt_int loader(runt_vm *vm)
 {
     runt_load_stdlib(vm);
@@ -340,6 +359,7 @@ static runt_int loader(runt_vm *vm)
     KEYWORD("kit_slot", 8, PROC(kit_slot));
     KEYWORD("kit_sample", 10, PROC(kit_sample));
     KEYWORD("songquery", 9, PROC(songquery));
+    KEYWORD("readonly", 8, PROC(readonly));
     return runt_is_alive(vm);
 }
 
