@@ -10,12 +10,13 @@
 #include "eyejam.h"
 #include "nanovg.h"
 
-#define NBUTTONS 2
+#define NBUTTONS 3
 #define BSPACING CONSTANT(50)
 
 OPENSCREEN(presets, JAM_PRESETS);
 OPENSCREEN(launcher, JAM_LAUNCHER);
 OPENSCREEN(loopmode, JAM_LOOPMODE);
+OPENSCREEN(loadsong, JAM_LOADSONG);
 
 typedef struct {
     const char *name;
@@ -25,7 +26,7 @@ typedef struct {
 static preset_button_config bconfig[] = {
     {"Presets", open_presets},
     {"Loop Mode", open_loopmode},
-    {"Mixer", open_launcher},
+    {"Load Song", open_loadsong},
 };
 
 struct jam_config {

@@ -44,6 +44,7 @@ enum {
     JAM_CONFIG,
     JAM_PRESETS,
     JAM_LOOPMODE,
+    JAM_LOADSONG,
 };
 
 typedef struct jam_audio jam_audio;
@@ -59,6 +60,7 @@ typedef struct jam_toys jam_toys;
 typedef struct jam_config jam_config;
 typedef struct jam_presets jam_presets;
 typedef struct jam_loopmode jam_loopmode;
+typedef struct jam_loadsong jam_loadsong;
 
 typedef void (*jam_button_cb)(jam_button*,void*);
 
@@ -222,6 +224,15 @@ void jam_loopmode_free(jam_loopmode *loopmode);
 void jam_loopmode_interact(jam_loopmode *loopmode, double x, double y, double step);
 void jam_loopmode_draw(NVGcontext *vg, jam_loopmode *loopmode);
 void jam_loopmode_step(NVGcontext *vg, jam_loopmode *loopmode, double x, double y, double step);
+
+/* Load Song Screen */
+
+size_t jam_loadsong_size();
+void jam_loadsong_init(jam_loadsong *loadsong, jam_ui *ui);
+void jam_loadsong_free(jam_loadsong *loadsong);
+void jam_loadsong_interact(jam_loadsong *loadsong, double x, double y, double step);
+void jam_loadsong_draw(NVGcontext *vg, jam_loadsong *loadsong);
+void jam_loadsong_step(NVGcontext *vg, jam_loadsong *loadsong, double x, double y, double step);
 
 
 /* labels */

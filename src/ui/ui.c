@@ -640,6 +640,8 @@ void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
         case JAM_LOOPMODE:
             jam_loopmode_step(vg, ui->loopmode, x, y, delta);
             break;
+        case JAM_LOADSONG:
+            /* TODO: add LOADSONG step */
         default:
             launcher_step(vg, &ui->launcher, x, y, delta);
             break;
