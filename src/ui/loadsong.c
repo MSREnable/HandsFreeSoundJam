@@ -69,3 +69,8 @@ void jam_loadsong_step(NVGcontext *vg, jam_loadsong *loadsong, double x, double 
     jam_loadsong_interact(loadsong, x, y, step);
     jam_loadsong_draw(vg, loadsong);
 }
+
+void jam_loadsong_populate(jam_loadsong *loadsong)
+{
+    printf("Populating...\n");
+}

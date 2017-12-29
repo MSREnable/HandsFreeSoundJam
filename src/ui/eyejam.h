@@ -233,6 +233,7 @@ void jam_loadsong_free(jam_loadsong *loadsong);
 void jam_loadsong_interact(jam_loadsong *loadsong, double x, double y, double step);
 void jam_loadsong_draw(NVGcontext *vg, jam_loadsong *loadsong);
 void jam_loadsong_step(NVGcontext *vg, jam_loadsong *loadsong, double x, double y, double step);
+void jam_loadsong_populate(jam_loadsong *loadsong);
 
 
 /* labels */

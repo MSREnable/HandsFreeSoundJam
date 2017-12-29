@@ -55,6 +55,7 @@ struct jam_ui {
     jam_loopmode *loopmode;
     jam_loadsong *loadsong;
     int screen;
+    int just_opened;
 };
 
 /* positions for button regions */
@@ -597,6 +598,8 @@ void jam_ui_init(jam_ui *ui)
     jam_loadsong_init(ui->loadsong, ui);
 
     jam_ui_screen(ui, JAM_LAUNCHER);
+    ui->just_opened = 0;
+
 }
 
 void jam_ui_free(jam_ui *ui)
@@ -646,6 +649,10 @@ void jam_ui_step(NVGcontext *vg, jam_ui *ui, double x, double y, double delta)
             jam_loopmode_step(vg, ui->loopmode, x, y, delta);
             break;
         case JAM_LOADSONG:
+            if(ui->just_opened) {
+                ui->just_opened = 0;
+                jam_loadsong_populate(ui->loadsong);
+            }
             jam_loadsong_step(vg, ui->loadsong, x, y, delta);
             break;
         default:
@@ -689,6 +696,7 @@ int jam_xy_is_on()
 void jam_ui_screen(jam_ui *ui, int screen)
 {
     ui->screen = screen;
+    ui->just_opened = 1;
 }
 
 const char *jam_track_label(int track)
