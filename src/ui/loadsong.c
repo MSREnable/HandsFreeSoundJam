@@ -23,6 +23,7 @@ typedef struct {
 struct jam_loadsong {
     jam_ui *top;
     jam_button *config;
+    jam_button *load;
     int centerw;
     int centerh;
     loadsong_entry entry[MAXSONGS];
@@ -68,6 +69,17 @@ SONGFUN(3),
 SONGFUN(4),
 };
 
+static void load_the_song(jam_button *but, void *ud)
+{
+    jam_loadsong *ls;
+    int song;
+    ls = ud;
+
+    song = ls->entry[ls->selected_song].id;
+    fprintf(stderr, "loading song %d from song slot %d\n", 
+        song, ls->selected_song);
+}
+
 size_t jam_loadsong_size()
 {
     return sizeof(jam_loadsong);
@@ -96,6 +108,17 @@ void jam_loadsong_init(jam_loadsong *loadsong, jam_ui *ui)
     jam_button_cb_trigger(loadsong->config, open_config);
     jam_button_text(loadsong->config, "Config");
     jam_button_data(loadsong->config, loadsong->top);
+    
+    /* Load */
+    loadsong->load= malloc(jam_button_size());
+    jam_button_init(loadsong->load);
+    jam_button_setsize(loadsong->load, CONSTANT(100), CONSTANT(100));
+    jam_button_pos(loadsong->load, 
+        centerw - CONSTANT(512), 
+        centerh + (CONSTANT(384 - 100)));
+    jam_button_cb_trigger(loadsong->load, load_the_song);
+    jam_button_text(loadsong->load, "Load");
+    jam_button_data(loadsong->load, loadsong);
 
     loadsong->nsongs = 0;
     loadsong->selected_song = -1;
@@ -121,6 +144,8 @@ void jam_loadsong_free(jam_loadsong *loadsong)
     loadsong_entry *ent;
     jam_button_free(loadsong->config);
     free(loadsong->config);
+    jam_button_free(loadsong->load);
+    free(loadsong->load);
 
     for(i = 0; i < MAXSONGS; i++) {
         ent = &loadsong->entry[i]; 
@@ -133,6 +158,7 @@ void jam_loadsong_interact(jam_loadsong *loadsong, double x, double y, double st
 {
     int i;
     jam_button_interact(loadsong->config, x, y, step);
+    jam_button_interact(loadsong->load, x, y, step);
     for(i = 0; i < loadsong->nsongs; i++) {
         jam_button_interact(loadsong->entry[i].but, x, y, step);
     }
@@ -143,6 +169,7 @@ void jam_loadsong_draw(NVGcontext *vg, jam_loadsong *loadsong)
     int offy;
     int i;
     jam_button_draw(vg, loadsong->config);
+    jam_button_draw(vg, loadsong->load);
 
     offy = YSTART;
     nvgTextAlign(vg, NVG_ALIGN_CENTER|NVG_ALIGN_TOP);
