@@ -407,6 +407,7 @@ EXPORT int whisper_eyejam_db_songquery_begin();
 EXPORT void whisper_eyejam_db_songquery_end();
 EXPORT void whisper_eyejam_db_songquery_step();
 EXPORT void whisper_eyejam_db_songquery_copy(char *str);
+EXPORT int whisper_eyejam_db_songquery_id(void);
 EXPORT void whisper_eyejam_db_songquery_print();
 EXPORT void whisper_eyejam_db_readonly(int song, int readonly);
 
