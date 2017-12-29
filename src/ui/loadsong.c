@@ -9,12 +9,15 @@
 #include "dsp/dsp.h"
 #include "eyejam.h"
 #include "nanovg.h"
+#define YSTART 260 
+#define YINCR 130
 
 #define MAXSONGS 5
 
 typedef struct {
     char title[41];
     int id;
+    jam_button *but;
 } loadsong_entry;
 
 struct jam_loadsong {
@@ -36,6 +39,9 @@ void jam_loadsong_init(jam_loadsong *loadsong, jam_ui *ui)
 {
     int centerw;
     int centerh;
+    int i;
+    int cy;
+    loadsong_entry *ent;
     centerw = jam_win_width() / 2;
     centerh = jam_win_height() / 2;
 
@@ -53,13 +59,35 @@ void jam_loadsong_init(jam_loadsong *loadsong, jam_ui *ui)
     jam_button_cb_trigger(loadsong->config, open_config);
     jam_button_text(loadsong->config, "Config");
     jam_button_data(loadsong->config, loadsong->top);
+
     loadsong->nsongs = 0;
+
+    cy = YSTART;
+    for(i = 0; i < MAXSONGS; i++) {
+        ent = &loadsong->entry[i]; 
+        ent->but= malloc(jam_button_size());
+        jam_button_init(ent->but);
+        jam_button_setsize(ent->but, CONSTANT(500), CONSTANT(100));
+        jam_button_pos(ent->but, 
+            centerw - CONSTANT(250), 
+            //centerh - CONSTANT(cy) - CONSTANT(25));
+            centerh - CONSTANT(cy) - CONSTANT(50));
+        cy -= YINCR;
+    }
 }
 
 void jam_loadsong_free(jam_loadsong *loadsong)
 {
+    int i;
+    loadsong_entry *ent;
     jam_button_free(loadsong->config);
     free(loadsong->config);
+
+    for(i = 0; i < MAXSONGS; i++) {
+        ent = &loadsong->entry[i]; 
+        jam_button_free(ent->but);
+        free(ent->but);
+    }
 }
 
 void jam_loadsong_interact(jam_loadsong *loadsong, double x, double y, double step)
@@ -73,22 +101,23 @@ void jam_loadsong_draw(NVGcontext *vg, jam_loadsong *loadsong)
     int i;
     jam_button_draw(vg, loadsong->config);
 
-    offy = 210;
-    nvgFillColor(vg, nvgRGB(255, 255, 255));
+    offy = YSTART;
     nvgTextAlign(vg, NVG_ALIGN_CENTER|NVG_ALIGN_TOP);
     nvgFontSize(vg, CONSTANT(48.0f));
 
     for(i = 0; i < loadsong->nsongs; i++) {
+        jam_button_draw(vg, loadsong->entry[i].but);
+        nvgFillColor(vg, nvgRGB(0, 0, 0));
         nvgBeginPath(vg);
         nvgText(
             vg, 
             loadsong->centerw, 
-            loadsong->centerh - (CONSTANT(60.f) + CONSTANT(offy)),
+            loadsong->centerh - CONSTANT(offy) - CONSTANT(25),
             loadsong->entry[i].title, 
             NULL
         );
-        offy -= 140;
         nvgFill(vg);
+        offy -= YINCR;
     }
 
 }
