@@ -907,7 +907,7 @@ EXPORT int whisper_eyejam_db_songquery_begin()
     sqlite3_finalize(the_db.stmt);
     
     sqlite3_prepare_v2(the_db.db, 
-        "select title from songs",
+        "select title, id from songs",
         -1, 
         &the_db.stmt,
         NULL);
@@ -933,17 +933,24 @@ EXPORT void whisper_eyejam_db_songquery_copy(char *str)
     strncpy(str, text, 40);
 }
 
+EXPORT int whisper_eyejam_db_songquery_id(void)
+{
+    return sqlite3_column_int(the_db.stmt, 1);
+}
+
 EXPORT void whisper_eyejam_db_songquery_print()
 {
     int count;
     int i;
+    int id;
     char str[40];
     count = whisper_eyejam_db_songquery_begin();
   
     for(i = 0; i < count; i++) {
         whisper_eyejam_db_songquery_step();
         whisper_eyejam_db_songquery_copy(str);
-        fprintf(stderr, "%s\n", str);
+        id = whisper_eyejam_db_songquery_id();
+        fprintf(stderr, "%d: %s\n", id, str);
     }
 
     whisper_eyejam_db_songquery_end();
