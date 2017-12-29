@@ -27,9 +27,46 @@ struct jam_loadsong {
     int centerh;
     loadsong_entry entry[MAXSONGS];
     int nsongs;
+    int selected_song;
 };
 
 OPENSCREEN(config, JAM_CONFIG);
+
+#define SONGFUN(id) select_song_##id
+
+#define SELECT_SONG(id)\
+static void SONGFUN(id)(jam_button *but, void *ud)\
+{\
+    jam_loadsong *ls;\
+    ls = ud;\
+    printf("selecting song %d\n", id);\
+    ls->selected_song = id;\
+}
+
+
+#if 0
+static void select_song_0(jam_button *but, void *ud)
+{
+    jam_loadsong *ls;
+    ls = ud;
+    printf("selecting song 1\n");
+    ls->selected_song = 0;
+}
+#endif
+
+SELECT_SONG(0)
+SELECT_SONG(1)
+SELECT_SONG(2)
+SELECT_SONG(3)
+SELECT_SONG(4)
+
+static jam_button_cb selector[] = {
+SONGFUN(0),
+SONGFUN(1),
+SONGFUN(2),
+SONGFUN(3),
+SONGFUN(4),
+};
 
 size_t jam_loadsong_size()
 {
@@ -61,6 +98,7 @@ void jam_loadsong_init(jam_loadsong *loadsong, jam_ui *ui)
     jam_button_data(loadsong->config, loadsong->top);
 
     loadsong->nsongs = 0;
+    loadsong->selected_song = -1;
 
     cy = YSTART;
     for(i = 0; i < MAXSONGS; i++) {
@@ -70,8 +108,9 @@ void jam_loadsong_init(jam_loadsong *loadsong, jam_ui *ui)
         jam_button_setsize(ent->but, CONSTANT(500), CONSTANT(100));
         jam_button_pos(ent->but, 
             centerw - CONSTANT(250), 
-            //centerh - CONSTANT(cy) - CONSTANT(25));
             centerh - CONSTANT(cy) - CONSTANT(50));
+        jam_button_data(ent->but, loadsong);
+        jam_button_cb_trigger(loadsong->entry[i].but, selector[i]);
         cy -= YINCR;
     }
 }
@@ -92,7 +131,11 @@ void jam_loadsong_free(jam_loadsong *loadsong)
 
 void jam_loadsong_interact(jam_loadsong *loadsong, double x, double y, double step)
 {
+    int i;
     jam_button_interact(loadsong->config, x, y, step);
+    for(i = 0; i < loadsong->nsongs; i++) {
+        jam_button_interact(loadsong->entry[i].but, x, y, step);
+    }
 }
 
 void jam_loadsong_draw(NVGcontext *vg, jam_loadsong *loadsong)
@@ -106,6 +149,13 @@ void jam_loadsong_draw(NVGcontext *vg, jam_loadsong *loadsong)
     nvgFontSize(vg, CONSTANT(48.0f));
 
     for(i = 0; i < loadsong->nsongs; i++) {
+
+        if(loadsong->selected_song == i) {
+            jam_button_alt_color(loadsong->entry[i].but, 1);
+        } else {
+            jam_button_alt_color(loadsong->entry[i].but, 0);
+        }
+
         jam_button_draw(vg, loadsong->entry[i].but);
         nvgFillColor(vg, nvgRGB(0, 0, 0));
         nvgBeginPath(vg);
