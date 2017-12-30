@@ -82,11 +82,14 @@ static void drumkit_sample_silence(whisper_drumkit *k, drumkit_sample *s)
     s->ft.tbl = k->silence;
 }
 
+static void drumkit_sample_destroy(drumkit_sample *samp);
+
 static void drumkit_sample_load(whisper_drumkit *kit,
         drumkit_sample *smp, const char *filename)
 {
     int r;
     /* TODO: make sure previously allocated samples get freed somehow */
+    drumkit_sample_destroy(smp);
     r = sp_ftbl_loadflac(kit->sp, &smp->ft, filename);
     if(r == SP_NOT_OK) {
         drumkit_sample_silence(kit, smp);
