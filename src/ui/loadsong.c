@@ -78,6 +78,8 @@ static void load_the_song(jam_button *but, void *ud)
     song = ls->entry[ls->selected_song].id;
     fprintf(stderr, "loading song %d from song slot %d\n", 
         song, ls->selected_song);
+    whisper_eyejam_loadsong(song);
+    jam_ui_screen(ls->top, JAM_LAUNCHER);
 }
 
 size_t jam_loadsong_size()
@@ -211,9 +213,10 @@ void jam_loadsong_populate(jam_loadsong *loadsong)
     int i;
     loadsong_entry *entry;
 
+    loadsong->selected_song = -1;
     entry = loadsong->entry;
     count = whisper_eyejam_db_songquery_begin();
-    printf("Populating...\n");
+    fprintf(stderr, "Populating...\n");
     
     if(count > MAXSONGS) count = MAXSONGS;
 

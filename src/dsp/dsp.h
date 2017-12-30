@@ -293,6 +293,10 @@ EXPORT const char * whisper_eyejam_title_get();
 EXPORT int whisper_eyejam_readonly_get(void);
 EXPORT void whisper_eyejam_readonly_set(int readonly);
 
+EXPORT void whisper_eyejam_loadsong(int song);
+EXPORT int whisper_eyejam_song_id_get(void);
+EXPORT void whisper_eyejam_song_id_set(int id);
+
 
 /* Soundpipe */
 

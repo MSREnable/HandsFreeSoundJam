@@ -84,7 +84,7 @@ void jam_audio_create(jam_audio **jam)
 
 void jam_audio_destroy(jam_audio **jam)
 {
-    whisper_eyejam_db_save_default();
+    whisper_eyejam_db_save_song(whisper_eyejam_song_id_get());
     whisper_eyejam_db_close();
     whisper_eyejam_destroy();
     free(*jam);

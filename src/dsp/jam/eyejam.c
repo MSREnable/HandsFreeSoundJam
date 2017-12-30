@@ -13,7 +13,7 @@
 
 #define LENGTH(x) ((int)(sizeof(x) / sizeof *(x)))
 
-#define MAX_DUR 900 /* max duration of 15 minutes */ 
+#define MAX_DUR 900 /* record max duration of 15 minutes */ 
 
 typedef struct whisper_eyejam whisper_eyejam;
 
@@ -63,6 +63,10 @@ struct whisper_eyejam
 
     /* readonly mode */
     int readonly;
+
+    int song_id;
+    int next_song_id;
+    int please_load;
 };
 
 static whisper_eyejam eyejam;
@@ -85,6 +89,9 @@ static void eyejam_setup(whisper_eyejam *ej)
     ej->am_i_recording = 0;
     ej->wavout = NULL;
     ej->readonly = 0;
+    ej->song_id = 0;
+    ej->next_song_id = 0;
+    ej->please_load = 0;
 }
 
 static void eyejam_init(whisper_eyejam *ej, int sr)
@@ -267,6 +274,16 @@ void whisper_eyejam_tick_stereo(SPFLOAT *sampleL, SPFLOAT *sampleR)
     *sampleL = 0;
     *sampleR = 0;
     clock_tick = 0.f;
+
+    /* load new song, if needed */
+    /* TODO: perhaps don't do this on the audio render thread */
+
+    if(eyejam.please_load) {
+        eyejam.please_load = 0;
+        whisper_eyejam_db_save_song(eyejam.song_id);
+        whisper_eyejam_db_load_song(eyejam.next_song_id);
+        eyejam.song_id = eyejam.next_song_id;
+    }
 
     /* sort out any play/stop buttons, then return if not playing */
     if(eyejam.please_play) {
@@ -621,4 +638,20 @@ EXPORT int whisper_eyejam_readonly_get(void)
 EXPORT void whisper_eyejam_readonly_set(int readonly)
 {
     eyejam.readonly = readonly;
+}
+
+EXPORT void whisper_eyejam_loadsong(int song)
+{
+    eyejam.next_song_id = song;
+    eyejam.please_load = 1;
+}
+
+EXPORT int whisper_eyejam_song_id_get(void)
+{
+    return eyejam.song_id;
+}
+
+EXPORT void whisper_eyejam_song_id_set(int id)
+{
+    eyejam.song_id = id;
 }
