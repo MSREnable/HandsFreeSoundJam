@@ -89,7 +89,7 @@ static void eyejam_setup(whisper_eyejam *ej)
     ej->am_i_recording = 0;
     ej->wavout = NULL;
     ej->readonly = 0;
-    ej->song_id = 0;
+    ej->song_id = 1;
     ej->next_song_id = 0;
     ej->please_load = 0;
 }
