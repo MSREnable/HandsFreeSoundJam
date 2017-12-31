@@ -75,6 +75,7 @@ static void load_the_song(jam_button *but, void *ud)
     int song;
     ls = ud;
 
+    if(ls->selected_song < 0) return;
     song = ls->entry[ls->selected_song].id;
     fprintf(stderr, "loading song %d from song slot %d\n", 
         song, ls->selected_song);
