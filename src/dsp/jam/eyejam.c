@@ -279,8 +279,10 @@ void whisper_eyejam_tick_stereo(SPFLOAT *sampleL, SPFLOAT *sampleR)
     /* TODO: perhaps don't do this on the audio render thread */
 
     if(eyejam.please_load) {
+        printf("Loading new song!\n");
         eyejam.please_load = 0;
         whisper_eyejam_db_save_song(eyejam.song_id);
+        whisper_tracks_reset();
         whisper_eyejam_db_load_song(eyejam.next_song_id);
         eyejam.song_id = eyejam.next_song_id;
     }

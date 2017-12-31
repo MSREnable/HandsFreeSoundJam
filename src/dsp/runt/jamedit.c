@@ -160,6 +160,21 @@ FUN(set_pos)
     return RUNT_OK;
 }
 
+FUN(set_voice)
+{
+    runt_int rc;
+    runt_stacklet *s;
+    runt_int voice;
+
+    rc = runt_ppop(vm, &s);
+    RUNT_ERROR_CHECK(rc);
+    voice = s->f;
+
+    whisper_eyejam_edit_set_voice(voice);
+
+    return RUNT_OK;
+}
+
 FUN(voice_up)
 {
     whisper_eyejam_edit_voice_up();
@@ -330,6 +345,18 @@ FUN(readonly)
     return RUNT_OK;
 }
 
+FUN(democlips)
+{
+    whisper_eyejam_demo_clips();
+    return RUNT_OK;
+}
+
+FUN(zzzap)
+{
+    whisper_tracks_reset();
+    return RUNT_OK;
+}
+
 static runt_int loader(runt_vm *vm)
 {
     runt_load_stdlib(vm);
@@ -343,6 +370,7 @@ static runt_int loader(runt_vm *vm)
     KEYWORD("set_track", 9, PROC(set_track));
     KEYWORD("set_clip", 8, PROC(set_clip));
     KEYWORD("set_pos", 7, PROC(set_pos));
+    KEYWORD("set_voice", 9, PROC(set_voice));
     KEYWORD("voice_up", 8, PROC(voice_up));
     KEYWORD("voice_down", 8, PROC(voice_down));
     KEYWORD("stepsize_double", 15, PROC(stepsize_double));
@@ -360,6 +388,8 @@ static runt_int loader(runt_vm *vm)
     KEYWORD("kit_sample", 10, PROC(kit_sample));
     KEYWORD("songquery", 9, PROC(songquery));
     KEYWORD("readonly", 8, PROC(readonly));
+    KEYWORD("democlips", 9, PROC(democlips));
+    KEYWORD("zzzap", 5, PROC(zzzap));
     return runt_is_alive(vm);
 }
 

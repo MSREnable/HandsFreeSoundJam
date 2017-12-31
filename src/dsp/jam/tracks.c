@@ -491,3 +491,23 @@ EXPORT int whisper_tracks_get_loopmode(int track)
 
     return wtrack_get_loopmode(t);
 }
+
+/* zeros out all whisper tracks data and mod flags. */
+EXPORT void whisper_tracks_reset(void)
+{
+    int t, c;
+    whisper_track *trk;
+    whisper_clip *clp;
+    for(t = 0; t < WHISPER_NTRACKS; t++) {
+        trk = &tracks[t];
+        /* set track modflag to 0 */
+        trk->modflag = 0;
+        /* unset modflags for all clips, and clear data */
+        for(c = 0; c < WHISPER_NCLIPS; c++) {
+            clp = trk->clipspace[c];
+            wclip_unset_modflag(clp);
+            wclip_clear(clp);
+        }
+
+    }
+}

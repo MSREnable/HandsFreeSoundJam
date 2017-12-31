@@ -224,3 +224,8 @@ int wclip_get_modflag(whisper_clip *clip)
 {
     return clip->modflag;
 }
+
+void wclip_unset_modflag(whisper_clip *clip)
+{
+    clip->modflag = 0;
+}

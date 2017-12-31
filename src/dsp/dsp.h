@@ -208,6 +208,7 @@ void wclip_set_length(whisper_clip *clip, unsigned int length);
 void wclip_set_row_id(whisper_clip *clip, int row_id);
 void wclip_set_modflag(whisper_clip *clip);
 int wclip_get_modflag(whisper_clip *clip);
+void wclip_unset_modflag(whisper_clip *clip);
 
 
 /* track */
@@ -248,6 +249,7 @@ EXPORT void whisper_track_modified(int track);
 EXPORT int whisper_track_is_modified(int track);
 void wtrack_modified(whisper_track *track);
 int wtrack_is_modified(whisper_track *track);
+EXPORT void whisper_tracks_reset(void);
 
 /* EyeJam */
 
